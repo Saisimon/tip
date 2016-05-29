@@ -1,0 +1,88 @@
+#+AUTHOR: Saisimon
+
+* 小技巧
+** Windows
+*** 右键添加命令提示符(CMD)
+    1. Win + R 运行 regedit
+    2. 找到 计算机 > HKEY_CLASSES_ROOT > Folder > shell
+    3. 右键shell 新建 -> 项 -> 命令提示符
+    4. 右键命令提示符 新建 -> 项 -> command
+    5. 点击(默认)项 输入 C:\Windows\System32\cmd.exe /k cd "%1" 确认
+*** 修改 XShell Alt 键作为 Meta 键, Backspace 键作为删除键
+    1. 打开XShell 选择 文件 -> 属性
+    2. 选择 终端 -> 键盘
+    3. 选中 将 Alt 用作 Meta 键
+    4. BACKSPACE 键序列 中选择 ASCII 127 确认
+
+** Linux
+*** 查看 linux 内存占用
+    1. 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
+    2. 按 Shift + m ,即 M 按内存占用率排序
+
+** Database
+*** 查询 Mysql 数据库大小
+    - 选择指定 [[http://dev.mysql.com/doc/refman/5.7/en/tables-table.html][information_schema 数据库]]
+      #+BEGIN_SRC sql
+            use information_schema;
+      #+END_SRC
+    - 查询整个数据库大小
+      #+BEGIN_SRC sql
+            select concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') as data from TABLES;
+      #+END_SRC
+    - 查询指定数据库大小
+      #+BEGIN_SRC sql
+            select concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') as data from TABLES where table_schema='your_database_name';
+      #+END_SRC
+    - 查询指定数据库下某个表的大小
+      #+BEGIN_SRC sql
+            select concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') as data from TABLES where table_schema='your_database_name' and table_name='your_table_name';
+      #+END_SRC
+*** Mysql 数据库存中文字符乱码解决方法
+    - 修改 [[http://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html][jdbc.url 配置]]
+      #+BEGIN_SRC 
+            jdbc.url=jdbc:mysql://ip-address:port/your_database_name?useUnicode=true&characterEncoding=utf8
+      #+END_SRC
+*** Mysql 新增用户, 并附指定权限
+    - [[http://dev.mysql.com/doc/refman/5.7/en/adding-users.html][新增用户]]
+      #+BEGIN_SRC sql
+            create user 'username'@'localhost' identified by 'password';
+      #+END_SRC
+    - [[http://dev.mysql.com/doc/refman/5.7/en/adding-users.html][附指定权限]]
+      #+BEGIN_SRC sql
+            grant all privileges on 'database'.'table' to 'username'@'localhost';
+      #+END_SRC
+    - [[http://dev.mysql.com/doc/refman/5.7/en/removing-users.html][删除用户]]
+      #+BEGIN_SRC sql
+            drop user 'username'@'localhost';
+      #+END_SRC
+
+** Java
+*** 前端页面传中文字符乱码解决方法
+    - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
+      #+BEGIN_SRC 
+          <filter>
+              <filter-name>CharacterEncodingFilter</filter-name>
+              <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+              <init-param>
+                  <param-name>encoding</param-name>
+                  <param-value>UTF-8</param-value>
+              </init-param>
+              <init-param>
+                  <param-name>forceEncoding</param-name>
+                  <param-value>true</param-value>
+              </init-param>
+          </filter>
+
+          <filter-mapping>
+                <filter-name>CharacterEncodingFilter</filter-name>
+                <url-pattern>/*</url-pattern>
+          </filter-mapping>
+      #+END_SRC
+    - filter 需要放在所有 filter 的前面才会生效
+*** Maven 跳单元测试
+    - 跳过单元测试
+      #+BEGIN_SRC 
+          $ mvn install -Dmaven.test.skip=true
+      #+END_SRC
+
+** Emacs
