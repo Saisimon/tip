@@ -1,0 +1,163 @@
+* Emacs基本操作
+
+emacs [filename] 使用Emacs打开文件
+emacs [+rows:cols] [filename] --insert [filename] 使用Emacs打开文件，光标移动至第rows行第cols列，并且插入另一个指定文件里的内容
+
+** base
+C-[char] 表示按Ctrl和字符，同时按。
+M-[char] 表示按Alt和字符，同时按。如果键盘没有Alt键，可以先按Esc在输入字符。
+
+C-v 移动至下一屏 (scroll-up)
+M-v 移动至上一屏 (scroll-down)
+
+C-p 移动至上一行 (previous-line)
+C-n 移动至下一行 (next-line)
+C-b 移动至上一个字符 (backward-char)
+C-f 移动至下一个字符 (forward-char)
+
+M-< 即“Alt+Shift+,”或者“Esc Shift+,”，移动至文档开头 (beginning-of-buffer)
+M-> 即“Alt+Shift+.”或者“Esc Shift+.”，移动至文档结尾 (end-of-buffer)
+
+M-b 移动至上一个单词（英语）、句子（中文）(backward-word)
+M-f 移动至下一个单词（英语）、句子（中文）(forward-word)
+
+C-a 移动至一行的行首 (beginning-of-line)
+C-e 移动至一行的行尾 (end-of-line)
+
+M-a 移动至一段的段首 (backward-sentence)
+M-e 移动至一段的段尾 (forward-sentence)
+
+C-d 删除光标后一个字符 (delete-char)
+C-k 移除从光标到段尾的所有内容（不包括换行符）(org-kill-line)
+
+M-d 删除光标后一个单词（英语）、句子（中文）(kill-word)
+M-k 删除一句话 (kill-sentence)
+
+C-/ 撤销上一步操作 (undo)
+C-_ 同C-/操作，撤销上一步操作 (undo)
+C-x u 同C-/操作，撤销上一步操作 (undo)
+
+C-l 使光标所在行居文档中间 (re-center)
+C-l C-l 使光标所在行居文档顶部
+C-l C-l C-l 使光标所在行居文档底部
+
+C-Space 即Ctrl+空格，标记光标所在的位置，移动以选中区域 (set-mark-command)
+C-@ 同C-Space操作 (set-mark-command)
+C-w 剪切所选区域的内容 (kill-region)
+M-w 复制所选区域的内容 (kill-ring-save)
+C-y 召回C-k删除的内容，多次执行可执行复制操作 (org-yank)
+M-y 在所有C-k删除的内容中循环切换，替换前面的粘贴 
+
+C-h m 描述当前缓冲区的模式 (describe-mode)
+C-h v [variable name] 描述指定变量 (describe-variable)
+C-h c [operation] 获取指定操作所执行的函数名称 (describe-key-briefly)
+C-h k [operation] 获取指定操作的详细描述 (describe-key)
+C-h l 获取最后键入的100个键盘输入操作 (view-lossage)
+C-h f [function name] 获取指定函数的说明 (describe-function)
+C-h b 获取函数与键绑定的对应关系列表 (describe-bindings)
+C-h w [function name] 获取指定函数与键的绑定关系 (where-is)
+
+C-g 结束当前操作 (keyboard-quit)
+Esc Esc Esc 同C-g，结束当前操作 (keyboard-escape-quit)
+
+C-s [input] 全局向前搜索 (isearch-forward)
+C-r [input] 全局向后搜索 (isearch-backward)
+
+Esc C-s [regx] 全局向前正则表达式搜索 (isearch-forward-regexp)
+Esc C-r [regx] 全局向后正则表达式搜索 (isearch-backward-regexp)
+
+M-% [replaced] [replace] 查询替换 (query-replace)
+
+M-x [function name] 运行任意一个函数M-q 填充段落 (fill-paragraph)
+
+C-x C-f [file path] 打开文件或创建文件 (find-file)
+C-x C-s 保存当前缓冲区的文档 (save-buffer)
+C-x C-w [filename] 将当前缓冲区的文档另存为指定文件 (write-file)
+C-x s 保存所有缓冲区中未保存的文档 (save-some-buffers)
+C-x i 在光标所在处插入指定文件内容 (insert-file)
+
+C-x 0 关闭当前缓冲区窗口 (delete-window)
+C-x 1 关闭除当前缓冲区以外的窗口，即将当前缓冲区窗口最大化 (delete-other-windows)
+C-x 2 划分当前缓冲区为两个窗口，垂直分屏 (split-window-vertically)
+C|M-[count] C-x 2 使顶部缓冲区指定为count行内容的高度
+M-- C|M[count] C-x 2 使底部缓冲区指定为count行内容的高度
+C-x 3 划分当前缓冲区为两个窗口，水平分屏 (split-window-horizontally)
+C-x 4 f [filename] 在新窗口打开指定文件，光标显示在新窗口中 (find-file-other-window)
+C-x 4 r [filename] 在新窗口打开指定只读文件，光标显示在新窗口中 (find-file-read-only-other-window)
+C-x 4 C-o [buffername] 在新窗口打开指定文件，光标任显示在当前窗口 (display-buffer)
+C-x o 切换至其他缓冲区窗口 (other-window)
+C-x C-b 查看缓冲区列表 (list-buffers)
+C-x b [buffername] 打开指定缓冲区 (switch-to-buffer)
+C-x k [buffername] 关闭指定缓冲区 (kill-buffer)
+C-x C-q 切换当前缓冲区文件的只读状态 (vc-toggle-read-only)
+C-x C-z 挂起Emacs，即最小化Emacs (suspend-emacs)
+C-x C-c 关闭Emacs (save-buffers-kill-emacs)
+
+C-x r m [bookmark] 在光标所在位置设置书签 (bookmark-set)
+C-x r l 列出所有保存的书签 (bookmarks-bmenu-list)
+M-x bookmark-delete [bookmark] 删除指定书签 (bookmark-delete)
+C-x r b [bookmark] 跳转至指定书签 (bookmark-jump)
+
+C-u [count] [operation|input] 键绑定次数 (universal-argument)
+    例如C-u 3 C-n 表示光标向下移动三行，即执行了三次C-n操作
+    又如C-u 8 * 表示输入八个*，即********
+    universal-argument默认值为4，即C-u + 表示++++
+M-[count] [operation|input] 同上操作，键绑定次数
+    例如M-3 C-n 同C-u 3 C-n 表示光标向下移动三行，即执行了三次C-n操作
+
+M-x menu-bar-mode 关闭/打开Emacs菜单栏
+M-x tool-bar-mode 关闭/打开Emacs工具栏
+M-x scroll-bar-mode 关闭/打开Emacs滚动条
+M-x display-time 关闭/打开时间显示
+M-x set-variable 设置当前缓冲区的变量值
+
+** org-mode
+#+BEGIN_SRC org
+,* 一级标题
+,** 二级标题
+,*** 三级标题
+    
+    [[link][describe]] 链接样式
+    
+    ,*粗体 fff*    星号包裹
+    /斜体 fff/     斜杠包裹
+    +删除线 fff+   加号包裹
+    _下划线 fff_   下划线包裹
+    =等宽 fff=     等号包裹
+    
+    | A    | B    | C    | D    | E    |
+    |------+------+------+------+------|
+    | aaaa | bbbb | cccc | dddd | eeee | 
+
+    | 命令           | 说明                                                           |
+    |----------------+----------------------------------------------------------------|
+    | C-c 竖线 5x2   | 创建一个5列2行的表格                                           |
+    | C-c C-c        | 格式化表格                                                     |
+    | C-c -          | 添加一行水平线                                                 |
+    | Tab            | 下一个单元格，格式化表格，当到达最后一个单元格时，自动创建一行 |
+    | Return         | 即回车键 下一行，当到达最后一行时，自动创建一行                |
+    | Shift + Tab    | 上一个单元格                                                   |
+    | M-LEFT/RIGHT   | 移动一列                                                       |
+    | M-UP/DOWN      | 移动一行                                                       |
+    | M-S-LEFT/RIGHT | 删除/插入一列                                                  |
+    | M-S-UP/DOWN    | 删除/插入行                                                    |
+
+#+END_SRC
+
+Tab 光标在某个标题是，展开或收缩该标题
+
+输入<s，然后按Tab，来创建一个代码区，在代码区内按 C-c ' ，进入指定在 src 后面对应的模式的新缓冲区
+
+C-c C-p 跳转到上一个标题 
+C-c C-n 跳转到下一个标题 
+
+C-c C-t 在 org 模式下，将一条记录变成某个指定状态 (org-todo)
+t[TODO] s[STARTED] d[DONE] w[WAITING] S[SOMEDAY] P[PROJECT] c[CANCELLED]
+
+C-c C-s 设置某条记录的开始时间 (org-schedule)
+C-c C-d 设置某条记录的结束时间 (org-deadline)
+
+C-c C-e 根据提示，到处指定的文件类型
+
+
+
