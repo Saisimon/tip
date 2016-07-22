@@ -18,6 +18,30 @@
 *** 查看 linux 内存占用
     1. 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
     2. 按 Shift + m ,即 M 按内存占用率排序
+*** linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
+    $ tar -xf *.tar
+    $ tar -xzf *.tar.gz
+    $ tar -xcf *.tar.bz2
+    $ tar -xZf *.tar.Z
+    $ unzip *.zip
+*** linux 下 nginx 安装、启动、重启、停止
+    安装 tar -xzf nginx-${version}.tar.gz
+         cd nginx-${version}
+         yum install -y pcre-devel openssl-devel
+         ./configure 
+         make
+         make install
+         nginx 默认安装路径 /usr/local/nginx
+    启动 ${nginx_path}/sbin/nginx
+    启动指定配置文件 ${nginx_path}/sbin/nginx -c ${conf_path}
+    重启 ${nginx_path}/sbin/nginx -s reload
+    停止 ${nginx_path}/sbin/nginx -s stop
+*** nginx 反向代理配置
+    在 http-server-location / 下填写反向代理配置
+         proxy_pass http://localhost:8080;
+         proxy_set_header Host $host;
+         proxy_set_header X-Real-IP $remote_addr;
+         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
 ** Database
 *** 查询 Mysql 数据库大小
@@ -45,15 +69,15 @@
 *** Mysql 新增用户, 并附指定权限
     - [[http://dev.mysql.com/doc/refman/5.7/en/adding-users.html][新增用户]]
       #+BEGIN_SRC sql
-            create user 'username'@'localhost' identified by 'password';
+            create user ['username']@['localhost'] identified by ['password'];
       #+END_SRC
     - [[http://dev.mysql.com/doc/refman/5.7/en/adding-users.html][附指定权限]]
       #+BEGIN_SRC sql
-            grant all privileges on 'database'.'table' to 'username'@'localhost';
+            grant all privileges on [database].[table] to ['username']@['localhost'];
       #+END_SRC
     - [[http://dev.mysql.com/doc/refman/5.7/en/removing-users.html][删除用户]]
       #+BEGIN_SRC sql
-            drop user 'username'@'localhost';
+            drop user ['username']@['localhost'];
       #+END_SRC
 
 ** Java
@@ -86,3 +110,26 @@
       #+END_SRC
 
 ** Emacs
+
+** Git
+*** Git 基本操作
+    - 初始化
+      $ git init
+    - clone别人的库
+      $ git clone ssh://user@domain.com/repo.git
+    - 查看库的状态
+      $ git status
+    - 添加文件到暂存区
+      $ git add .
+    - 提交文件到本地库
+      $ git commit
+    - 提交历史纪录
+      $ git log
+    - 查看库的分支
+      $ git branch
+    - 切换分支
+      $ git checkout <branch>
+    - 将本地库推送至远程库中
+      $ git push <remote> <branch>
+    - 将指定分支合并至当前分支
+      $ git merge <branch>
