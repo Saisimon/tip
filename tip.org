@@ -119,6 +119,8 @@
       $ git clone ssh://user@domain.com/repo.git
     - 查看库的状态
       $ git status
+    - 查看工作区与暂存区文件的修改
+      $ git diff
     - 添加文件到暂存区
       $ git add .
     - 提交文件到本地库
@@ -133,3 +135,10 @@
       $ git push <remote> <branch>
     - 将指定分支合并至当前分支
       $ git merge <branch>
+*** 更新.gitignore后，清理Git仓库
+    - 清理暂存区的文件
+      $ git rm -r --cached .
+    - 添加所有文件
+      $ git add .
+    - 提交
+      $ git commit -m ".gitignore is now working"
