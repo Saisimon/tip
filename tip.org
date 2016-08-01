@@ -147,3 +147,9 @@
        例如 st = status 
     2. 使用 git config --global alias.[alias-name] [operation-name]
        例如 git config --global alias.st status 表示将st作为status的别名，可以直接使用 git st 命令。
+*** Git推送代码
+    - 首次推送，添加远程代码库至配置
+      $ git remote add tip https://github.com/Saisimon/tip.git
+    - 推送代码至远程代码库
+      $ git push tip master
+    - 输入账号密码进行确认
