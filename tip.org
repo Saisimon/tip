@@ -142,3 +142,8 @@
       $ git add .
     - 提交
       $ git commit -m ".gitignore is now working"
+*** 修改Git别名
+    1. 修改.gitconfig文件中[alias]属性
+       例如 st = status 
+    2. 使用 git config --global alias.[alias-name] [operation-name]
+       例如 git config --global alias.st status 表示将st作为status的别名，可以直接使用 git st 命令。
