@@ -106,6 +106,23 @@
       #+END_SRC
     - filter 需要放在所有 filter 的前面才会生效
 *** Maven
+**** Maven 基本操作
+    - 创建Maven的普通java项目
+      $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[projectName]
+    - 创建Maven的Web项目
+      $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[webappName] -DarchetypeArtfactId=maven-archetype-webapp
+    - 编译源码
+      $ mvn compile
+    - 打包
+      $ mvn package
+    - 在本地Repository中安装jar
+      $ mvn install
+    - 清理项目
+      $ mvn clean
+    - 生成eclipse/idea项目
+      $ mvn eclipse:eclipse / mvn idea:idea
+    - 生成站点信息
+      $ mvn site
 **** Maven 跳单元测试
     - 跳过单元测试
       #+BEGIN_SRC 
