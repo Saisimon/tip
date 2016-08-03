@@ -19,29 +19,51 @@
     1. 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
     2. 按 Shift + m ,即 M 按内存占用率排序
 *** linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
-    $ tar -xf *.tar
-    $ tar -xzf *.tar.gz
-    $ tar -xcf *.tar.bz2
-    $ tar -xZf *.tar.Z
-    $ unzip *.zip
+    #+BEGIN_SRC
+      $ tar -xf *.tar
+      $ tar -xzf *.tar.gz
+      $ tar -xcf *.tar.bz2
+      $ tar -xZf *.tar.Z
+      $ unzip *.zip
+    #+END_SRC
 *** linux 下 nginx 安装、启动、重启、停止
-    安装 tar -xzf nginx-${version}.tar.gz
-         cd nginx-${version}
-         yum install -y pcre-devel openssl-devel
-         ./configure 
-         make
-         make install
-         nginx 默认安装路径 /usr/local/nginx
-    启动 ${nginx_path}/sbin/nginx
-    启动指定配置文件 ${nginx_path}/sbin/nginx -c ${conf_path}
-    重启 ${nginx_path}/sbin/nginx -s reload
-    停止 ${nginx_path}/sbin/nginx -s stop
+    安装
+    #+BEGIN_SRC 
+      tar -xzf nginx-${version}.tar.gz
+      cd nginx-${version}
+      yum install -y pcre-devel openssl-devel
+      ./configure 
+      make
+      make install
+    #+END_SRC
+    nginx 默认安装路径 
+    #+BEGIN_SRC 
+      /usr/local/nginx
+    #+END_SRC
+    启动 
+    #+BEGIN_SRC 
+      ${nginx_path}/sbin/nginx
+    #+END_SRC
+    启动指定配置文件 
+    #+BEGIN_SRC 
+      ${nginx_path}/sbin/nginx -c ${conf_path}
+    #+END_SRC
+    重启 
+    #+BEGIN_SRC 
+      ${nginx_path}/sbin/nginx -s reload
+    #+END_SRC
+    停止 
+    #+BEGIN_SRC 
+      ${nginx_path}/sbin/nginx -s stop
+    #+END_SRC
 *** nginx 反向代理配置
     在 http-server-location / 下填写反向代理配置
-         proxy_pass http://localhost:8080;
-         proxy_set_header Host $host;
-         proxy_set_header X-Real-IP $remote_addr;
-         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #+BEGIN_SRC
+      proxy_pass http://localhost:8080;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #+END_SRC
 
 ** Database
 *** Mysql
@@ -85,7 +107,7 @@
 *** Web
 **** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
-      #+BEGIN_SRC 
+      #+BEGIN_SRC xml
           <filter>
               <filter-name>CharacterEncodingFilter</filter-name>
               <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -108,25 +130,42 @@
 *** Maven
 **** Maven 基本操作
     - 创建Maven的普通java项目
-      $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[projectName]
+      #+BEGIN_SRC 
+        $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[projectName]
+      #+END_SRC
     - 创建Maven的Web项目
-      $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[webappName] -DarchetypeArtfactId=maven-archetype-webapp
+      #+BEGIN_SRC 
+        $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[webappName] -DarchetypeArtfactId=maven-archetype-webapp
+      #+END_SRC
     - 编译源码
-      $ mvn compile
+      #+BEGIN_SRC 
+        $ mvn compile
+      #+END_SRC
     - 打包
-      $ mvn package
+      #+BEGIN_SRC 
+        $ mvn package
+      #+END_SRC
     - 在本地Repository中安装jar
-      $ mvn install
+      #+BEGIN_SRC 
+        $ mvn install
+      #+END_SRC
     - 清理项目
-      $ mvn clean
+      #+BEGIN_SRC 
+        $ mvn clean
+      #+END_SRC
     - 生成eclipse/idea项目
-      $ mvn eclipse:eclipse / mvn idea:idea
+      #+BEGIN_SRC 
+        $ mvn eclipse:eclipse
+        $ mvn idea:idea
+      #+END_SRC
     - 生成站点信息
-      $ mvn site
+      #+BEGIN_SRC 
+        $ mvn site
+      #+END_SRC
 **** Maven 跳单元测试
     - 跳过单元测试
       #+BEGIN_SRC 
-          $ mvn install -Dmaven.test.skip=true
+        $ mvn install -Dmaven.test.skip=true
       #+END_SRC
 *** Tomcat
 **** 导入Web项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X...
@@ -139,6 +178,7 @@
 
 ** Git
 *** Git 基本操作
+    #+BEGIN_SRC 
     - 初始化
       $ git init
     - clone别人的库
@@ -161,21 +201,26 @@
       $ git push <remote> <branch>
     - 将指定分支合并至当前分支
       $ git merge <branch>
+    #+END_SRC
 *** 更新.gitignore后，清理Git仓库
+    #+BEGIN_SRC 
     - 清理暂存区的文件
       $ git rm -r --cached .
     - 添加所有文件
       $ git add .
     - 提交
       $ git commit -m ".gitignore is now working"
+    #+END_SRC
 *** 修改Git别名
     1. 修改.gitconfig文件中[alias]属性
        例如 st = status 
     2. 使用 git config --global alias.[alias-name] [operation-name]
        例如 git config --global alias.st status 表示将st作为status的别名，可以直接使用 git st 命令。
 *** Git推送代码
+    #+BEGIN_SRC 
     - 首次推送，添加远程代码库至配置
       $ git remote add tip https://github.com/Saisimon/tip.git
     - 推送代码至远程代码库
       $ git push tip master
     - 输入账号密码进行确认
+    #+END_SRC
