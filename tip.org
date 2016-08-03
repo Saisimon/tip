@@ -44,7 +44,8 @@
          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
 ** Database
-*** 查询 Mysql 数据库大小
+*** Mysql
+**** 查询 Mysql 数据库大小
     - 选择指定 [[http://dev.mysql.com/doc/refman/5.7/en/tables-table.html][information_schema 数据库]]
       #+BEGIN_SRC sql
             use information_schema;
@@ -61,12 +62,12 @@
       #+BEGIN_SRC sql
             select concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') as data from TABLES where table_schema='your_database_name' and table_name='your_table_name';
       #+END_SRC
-*** Mysql 数据库存中文字符乱码解决方法
+**** Mysql 数据库存中文字符乱码解决方法
     - 修改 [[http://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html][jdbc.url 配置]]
       #+BEGIN_SRC 
             jdbc.url=jdbc:mysql://ip-address:port/your_database_name?useUnicode=true&characterEncoding=utf8
       #+END_SRC
-*** Mysql 新增用户, 并附指定权限
+**** Mysql 新增用户, 并附指定权限
     - [[http://dev.mysql.com/doc/refman/5.7/en/adding-users.html][新增用户]]
       #+BEGIN_SRC sql
             create user ['username']@['localhost'] identified by ['password'];
@@ -81,7 +82,8 @@
       #+END_SRC
 
 ** Java
-*** 前端页面传中文字符乱码解决方法
+*** Web
+**** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
       #+BEGIN_SRC 
           <filter>
@@ -103,12 +105,14 @@
           </filter-mapping>
       #+END_SRC
     - filter 需要放在所有 filter 的前面才会生效
-*** Maven 跳单元测试
+*** Maven
+**** Maven 跳单元测试
     - 跳过单元测试
       #+BEGIN_SRC 
           $ mvn install -Dmaven.test.skip=true
       #+END_SRC
-*** 导入Web项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X...
+*** Tomcat
+**** 导入Web项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X...
     其主要原因为当前 Tomcat 版本与该 Web 项目的Web版本不兼容，Tomcat 6支持 Web 2.5及以下版本，tomcat 7支持 Web 3.0及以下版本
     在 Eclipse 中：Project -> Properties -> Project Facets -> Dynamic Web Module，检查 Web 项目的Web版本
     1.Eclipse 环境下的修改方法为：项目根目录找到 .setting 文件夹中的 org.eclipse.wst.common.project.facet.core.xml 文件，修改其中 jst.web 的 version 的值至当前 Tomcat 支持的版本
