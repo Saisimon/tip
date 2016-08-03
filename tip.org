@@ -108,6 +108,11 @@
       #+BEGIN_SRC 
           $ mvn install -Dmaven.test.skip=true
       #+END_SRC
+*** 导入Web项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X...
+    其主要原因为当前 Tomcat 版本与该 Web 项目的Web版本不兼容，Tomcat 6支持 Web 2.5及以下版本，tomcat 7支持 Web 3.0及以下版本
+    在 Eclipse 中：Project -> Properties -> Project Facets -> Dynamic Web Module，检查 Web 项目的Web版本
+    1.Eclipse 环境下的修改方法为：项目根目录找到 .setting 文件夹中的 org.eclipse.wst.common.project.facet.core.xml 文件，修改其中 jst.web 的 version 的值至当前 Tomcat 支持的版本
+    2.更新 Tomcat 版本，使其与 Web 版本兼容
 
 ** Emacs
 
