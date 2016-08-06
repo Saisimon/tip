@@ -192,6 +192,24 @@
     1.Eclipse 环境下的修改方法为：项目根目录找到 .setting 文件夹中的 org.eclipse.wst.common.project.facet.core.xml 文件，修改其中 jst.web 的 version 的值至当前 Tomcat 支持的版本
     2.更新 Tomcat 版本，使其与 Web 版本兼容
 
+** Python
+*** SCons
+**** CentOS下编译安装SCons
+     #+BEGIN_SRC 
+     - 确定系统中安装了Python
+       $ python -V
+       Python 2.6.6
+     - 方式一: 使用yum安装SCons
+       $ yum install scons
+     - 方式二: 使用安装包安装SCons
+       - 去官网下载SCons安装包，解压
+       $ tar -xzvf scons-2.4.1.tar.gz
+       - 编译安装，默认安装路径 /usr/lib/scons-2.4.1
+       $ python setup.py install [--prefix=/xx/xx]
+     - 查看版本号
+       $ scons -v
+     #+END_SRC
+
 ** Emacs
 
 ** Git
