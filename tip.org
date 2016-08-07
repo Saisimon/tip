@@ -194,15 +194,15 @@
 
 ** Python
 *** SCons
-**** CentOS下编译安装SCons
+**** CentOS 下编译安装 SCons
      #+BEGIN_SRC 
-     - 确定系统中安装了Python
+     - 确定系统中安装了 Python
        $ python -V
        Python 2.6.6
-     - 方式一: 使用yum安装SCons
+     - 方式一: 使用 yum 安装 SCons
        $ yum install scons
-     - 方式二: 使用安装包安装SCons
-       - 去官网下载SCons安装包，解压
+     - 方式二: 使用安装包安装 SCons
+       - 去官网下载 SCons 安装包，解压
        $ tar -xzvf scons-2.4.1.tar.gz
        - 编译安装，默认安装路径 /usr/lib/scons-2.4.1
        $ python setup.py install [--prefix=/xx/xx]
