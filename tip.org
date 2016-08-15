@@ -191,6 +191,20 @@
     在 Eclipse 中：Project -> Properties -> Project Facets -> Dynamic Web Module，检查 Web 项目的Web版本
     1.Eclipse 环境下的修改方法为：项目根目录找到 .setting 文件夹中的 org.eclipse.wst.common.project.facet.core.xml 文件，修改其中 jst.web 的 version 的值至当前 Tomcat 支持的版本
     2.更新 Tomcat 版本，使其与 Web 版本兼容
+**** 配置从根目录访问 Tomcat 下的 Web 项目
+     #+BEGIN_SRC xml
+     <!-- docBase为webapp的路径 path为发布的路径，根目录访问这里留空  -->
+     <!-- Context 标签配置在 Tomcat 目录下 conf 文件里的 Server.xml 配置文件中  -->
+     <Server>
+       <Service>
+         <Engine>
+           <Host>
+             <Context docBase="[webapp_path]" path="" reloadable="true"/>
+           </Host>
+         </Engine>
+       </Service>
+     </Server>
+     #+END_SRC
 
 ** Python
 *** SCons
