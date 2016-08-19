@@ -13,7 +13,7 @@
     2. 选择 终端 -> 键盘
     3. 选中 将 Alt 用作 Meta 键
     4. BACKSPACE 键序列 中选择 ASCII 127 确认
-
+       
 ** Linux
 *** 查看 linux 内存占用
     1. 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
@@ -64,7 +64,7 @@
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     #+END_SRC
-
+    
 ** Database
 *** Mysql
 **** 查询 Mysql 数据库大小
@@ -102,7 +102,7 @@
       #+BEGIN_SRC sql
             drop user ['username']@['localhost'];
       #+END_SRC
-
+      
 ** Java
 *** Web
 **** 前端页面传中文字符乱码解决方法
@@ -129,45 +129,31 @@
     - filter 需要放在所有 filter 的前面才会生效
 *** Maven
 **** Maven 基本操作
+     #+BEGIN_SRC
     - 创建Maven的普通java项目
-      #+BEGIN_SRC 
-        $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[projectName]
-      #+END_SRC
+      $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[projectName]
     - 创建Maven的Web项目
-      #+BEGIN_SRC 
-        $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[webappName] -DarchetypeArtfactId=maven-archetype-webapp
-      #+END_SRC
+      $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[webappName] -DarchetypeArtfactId=maven-archetype-webapp
     - 编译源码
-      #+BEGIN_SRC 
-        $ mvn compile
-      #+END_SRC
+      $ mvn compile
     - 打包
-      #+BEGIN_SRC 
-        $ mvn package
-      #+END_SRC
+      $ mvn package
     - 在本地Repository中安装jar
-      #+BEGIN_SRC 
-        $ mvn install
-      #+END_SRC
+      $ mvn install
     - 清理项目
-      #+BEGIN_SRC 
-        $ mvn clean
-      #+END_SRC
+      $ mvn clean
     - 生成eclipse/idea项目
-      #+BEGIN_SRC 
-        $ mvn eclipse:eclipse
-        $ mvn idea:idea
-      #+END_SRC
+      $ mvn eclipse:eclipse
+      $ mvn idea:idea
     - 生成站点信息
-      #+BEGIN_SRC 
-        $ mvn site
-      #+END_SRC
+      $ mvn site
+     #+END_SRC
 **** Maven 跳单元测试
     - 跳过单元测试
       #+BEGIN_SRC 
         $ mvn install -Dmaven.test.skip=true
       #+END_SRC
-**** Maven指定编译版本
+**** Maven 指定编译版本
     - 添加编译插件
       #+BEGIN_SRC xml
       <build>
@@ -186,11 +172,37 @@
       </build> 
       #+END_SRC
 *** Tomcat
-**** 导入Web项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X...
-    其主要原因为当前 Tomcat 版本与该 Web 项目的Web版本不兼容，Tomcat 6支持 Web 2.5及以下版本，tomcat 7支持 Web 3.0及以下版本
-    在 Eclipse 中：Project -> Properties -> Project Facets -> Dynamic Web Module，检查 Web 项目的Web版本
-    1.Eclipse 环境下的修改方法为：项目根目录找到 .setting 文件夹中的 org.eclipse.wst.common.project.facet.core.xml 文件，修改其中 jst.web 的 version 的值至当前 Tomcat 支持的版本
-    2.更新 Tomcat 版本，使其与 Web 版本兼容
+**** 导入 Web 项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X...
+     - 其主要原因为当前 Tomcat 版本与该 Web 项目的Web版本不兼容，Tomcat 6支持 Web 2.5及以下版本，tomcat 7支持 Web 3.0及以下版本
+     - 在 Eclipse 中：Project -> Properties -> Project Facets -> Dynamic Web Module，检查 Web 项目的Web版本
+     1. Eclipse 环境下的修改方法为：项目根目录找到 .setting 文件夹中的 org.eclipse.wst.common.project.facet.core.xml 文件，修改其中 jst.web 的 version 的值至当前 Tomcat 支持的版本
+     2. 更新 Tomcat 版本，使其与 Web 版本兼容
+**** 配置从根目录访问 Tomcat 下的 Web 项目
+     #+BEGIN_SRC xml
+     <!-- docBase为webapp的路径 path为发布的路径，根目录访问这里留空  -->
+     <!-- Context 标签配置在 Tomcat 目录下 conf 文件里的 Server.xml 配置文件中  -->
+     <Server>
+       <Service>
+         <Engine>
+           <Host>
+             <Context docBase="[webapp_path]" path="" reloadable="true"/>
+           </Host>
+         </Engine>
+       </Service>
+     </Server>
+     #+END_SRC
+**** eclipse 中 Web 项目配置根目录访问
+     - 修改 Web 项目的 Context Path
+     1. 打开 web project folder >> .setting >> org.eclipse.wst.common.component 文件
+     2. 编辑该文件，修改其中 content-root 属性为空值
+     #+BEGIN_SRC xml
+     <project-modules id="moduleCoreId" project-version="1.5.0">
+         <wb-module deploy-name="webapp">
+             ...
+             <property name="context-root" value=""/>
+         </wb-module>
+     </project-modules>
+     #+END_SRC
 
 ** Python
 *** SCons
@@ -209,9 +221,9 @@
      - 查看版本号
        $ scons -v
      #+END_SRC
-
+     
 ** Emacs
-
+   
 ** Git
 *** Git 基本操作
     #+BEGIN_SRC 
@@ -238,7 +250,7 @@
     - 将指定分支合并至当前分支
       $ git merge <branch>
     #+END_SRC
-*** 更新.gitignore后，清理Git仓库
+*** 更新 .gitignore 后，清理 Git 仓库
     #+BEGIN_SRC 
     - 清理暂存区的文件
       $ git rm -r --cached .
@@ -247,16 +259,34 @@
     - 提交
       $ git commit -m ".gitignore is now working"
     #+END_SRC
-*** 修改Git别名
-    1. 修改.gitconfig文件中[alias]属性
+*** 修改 Git 别名
+    1. 修改 .gitconfig 文件中[alias]属性
        例如 st = status 
     2. 使用 git config --global alias.[alias-name] [operation-name]
-       例如 git config --global alias.st status 表示将st作为status的别名，可以直接使用 git st 命令。
-*** Git推送代码
+       例如 git config --global alias.st status 表示将 st 作为 status 的别名，可以直接使用 git st 命令。
+*** Git 推送代码
     #+BEGIN_SRC 
     - 首次推送，添加远程代码库至配置
       $ git remote add tip https://github.com/Saisimon/tip.git
     - 推送代码至远程代码库
       $ git push tip master
     - 输入账号密码进行确认
+    #+END_SRC
+*** 添加新 ssh_key 至 Github
+    #+BEGIN_SRC 
+    - 检查是否存在 .ssh 文件夹
+      $ cd ~/.ssh
+    - 生成 ssh_key
+      $ ssh-keygen -t rsa -C "youremail@email.com"
+    - 输入密码
+    - 启动 ssh-agent
+      $ eval "$(ssh-agent -s)"
+    - 添加 ssh_key 到 ssh-agent
+      $ ssh-add ~/.ssh/id_rsa
+    - 将 id_rsa.pub 中的key添加进 Github 中
+      github >> Settings >> SSH and GPG keys >> new SSH key
+    - 测试联通性
+      $ ssh git@github.com
+      Hi Saisimon! You've successfully authenticated, but GitHub does not provide shell access.
+      Connection to github.com closed.
     #+END_SRC
