@@ -191,7 +191,19 @@
        </Service>
      </Server>
      #+END_SRC
-     
+**** eclipse 中 Web 项目配置根目录访问
+     - 修改 Web 项目的 Context Path
+     1. 打开 web project folder >> .setting >> org.eclipse.wst.common.component 文件
+     2. 编辑该文件，修改其中 content-root 属性为空值
+     #+BEGIN_SRC xml
+     <project-modules id="moduleCoreId" project-version="1.5.0">
+         <wb-module deploy-name="webapp">
+             ...
+             <property name="context-root" value=""/>
+         </wb-module>
+     </project-modules>
+     #+END_SRC
+
 ** Python
 *** SCons
 **** CentOS下编译安装SCons
