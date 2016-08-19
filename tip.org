@@ -272,6 +272,16 @@
       $ git push tip master
     - 输入账号密码进行确认
     #+END_SRC
+*** Git 拉取代码
+    #+BEGIN_SRC 
+    - 暂存工作区
+     $ git stash
+    - 拉取远程代码
+     $ git pull origin master
+    - 还原最近一次工作区的内容
+     $ git stash pop
+    - 出现冲突时，解决冲突提交即可
+    #+END_SRC
 *** 添加新 ssh_key 至 Github
     #+BEGIN_SRC 
     - 检查是否存在 .ssh 文件夹
