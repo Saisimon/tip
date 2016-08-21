@@ -64,7 +64,32 @@
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     #+END_SRC
-    
+*** linux 下安装 cheat 命令
+    1. 通过 pip 安装 cheat
+    #+BEGIN_SRC 
+    - 安装 python 和 pip
+      $ yum install python-pip -y
+    - 更新 pip
+      $ pip install --upgrade pip
+    - 安装 cheat
+      $ pip install cheat
+    #+END_SRC
+    2. 通过 github 下载源码安装 cheat
+    #+BEGIN_SRC 
+    - 安装 python 和 pip
+      $ yum install python-pip -y
+    - 更新 pip
+      $ pip install --upgrade pip
+    - 安装编译工具
+      $ pip install docopt pygments appdirs
+    - clone cheat 源码
+      $ git clone git@github.com:chrisallenlane/cheat.git
+    - 进入源码目录
+      $ cd cheat
+    - 编译安装 cheat
+      $ python setup.py install
+    #+END_SRC
+
 ** Database
 *** Mysql
 **** 查询 Mysql 数据库大小
@@ -130,23 +155,23 @@
 *** Maven
 **** Maven 基本操作
      #+BEGIN_SRC
-    - 创建Maven的普通java项目
-      $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[projectName]
-    - 创建Maven的Web项目
-      $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[webappName] -DarchetypeArtfactId=maven-archetype-webapp
-    - 编译源码
-      $ mvn compile
-    - 打包
-      $ mvn package
-    - 在本地Repository中安装jar
-      $ mvn install
-    - 清理项目
-      $ mvn clean
-    - 生成eclipse/idea项目
-      $ mvn eclipse:eclipse
-      $ mvn idea:idea
-    - 生成站点信息
-      $ mvn site
+     - 创建Maven的普通java项目
+       $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[projectName]
+     - 创建Maven的Web项目
+       $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[webappName] -DarchetypeArtfactId=maven-archetype-webapp
+     - 编译源码
+       $ mvn compile
+     - 打包
+       $ mvn package
+     - 在本地Repository中安装jar
+       $ mvn install
+     - 清理项目
+       $ mvn clean
+     - 生成eclipse/idea项目
+       $ mvn eclipse:eclipse
+       $ mvn idea:idea
+     - 生成站点信息
+       $ mvn site
      #+END_SRC
 **** Maven 跳单元测试
     - 跳过单元测试
