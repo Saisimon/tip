@@ -246,7 +246,40 @@
      - 查看版本号
        $ scons -v
      #+END_SRC
-     
+
+** JavaScript
+*** JQuery 与 Prototype 中 $ 符号冲突解决方法
+    - JQuery 在 prototype 之后引入，即：
+      #+BEGIN_SRC xml
+      <script src="prototype.js" type="text/javascript"/> 
+      <script src="jquery.js" type="text/javascript"/>
+      #+END_SRC
+      #+BEGIN_SRC javascript
+      // 改变 JQuery 的选择标识符，将 $ 的控制权交还给 Prototype 。
+      var jq = JQuery.noConflict();
+      // 使用 JQuery 选择器的方式改为如下：
+      jq("#id").text();
+      #+END_SRC
+    - JQuery 在 prototype 之前引入，即：
+      #+BEGIN_SRC xml
+      <script src="jquery.js" type="text/javascript"/> 
+      <script src="prototype.js" type="text/javascript"/>
+      #+END_SRC
+      #+BEGIN_SRC javascript
+      // 这种情况 $ 为 Prototype 中定义的标识符，要想使用 JQuery 的选择器，需用如下形式：
+      JQuery("#id").text();
+      #+END_SRC
+    - 通用解决方案，不管引入的先后顺序：
+      #+BEGIN_SRC javascript
+      // JQuery 放弃 $ 所有权
+      JQuery.noConflict();
+      (function($){ 
+              .....
+              //此时在这个语句块中使用的都是 JQuery 中定义的 $
+              $('#id').text(); 
+      })(JQuery)
+      #+END_SRC
+
 ** Emacs
    
 ** Git
