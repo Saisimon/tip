@@ -65,7 +65,7 @@
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     #+END_SRC
 *** linux 下安装 cheat 命令
-    1. 通过 pip 安装 cheat
+    - 通过 pip 安装 cheat
     #+BEGIN_SRC 
     - 安装 python 和 pip
       $ yum install python-pip -y
@@ -74,7 +74,7 @@
     - 安装 cheat
       $ pip install cheat
     #+END_SRC
-    2. 通过 github 下载源码安装 cheat
+    - 通过 github 下载源码安装 cheat
     #+BEGIN_SRC 
     - 安装 python 和 pip
       $ yum install python-pip -y
@@ -152,6 +152,22 @@
           </filter-mapping>
       #+END_SRC
     - filter 需要放在所有 filter 的前面才会生效
+**** 常见 ContentType 与文件后缀名对应关系
+     | 文件扩展名        | ContentType                                                       |
+     |------------------+-------------------------------------------------------------------|
+     | .html            | text/html                                                         |
+     | .doc             | application/msword                                                |
+     | .ppt             | application/vnd.ms-powerpoint                                     |
+     | .xls             | application/vnd.ms-excel                                          |
+     | .xlsx            | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet |
+     | .xml             | text/xml                                                          |
+     | .txt             | text/plain                                                        |
+     | .pdf             | application/pdf                                                   |
+     | .jpeg            | image/jpeg                                                        |
+     | .js              | application/x-javascript                                          |
+     | .css             | text/css                                                          |
+     | .*(未知二进制流)  | application/octet-stream                                          |
+     [[http://tool.oschina.net/commons][更多]]
 *** Maven
 **** Maven 基本操作
      #+BEGIN_SRC
