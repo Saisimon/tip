@@ -21,9 +21,16 @@
 *** linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
     #+BEGIN_SRC
       $ tar -xf *.tar
+
       $ tar -xzf *.tar.gz
-      $ tar -xcf *.tar.bz2
+
+      $ tar -jxvf *.tar.bz2
+      - 如果tar不支持j选项，就用下面方式解压
+      $ bzip2 -d  *.tar.bz2
+      $ tar -xvf  *.tar.bz2
+
       $ tar -xZf *.tar.Z
+
       $ unzip *.zip
     #+END_SRC
 *** linux 下 nginx 安装、启动、重启、停止
