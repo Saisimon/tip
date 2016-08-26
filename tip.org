@@ -244,6 +244,17 @@
          </wb-module>
      </project-modules>
      #+END_SRC
+*** JNI
+**** 使用 javah 生成头文件问题 - Error: Could not find class file for "X"
+     #+BEGIN_SRC
+     - HelloWorld.class 在 net.saisimon.jni 包中
+       $ javah HelloWorld
+       Error: Could not find class file for 'HelloWorld'.
+     - HelloWorld 在 Java 包中，需要到包的根目录执行 javah 命令
+       $ cd ../../../
+       $ javah net.saisimon.jni.HelloWorld
+     - 即可生成头文件 net_saisimon_jni_HelloWorld.h
+     #+END_SRC
 
 ** Python
 *** SCons
