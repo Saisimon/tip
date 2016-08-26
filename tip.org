@@ -1,6 +1,6 @@
 #+AUTHOR: Saisimon
 
-* 小技巧
+* Tip
 ** Windows
 *** 右键添加命令提示符(CMD)
     1. Win + R 运行 regedit
