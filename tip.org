@@ -96,6 +96,39 @@
     - 编译安装 cheat
       $ python setup.py install
     #+END_SRC
+*** linux 设置命令别名
+    - 列出目前所有的别名设置
+      #+BEGIN_SRC 
+      $ alias
+      alias l.='ls -d .* --color=auto'
+      alias ll='ls -l --color=auto'
+      alias ls='ls --color=auto'
+      alias vi='vim'
+      #+END_SRC
+    - 设置指令的别名(本次登录有效)
+      #+BEGIN_SRC 
+      $ alias [别名]=[指令名称]
+      $ alias la='ls -a'
+      $ alias cp='cp -i'
+      #+END_SRC
+    - 每次登录自动设置，修改自己的配置文件
+      #+BEGIN_SRC
+      # 编辑配置文件
+      $ vim ~/.bash_profile
+      # 配置别名
+      alias ..='cd ..'
+      alias cp='cp -i'
+      alias df='df -h'
+      alias home='cd ~'
+      alias l.='ls -d .* --color=auto'
+      alias la='ls -a --color=auto'
+      alias ll='ls -l --color=auto'
+      alias ls='ls --color=auto'
+      alias targz='tar -xzvf'
+      alias vi='vim'
+      # 重新加载配置文件
+      $ source .bash_profile
+      #+END_SRC
 
 ** Database
 *** Mysql
