@@ -352,6 +352,13 @@
       #+END_SRC
 
 ** Emacs
+*** 安装 Emacs 时，error: The required function `tputs' was not found in any library
+    - 缺少 libncurses-dev 包
+    #+BEGIN_SRC 
+    $ yum install libncurses-dev -y
+    或
+    $ apt-get install libncurses-dev
+    #+END_SRC
    
 ** Git
 *** Git 基本操作
