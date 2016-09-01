@@ -350,6 +350,25 @@
               $('#id').text(); 
       })(JQuery)
       #+END_SRC
+*** JavaScript 类型判断
+    - 是否为数字
+      #+BEGIN_SRC javascript
+      function isNumber(obj) {
+          return obj === +obj;
+      }
+      #+END_SRC
+    - 是否为字符串
+      #+BEGIN_SRC javascript
+      function isString(obj) {
+          return obj === obj + '';
+      }
+      #+END_SRC
+    - 是否为布尔类型
+      #+BEGIN_SRC javascript
+      function isBoolean(obj) {
+          return obj === !!obj;
+      }
+      #+END_SRC
 
 ** Emacs
 *** 安装 Emacs 时，error: The required function `tputs' was not found in any library
