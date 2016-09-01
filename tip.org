@@ -20,17 +20,21 @@
     2. 按 Shift + m ,即 M 按内存占用率排序
 *** linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
     #+BEGIN_SRC
+      1. 解压 .tar 文件
       $ tar -xf *.tar
-
+      2. 解压 .tar.gz 文件
       $ tar -xzf *.tar.gz
-
+      3. 解压 .tar.xz 文件
+      $ xz -d *.tar.xz
+      $ tar -xf *.tar
+      4. 解压 .tar.bz2 文件 
       $ tar -jxvf *.tar.bz2
       - 如果tar不支持j选项，就用下面方式解压
       $ bzip2 -d  *.tar.bz2
       $ tar -xvf  *.tar.bz2
-
+      5. 解压 .tar.Z 文件
       $ tar -xZf *.tar.Z
-
+      6. 解压 .zip 文件
       $ unzip *.zip
     #+END_SRC
 *** linux 下 nginx 安装、启动、重启、停止
