@@ -36,6 +36,9 @@
       $ tar -xZf *.tar.Z
       6. 解压 .zip 文件
       $ unzip *.zip
+      7. 解压到指定路径
+      $ tar -xzvf *.tar.gz -C ~/dic/
+      $ unzip *.zip -d ~/dic/
     #+END_SRC
 *** linux 下 nginx 安装、启动、重启、停止
     安装
