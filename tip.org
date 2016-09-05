@@ -22,20 +22,26 @@
     #+BEGIN_SRC
       1. 解压 .tar 文件
       $ tar -xf *.tar
+
       2. 解压 .tar.gz 文件
       $ tar -xzf *.tar.gz
+
       3. 解压 .tar.xz 文件
       $ xz -d *.tar.xz
       $ tar -xf *.tar
+
       4. 解压 .tar.bz2 文件 
       $ tar -jxvf *.tar.bz2
       - 如果tar不支持j选项，就用下面方式解压
       $ bzip2 -d  *.tar.bz2
       $ tar -xvf  *.tar.bz2
+
       5. 解压 .tar.Z 文件
       $ tar -xZf *.tar.Z
+
       6. 解压 .zip 文件
       $ unzip *.zip
+
       7. 解压到指定路径
       $ tar -xzvf *.tar.gz -C ~/dic/
       $ unzip *.zip -d ~/dic/
