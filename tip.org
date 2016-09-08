@@ -182,6 +182,14 @@
       #+END_SRC
       
 ** Java
+*** Jar
+**** 操作 jar 包
+     #+BEGIN_SRC 
+     - 查看 jar 包中的内容
+       $ jar -tf *.jar
+     - 解压出 jar 包中的内容
+       $ jar -xf *.jar
+     #+END_SRC
 *** Web
 **** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
