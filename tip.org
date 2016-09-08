@@ -431,6 +431,10 @@
     - 提交
       $ git commit -m ".gitignore is now working"
     #+END_SRC
+*** Git 在 push 之前撤回最近一次 commit 命令
+    #+BEGIN_SRC 
+      $ git reset --soft HEAD^
+    #+END_SRC
 *** 修改 Git 别名
     1. 修改 .gitconfig 文件中[alias]属性
        例如 st = status 
