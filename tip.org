@@ -316,6 +316,63 @@
        $ javah net.saisimon.jni.HelloWorld
      - 即可生成头文件 net_saisimon_jni_HelloWorld.h
      #+END_SRC
+*** 多线程
+**** 统计所有线程消耗的总时间
+     #+BEGIN_SRC java
+     package net.saisimon.test
+
+     import java.util.concurrent.CountDownLatch;
+     import java.util.concurrent.ExecutorService;
+     import java.util.concurrent.Executors;
+
+     import org.apache.commons.codec.digest.DigestUtils;
+
+     public class Test implements Runnable {
+         
+         volatile int vote = 0;
+         CountDownLatch cdl = new CountDownLatch(5);
+             
+         @Override
+         public void run() {
+             parse();
+             // 递减计数器
+             cdl.countDown();
+         }
+
+         public void parse() {
+             while (vote < 10) {
+                 int x = 0;
+                 int v = vote;
+                 vote++;
+                 String tmp = "Saisimon" + v + x;
+                 String md5 = DigestUtils.md5Hex(tmp);
+                 while (!md5.startsWith("000000")) {
+                     x++;
+                     tmp = "Saisimon" + v + x;
+                     md5 = DigestUtils.md5Hex(tmp);
+                 }
+                 System.out.println("thread : " + Thread.currentThread().getName() + " , vote : " + v + " , x : " + x);
+             }
+         }
+
+         public static void main(String[] args) {
+             Test t = new Test();
+             long start = System.currentTimeMillis();
+             ExecutorService es = Executors.newFixedThreadPool(5);
+             for (int i = 0; i < 5; i++) {
+                 es.execute(t);
+             }
+             es.shutdown();
+             try {
+                 // 计数器减至零时，await 会被执行
+                 p.cdl.await();
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+             System.out.println("多线程耗时:" + (System.currentTimeMillis() - start));
+         }
+     }
+     #+END_SRC
 
 ** Python
 *** SCons
