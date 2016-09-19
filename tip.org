@@ -373,6 +373,11 @@
          }
      }
      #+END_SRC
+*** Solr
+**** Solr 导入 csv 文件数据
+     #+BEGIN_SRC 
+       http://localhost:8983/solr/item/update?commit=true&stream.file=d:/tmp/solr_data.csv&stream.contentType=application/csv
+     #+END_SRC
 
 ** Python
 *** SCons
