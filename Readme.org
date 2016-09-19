@@ -1,1 +1,10 @@
 * Tip
+
+This project collect some tips about Linux.
+1.CheatSheet
+2.eclipse
+3.emascs
+4.Hosts
+5.vim
+6.yum
+
