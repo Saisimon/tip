@@ -13,7 +13,15 @@
     2. 选择 终端 -> 键盘
     3. 选中 将 Alt 用作 Meta 键
     4. BACKSPACE 键序列 中选择 ASCII 127 确认
-       
+*** 常见文件头特征（魔数）
+    | jpg            | FF D8 FF                      | png         | 89 50 4E 47    |
+    | gif            | 47 49 46 38                   | bmp         | 42 4D          |
+    | pdf            | 25 50 44 46                   | xml         | 3C 3F 78 6D 6C |
+    | docx/xlsx/pptx | 50 4B 03 04 14 00 06 00 08 00 | doc/xls/ppt | D0 CF 11 E0    |
+    | zip            | 50 4B 03 04                   | rar         | 52 61 72 21    |
+    | avi            | 41 56 49 20                   | class       | ca fe ba be    |
+    | exe            | 4D 5A 90 00 03                | psd         | 38 42 50 53    |
+    [[https://en.wikipedia.org/wiki/Magic_number_(programming)][更多]]
 ** Linux
 *** 查看 linux 内存占用
     1. 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
