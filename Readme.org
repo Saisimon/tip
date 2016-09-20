@@ -1,10 +1,11 @@
 * Tip
 
 This project collect some tips.
-1. CheatSheet
-2. Eclipse
-3. Emacs
-4. Hosts
-5. Vim
-6. Yum
-
+1. CheatSheet (Linux, Git)
+2. Eclipse Configuration
+3. Emacs Basic
+4. Hosts Configuration
+5. Vim Configuration
+6. Yum Configuration
+7. C / C++ Tips
+8. Java Tips
