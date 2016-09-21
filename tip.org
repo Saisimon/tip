@@ -190,13 +190,33 @@
       #+END_SRC
       
 ** Java
-*** Jar
+*** Java
 **** 操作 jar 包
      #+BEGIN_SRC 
      - 查看 jar 包中的内容
        $ jar -tf *.jar
      - 解压出 jar 包中的内容
        $ jar -xf *.jar
+     #+END_SRC
+**** byte 数组与 int 互转
+     #+BEGIN_SRC java
+     private int byteArrayToInt(byte[] bytes) {
+         int value = 0;
+         for (int i = 0; i < 4; i++) {
+             int shift = (4 - 1 - i) * 8;
+             value += (bytes[i] & 0x000000FF) << shift;
+         }
+         return value;
+     }
+
+     private byte[] intToByteArray(int i) {
+         byte[] result = new byte[4];
+         result[0] = (byte) ((i >> 24) & 0xFF);
+         result[1] = (byte) ((i >> 16) & 0xFF);
+         result[2] = (byte) ((i >> 8) & 0xFF);
+         result[3] = (byte) (i & 0xFF);
+         return result;
+     }
      #+END_SRC
 *** Web
 **** 前端页面传中文字符乱码解决方法
