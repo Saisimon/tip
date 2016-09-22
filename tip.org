@@ -218,6 +218,19 @@
          return result;
      }
      #+END_SRC
+**** 倒序遍历 LinkedHashMap 集合
+     #+BEGIN_SRC java
+     Map<Integer, String> data = new LinkedHashMap<>();
+     for (int i = 0; i < 5; i++) {
+         data.put(i, "A" + i);
+     }
+     ListIterator<Map.Entry<Integer, String>> it = new ArrayList<>(data.entrySet()).listIterator(data.size());
+     while (it.hasPrevious()) {
+         Map.Entry<Integer, String> entry = it.previous();
+         System.out.println("key : " + entry.getKey() + " value : " + entry.getValue());
+     }
+     #+END_SRC
+
 *** Web
 **** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
