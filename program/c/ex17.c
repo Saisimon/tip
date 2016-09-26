@@ -35,7 +35,7 @@ struct Connection
 
 //打印错误信息
 void
-die (const char *message)
+die (struct Connection *conn, const char *message)
 {
   if (errno)
     {
@@ -46,6 +46,9 @@ die (const char *message)
     {
       printf ("ERROR:%s\n", message);
     }
+
+  if(conn)
+      free(conn);
   exit (1);
 }
 
@@ -68,7 +71,7 @@ Database_load (struct Connection *conn)
 {
   int rc = fread (conn->db, sizeof (struct Database), 1, conn->file);
   if (rc != 1)
-    die ("Failed to load database");
+    die (conn, "Failed to load database");
 }
 
 //打开 db
@@ -78,12 +81,12 @@ Database_open (const char *filename, char mode)
 	//分配 conn
   struct Connection *conn = malloc (sizeof (struct Connection));
   if (!conn)
-    die ("Memory error");
+    die (conn, "Memory error");
 
 	//分配 coon 中的 db
   conn->db = malloc (sizeof (struct Database));
   if (!conn->db)
-    die ("Memory error");
+    die (conn, "Memory error");
 	
 	//如果 mode 为 c 就写; 否则就 读，并且加载打开
   if (mode == 'c')
@@ -102,7 +105,7 @@ Database_open (const char *filename, char mode)
     }
 
   if (!conn->file)
-    die ("Failed to open the file");
+    die (conn, "Failed to open the file");
 
   return conn;
 }
@@ -130,12 +133,12 @@ Database_write (struct Connection *conn)
 	//将 conn->db 写入文件 conn->file
   int rc = fwrite (conn->db, sizeof (struct Database), 1, conn->file);
   if (rc != 1)
-    die ("Failed to write database.");
+    die (conn, "Failed to write database.");
 
   //刷新
   rc = fflush (conn->file);
   if (rc == -1)
-    die ("Cannot flush database.");
+    die (conn, "Cannot flush database.");
 }
 
 //在 conn 中创建 Address
@@ -168,18 +171,18 @@ Database_set (struct Connection *conn,
   //更简单的写法
   // struct Address *addr = conn->db->rows+i;
   if (addr->set)
-    die ("Already set, delete it first");
+    die (conn, "Already set, delete it first");
 
   addr->set = 1;
   // WARNING: bug, read the "How To Break It" and fix this
   char *res = strncpy (addr->name, name, MAX_DATA);
   // demonstrate the strncpy bug
   if (!res)
-    die ("Name copy failed");
+    die (conn, "Name copy failed");
 
   res = strncpy (addr->email, email, MAX_DATA);
   if (!res)
-    die ("Email copy failed");
+    die (conn, "Email copy failed");
 }
 
 void
@@ -195,7 +198,7 @@ Database_get (struct Connection *conn, int id)
     }
   else
     {
-      die ("ID is not set");
+      die (conn, "ID is not set");
     }
 }
 
@@ -241,19 +244,19 @@ Database_list (struct Connection *conn)
 int
 main (int argc, char *argv[])
 {
-
+  struct Connection *conn;
   if (argc < 3)
-    die ("USAGE: ex17 <dbfile> <action> [action params]");
+    die (conn, "USAGE: ex17 <dbfile> <action> [action params]");
 
   char *filename = argv[1];
   char action = argv[2][0];
-  struct Connection *conn = Database_open (filename, action);
+  conn = Database_open (filename, action);
   int id = 0;
 
   if (argc > 3)
     id = atoi (argv[3]);
   if (id >= MAX_ROWS)
-    die ("There's not that many records.");
+    die (conn, "There's not that many records.");
 
   switch (action)
     {
@@ -265,14 +268,14 @@ main (int argc, char *argv[])
 
     case 'g':
       if (argc != 4)
-	die ("Need an id to get");
+	die (conn, "Need an id to get");
 
       Database_get (conn, id);
       break;
 
     case 's':
       if (argc != 6)
-	die ("Need id, name, email to set");
+	die (conn, "Need id, name, email to set");
 
       Database_set (conn, id, argv[4], argv[5]);
       Database_write (conn);
@@ -280,7 +283,7 @@ main (int argc, char *argv[])
 
     case 'd':
       if (argc != 4)
-	die ("Need id to delete");
+	die (conn, "Need id to delete");
 
       Database_delete (conn, id);
       Database_write (conn);
@@ -290,7 +293,7 @@ main (int argc, char *argv[])
       Database_list (conn);
       break;
     default:
-      die ("Invalid action, only: c=create, g=get, s=set, d=del, l=list");
+      die (conn, "Invalid action, only: c=create, g=get, s=set, d=del, l=list");
     }
 
   Database_close (conn);
