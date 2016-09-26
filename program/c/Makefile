@@ -1,2 +1,2 @@
 clean:
-	rm -f ex*.exe
+	rm -f *.exe *.exe.*
