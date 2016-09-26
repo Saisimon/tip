@@ -444,6 +444,39 @@
      #+END_SRC
 
 ** JavaScript
+*** JavaScript
+**** JavaScript 类型判断
+    - 是否为数字
+      #+BEGIN_SRC javascript
+      function isNumber(obj) {
+          return obj === +obj;
+      }
+      #+END_SRC
+    - 是否为字符串
+      #+BEGIN_SRC javascript
+      function isString(obj) {
+          return obj === obj + '';
+      }
+      #+END_SRC
+    - 是否为布尔类型
+      #+BEGIN_SRC javascript
+      function isBoolean(obj) {
+          return obj === !!obj;
+      }
+      #+END_SRC
+**** JavaScript 首字母大写
+     #+BEGIN_SRC javascript
+     function toCapitalizeCase(str) {
+         if (!str || str.length === 0) {
+             return str;
+         }
+         if (str.length == 1) {
+             return str.toUpperCase();
+         } else {
+             return str[0].toUpperCase() + str.substring(1);
+         }
+     }
+     #+END_SRC
 *** JQuery
 **** JQuery 与 Prototype 中 $ 符号冲突解决方法
     - JQuery 在 prototype 之后引入，即：
@@ -476,25 +509,7 @@
               $('#id').text(); 
       })(JQuery)
       #+END_SRC
-**** JavaScript 类型判断
-    - 是否为数字
-      #+BEGIN_SRC javascript
-      function isNumber(obj) {
-          return obj === +obj;
-      }
-      #+END_SRC
-    - 是否为字符串
-      #+BEGIN_SRC javascript
-      function isString(obj) {
-          return obj === obj + '';
-      }
-      #+END_SRC
-    - 是否为布尔类型
-      #+BEGIN_SRC javascript
-      function isBoolean(obj) {
-          return obj === !!obj;
-      }
-      #+END_SRC
+
 **** JQuery 获取 url 参数
     #+BEGIN_SRC javascript
     $.extend({
