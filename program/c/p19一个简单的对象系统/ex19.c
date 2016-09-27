@@ -120,9 +120,11 @@ int Map_init(void *self)
     Room *throne = NEW(Room, "The throne room");
     Room *arena = NEW(Room, "The arena, with the minotaur");
     Room *kitchen = NEW(Room, "Kitchen, you have the knife now");
+    Room *boudoir = NEW(Room, "Boudoir, there lives a Saisimon");
 
     // put the bad guy in the arena
     arena->bad_guy = NEW(Monster, "The evil minotaur");
+    boudoir->bad_guy = NEW(Monster, "The princess Saisimon");
 
     // setup the map rooms
     hall->north = throne;
@@ -130,9 +132,11 @@ int Map_init(void *self)
     throne->west = arena;
     throne->east = kitchen;
     throne->south = hall;
+    throne->north = boudoir;
 
     arena->east = throne;
     kitchen->west = throne;
+    boudoir->south = throne;
 
     // start the map and the character off in the hall
     map->start = hall;
