@@ -111,8 +111,9 @@ int main(int argc, char* argv[])
 
 	test_sorting(numbers, count, sorted_order);
 	test_sorting(numbers, count, reverse_order);
-	//test_sorting(numbers, count, strange_order);
-	test_sorting(numbers, count, NULL);
+	test_sorting(numbers, count, strange_order);
+	// Question 3. test
+	//test_sorting(numbers, count, NULL);
 
 	free(numbers);
 
@@ -126,8 +127,20 @@ int main(int argc, char* argv[])
 
 3. 将错误的函数传给compare_cb，并看看C编辑器会报告什么错误。
 将NULL传给它，看看程序中会发生什么。然后运行Valgrind来看看它会报告什么。
-编写另一个排序算法，修改test_sorting使它接收任意的排序函数和排序函数的比较回调。并使用它来测试两种排序算法。
-* 1. 
+
+==7102== Jump to the invalid address stated on the next line
+==7102==    at 0x0: ???
+==7102==    by 0x400998: test_sorting (in /home/younix/Code/tip/program/c/p18函数指针/ex18)
+==7102==    by 0x400AF1: main (in /home/younix/Code/tip/program/c/p18函数指针/ex18)
+==7102==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==7102== 
+==7102== 
+==7102== Process terminating with default action of signal 11 (SIGSEGV)
+==7102==  Bad permissions for mapped region at address 0x0
+==7102==    at 0x0: ???
+
+4. 编写另一个排序算法，修改test_sorting使它接收任意的排序函数和排序函数的比较回调。并使用它来测试两种排序算法。
+
 */
 
 
