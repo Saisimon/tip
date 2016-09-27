@@ -1,3 +1,7 @@
 *.*~
 *.exe
 *.exe.*
+core
+*.out
+*.o
+ex19
