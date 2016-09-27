@@ -33,6 +33,7 @@ struct Connection
   struct Database *db;
 };
 
+void Database_close (struct Connection *conn);
 //打印错误信息
 void
 die (struct Connection *conn, const char *message)
@@ -47,8 +48,7 @@ die (struct Connection *conn, const char *message)
       printf ("ERROR:%s\n", message);
     }
 
-  if(conn)
-      free(conn);
+  Database_close(conn);
   exit (1);
 }
 
