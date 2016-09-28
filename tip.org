@@ -625,3 +625,14 @@
       Hi Saisimon! You've successfully authenticated, but GitHub does not provide shell access.
       Connection to github.com closed.
     #+END_SRC
+*** Git status 输出中文为 UNICODE 解决方法
+    - 修改 git config 属性
+      #+BEGIN_SRC 
+        $ git config --global core.quotepath false
+      #+END_SRC
+    - 修改修改 git 配置文件
+      #+BEGIN_SRC 
+        $ vi ~/.gitconfig
+          [core]
+              quotepath = false
+      #+END_SRC
