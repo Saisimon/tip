@@ -586,9 +586,19 @@
     #+END_SRC
 *** 修改 Git 别名
     1. 修改 .gitconfig 文件中[alias]属性
-       例如 st = status 
+       #+BEGIN_SRC 
+         $ vi ~/.gitconfig
+           [alias]
+               st = status
+               ci = commit
+               co = checkout
+               br = branch
+       #+END_SRC
     2. 使用 git config --global alias.[alias-name] [operation-name]
-       例如 git config --global alias.st status 表示将 st 作为 status 的别名，可以直接使用 git st 命令。
+       #+BEGIN_SRC 
+         # 表示将 st 作为 status 的别名，可以直接使用 git st 命令
+         $ git config --global alias.st status
+       #+END_SRC
 *** Git 推送代码
     #+BEGIN_SRC 
     - 首次推送，添加远程代码库至配置
