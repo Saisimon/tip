@@ -1,4 +1,4 @@
-#+AUTHOR: Saisimon
+#+AUTHOR: [[http://blog.saisimon.net][Saisimon]]
 
 * Tip
 ** Windows
@@ -585,7 +585,7 @@
       $ git reset --soft HEAD^
     #+END_SRC
 *** 修改 Git 别名
-    1. 修改 .gitconfig 文件中[alias]属性
+    - 修改 .gitconfig 文件中[alias]属性
        #+BEGIN_SRC 
          $ vi ~/.gitconfig
            [alias]
@@ -594,7 +594,7 @@
                co = checkout
                br = branch
        #+END_SRC
-    2. 使用 git config --global alias.[alias-name] [operation-name]
+    - 使用 git config --global alias.[alias-name] [operation-name]
        #+BEGIN_SRC 
          # 表示将 st 作为 status 的别名，可以直接使用 git st 命令
          $ git config --global alias.st status
