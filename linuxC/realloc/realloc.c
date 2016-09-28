@@ -18,7 +18,7 @@ int main(){
 
 	memset(string , 51 , size);
 
-#if WANT_TO_EXPEND
+#ifdef WANT_TO_EXPEND
     string = realloc(string,2*size*sizeof(char));
 #else
 #endif
