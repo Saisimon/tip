@@ -1,0 +1,1364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Tip</title>
+<!-- 2016-09-28 Wed 11:01 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon" />
+<link rel="stylesheet" href="css/main.css" >
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Tip</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Tip</a>
+<ul>
+<li><a href="#sec-1-1">1.1. Windows</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1. 右键添加命令提示符(CMD)</a></li>
+<li><a href="#sec-1-1-2">1.1.2. 修改 XShell Alt 键作为 Meta 键, Backspace 键作为删除键</a></li>
+<li><a href="#sec-1-1-3">1.1.3. 常见文件头特征（魔数）</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">1.2. Linux</a>
+<ul>
+<li><a href="#sec-1-2-1">1.2.1. 查看 linux 内存占用</a></li>
+<li><a href="#sec-1-2-2">1.2.2. linux 解压 (tar 命令、unzip 命令)</a></li>
+<li><a href="#sec-1-2-3">1.2.3. linux 下 nginx 安装、启动、重启、停止</a></li>
+<li><a href="#sec-1-2-4">1.2.4. nginx 反向代理配置</a></li>
+<li><a href="#sec-1-2-5">1.2.5. linux 下安装 cheat 命令</a></li>
+<li><a href="#sec-1-2-6">1.2.6. linux 设置命令别名</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-3">1.3. Database</a>
+<ul>
+<li><a href="#sec-1-3-1">1.3.1. Mysql</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-4">1.4. Java</a>
+<ul>
+<li><a href="#sec-1-4-1">1.4.1. Java</a></li>
+<li><a href="#sec-1-4-2">1.4.2. Web</a></li>
+<li><a href="#sec-1-4-3">1.4.3. Maven</a></li>
+<li><a href="#sec-1-4-4">1.4.4. Tomcat</a></li>
+<li><a href="#sec-1-4-5">1.4.5. JNI</a></li>
+<li><a href="#sec-1-4-6">1.4.6. 多线程</a></li>
+<li><a href="#sec-1-4-7">1.4.7. Solr</a></li>
+<li><a href="#sec-1-4-8">1.4.8. Eclipse</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-5">1.5. Python</a>
+<ul>
+<li><a href="#sec-1-5-1">1.5.1. SCons</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-6">1.6. JavaScript</a>
+<ul>
+<li><a href="#sec-1-6-1">1.6.1. JavaScript</a></li>
+<li><a href="#sec-1-6-2">1.6.2. JQuery</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-7">1.7. Emacs</a>
+<ul>
+<li><a href="#sec-1-7-1">1.7.1. 安装 Emacs 时，error: The required function `tputs' was not found in any library</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-8">1.8. Git</a>
+<ul>
+<li><a href="#sec-1-8-1">1.8.1. Git 基本操作</a></li>
+<li><a href="#sec-1-8-2">1.8.2. 更新 .gitignore 后，清理 Git 仓库</a></li>
+<li><a href="#sec-1-8-3">1.8.3. Git 在 push 之前撤回最近一次 commit 命令</a></li>
+<li><a href="#sec-1-8-4">1.8.4. 修改 Git 别名</a></li>
+<li><a href="#sec-1-8-5">1.8.5. Git 推送代码</a></li>
+<li><a href="#sec-1-8-6">1.8.6. Git 拉取代码</a></li>
+<li><a href="#sec-1-8-7">1.8.7. 添加新 ssh<sub>key</sub> 至 Github</a></li>
+<li><a href="#sec-1-8-8">1.8.8. Git status 输出中文为 UNICODE 解决方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Tip</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Windows</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> 右键添加命令提示符(CMD)</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<ol class="org-ol">
+<li>Win + R 运行 regedit
+</li>
+<li>找到 计算机 &gt; HKEY<sub>CLASSES</sub><sub>ROOT</sub> &gt; Folder &gt; shell
+</li>
+<li>右键shell 新建 -&gt; 项 -&gt; 命令提示符
+</li>
+<li>右键命令提示符 新建 -&gt; 项 -&gt; command
+</li>
+<li>点击(默认)项 输入 C:\Windows\System32\cmd.exe /k cd %1 然后点击确认
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> 修改 XShell Alt 键作为 Meta 键, Backspace 键作为删除键</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<ol class="org-ol">
+<li>打开XShell 选择 文件 -&gt; 属性
+</li>
+<li>选择 终端 -&gt; 键盘
+</li>
+<li>选中 将 Alt 用作 Meta 键
+</li>
+<li>BACKSPACE 键序列 中选择 ASCII 127 确认
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> 常见文件头特征（魔数）</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">jpg</td>
+<td class="left">FF D8 FF</td>
+<td class="left">png</td>
+<td class="left">89 50 4E 47</td>
+</tr>
+
+<tr>
+<td class="left">gif</td>
+<td class="left">47 49 46 38</td>
+<td class="left">bmp</td>
+<td class="left">42 4D</td>
+</tr>
+
+<tr>
+<td class="left">pdf</td>
+<td class="left">25 50 44 46</td>
+<td class="left">xml</td>
+<td class="left">3C 3F 78 6D 6C</td>
+</tr>
+
+<tr>
+<td class="left">docx/xlsx/pptx</td>
+<td class="left">50 4B 03 04 14 00 06 00 08 00</td>
+<td class="left">doc/xls/ppt</td>
+<td class="left">D0 CF 11 E0</td>
+</tr>
+
+<tr>
+<td class="left">zip</td>
+<td class="left">50 4B 03 04</td>
+<td class="left">rar</td>
+<td class="left">52 61 72 21</td>
+</tr>
+
+<tr>
+<td class="left">avi</td>
+<td class="left">41 56 49 20</td>
+<td class="left">class</td>
+<td class="left">ca fe ba be</td>
+</tr>
+
+<tr>
+<td class="left">exe</td>
+<td class="left">4D 5A 90 00 03</td>
+<td class="left">psd</td>
+<td class="left">38 42 50 53</td>
+</tr>
+</tbody>
+</table>
+<p>
+<a href="https://en.wikipedia.org/wiki/Magic_number_(programming)">更多</a>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Linux</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> 查看 linux 内存占用</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ol class="org-ol">
+<li>使用 <a href="http://man.linuxde.net/top">top</a> 命令来查看各个进程的使用情况
+</li>
+<li>按 Shift + m ,即 M 按内存占用率排序
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> linux 解压 (<a href="http://man.linuxde.net/tar">tar</a> 命令、<a href="http://man.linuxde.net/unzip">unzip</a> 命令)</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<pre class="example">
+1. 解压 .tar 文件
+$ tar -xf *.tar
+
+2. 解压 .tar.gz 文件
+$ tar -xzf *.tar.gz
+
+3. 解压 .tar.xz 文件
+$ xz -d *.tar.xz
+$ tar -xf *.tar
+
+4. 解压 .tar.bz2 文件 
+$ tar -jxvf *.tar.bz2
+- 如果tar不支持j选项，就用下面方式解压
+$ bzip2 -d  *.tar.bz2
+$ tar -xvf  *.tar.bz2
+
+5. 解压 .tar.Z 文件
+$ tar -xZf *.tar.Z
+
+6. 解压 .zip 文件
+$ unzip *.zip
+
+7. 解压到指定路径
+$ tar -xzvf *.tar.gz -C ~/dic/
+$ unzip *.zip -d ~/dic/
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-2-3" class="outline-4">
+<h4 id="sec-1-2-3"><span class="section-number-4">1.2.3</span> linux 下 nginx 安装、启动、重启、停止</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+安装
+</p>
+<pre class="example">
+tar -xzf nginx-${version}.tar.gz
+cd nginx-${version}
+yum install -y pcre-devel openssl-devel
+./configure 
+make
+make install
+</pre>
+<p>
+nginx 默认安装路径 
+</p>
+<pre class="example">
+/usr/local/nginx
+</pre>
+<p>
+启动 
+</p>
+<pre class="example">
+${nginx_path}/sbin/nginx
+</pre>
+<p>
+启动指定配置文件 
+</p>
+<pre class="example">
+${nginx_path}/sbin/nginx -c ${conf_path}
+</pre>
+<p>
+重启 
+</p>
+<pre class="example">
+${nginx_path}/sbin/nginx -s reload
+</pre>
+<p>
+停止 
+</p>
+<pre class="example">
+${nginx_path}/sbin/nginx -s stop
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-2-4" class="outline-4">
+<h4 id="sec-1-2-4"><span class="section-number-4">1.2.4</span> nginx 反向代理配置</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+在 http-server-location / 下填写反向代理配置
+</p>
+<pre class="example">
+proxy_pass http://localhost:8080;
+proxy_set_header Host $host;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-2-5" class="outline-4">
+<h4 id="sec-1-2-5"><span class="section-number-4">1.2.5</span> linux 下安装 cheat 命令</h4>
+<div class="outline-text-4" id="text-1-2-5">
+<ul class="org-ul">
+<li>通过 pip 安装 cheat
+</li>
+</ul>
+<pre class="example">
+- 安装 python 和 pip
+  $ yum install python-pip -y
+- 更新 pip
+  $ pip install --upgrade pip
+- 安装 cheat
+  $ pip install cheat
+</pre>
+<ul class="org-ul">
+<li>通过 github 下载源码安装 cheat
+</li>
+</ul>
+<pre class="example">
+- 安装 python 和 pip
+  $ yum install python-pip -y
+- 更新 pip
+  $ pip install --upgrade pip
+- 安装编译工具
+  $ pip install docopt pygments appdirs
+- clone cheat 源码
+  $ git clone git@github.com:chrisallenlane/cheat.git
+- 进入源码目录
+  $ cd cheat
+- 编译安装 cheat
+  $ python setup.py install
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-2-6" class="outline-4">
+<h4 id="sec-1-2-6"><span class="section-number-4">1.2.6</span> linux 设置命令别名</h4>
+<div class="outline-text-4" id="text-1-2-6">
+<ul class="org-ul">
+<li>列出目前所有的别名设置
+<pre class="example">
+$ alias
+alias l.='ls -d .* --color=auto'
+alias ll='ls -l --color=auto'
+alias ls='ls --color=auto'
+alias vi='vim'
+</pre>
+</li>
+<li>设置指令的别名(本次登录有效)
+<pre class="example">
+$ alias [别名]=[指令名称]
+$ alias la='ls -a'
+$ alias cp='cp -i'
+</pre>
+</li>
+<li>每次登录自动设置，修改自己的配置文件
+<pre class="example">
+# 编辑配置文件
+$ vim ~/.bash_profile
+# 配置别名
+alias ..='cd ..'
+alias cp='cp -i'
+alias df='df -h'
+alias home='cd ~'
+alias l.='ls -d .* --color=auto'
+alias la='ls -a --color=auto'
+alias ll='ls -l --color=auto'
+alias ls='ls --color=auto'
+alias targz='tar -xzvf'
+alias vi='vim'
+# 重新加载配置文件
+$ source .bash_profile
+</pre>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Database</h3>
+<div class="outline-text-3" id="text-1-3">
+</div><div id="outline-container-sec-1-3-1" class="outline-4">
+<h4 id="sec-1-3-1"><span class="section-number-4">1.3.1</span> Mysql</h4>
+<div class="outline-text-4" id="text-1-3-1">
+</div><ol class="org-ol"><li><a id="sec-1-3-1-1" name="sec-1-3-1-1"></a>查询 Mysql 数据库大小<br  /><div class="outline-text-5" id="text-1-3-1-1">
+<ul class="org-ul">
+<li>选择指定 <a href="http://dev.mysql.com/doc/refman/5.7/en/tables-table.html">information<sub>schema</sub> 数据库</a>
+<div class="org-src-container">
+
+<pre class="src src-sql">use information_schema;
+</pre>
+</div>
+</li>
+<li>查询整个数据库大小
+<div class="org-src-container">
+
+<pre class="src src-sql"><span style="color: #66D9EF;">select</span> concat(round(<span style="color: #A6E22E;">sum</span>(DATA_LENGTH/1024/1024),2),<span style="color: #E6DB74;">'MB'</span>) <span style="color: #66D9EF;">as</span> <span style="color: #66D9EF;">data</span> <span style="color: #66D9EF;">from</span> TABLES;
+</pre>
+</div>
+</li>
+<li>查询指定数据库大小
+<div class="org-src-container">
+
+<pre class="src src-sql"><span style="color: #66D9EF;">select</span> concat(round(<span style="color: #A6E22E;">sum</span>(DATA_LENGTH/1024/1024),2),<span style="color: #E6DB74;">'MB'</span>) <span style="color: #66D9EF;">as</span> <span style="color: #66D9EF;">data</span> <span style="color: #66D9EF;">from</span> TABLES <span style="color: #66D9EF;">where</span> table_schema=<span style="color: #E6DB74;">'your_database_name'</span>;
+</pre>
+</div>
+</li>
+<li>查询指定数据库下某个表的大小
+<div class="org-src-container">
+
+<pre class="src src-sql"><span style="color: #66D9EF;">select</span> concat(round(<span style="color: #A6E22E;">sum</span>(DATA_LENGTH/1024/1024),2),<span style="color: #E6DB74;">'MB'</span>) <span style="color: #66D9EF;">as</span> <span style="color: #66D9EF;">data</span> <span style="color: #66D9EF;">from</span> TABLES <span style="color: #66D9EF;">where</span> table_schema=<span style="color: #E6DB74;">'your_database_name'</span> <span style="color: #66D9EF;">and</span> <span style="color: #66D9EF;">table_name</span>=<span style="color: #E6DB74;">'your_table_name'</span>;
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-1-3-1-2" name="sec-1-3-1-2"></a>Mysql 数据库存中文字符乱码解决方法<br  /><div class="outline-text-5" id="text-1-3-1-2">
+<ul class="org-ul">
+<li>修改 <a href="http://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html">jdbc.url 配置</a>
+<pre class="example">
+jdbc.url=jdbc:mysql://ip-address:port/your_database_name?useUnicode=true&amp;characterEncoding=utf8
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-1-3-1-3" name="sec-1-3-1-3"></a>Mysql 新增用户, 并附指定权限<br  /><div class="outline-text-5" id="text-1-3-1-3">
+<ul class="org-ul">
+<li><a href="http://dev.mysql.com/doc/refman/5.7/en/adding-users.html">新增用户</a>
+<div class="org-src-container">
+
+<pre class="src src-sql"><span style="color: #66D9EF;">create</span> <span style="color: #A6E22E;">user</span> [<span style="color: #E6DB74;">'username'</span>]@[<span style="color: #E6DB74;">'localhost'</span>] identified <span style="color: #66D9EF;">by</span> [<span style="color: #E6DB74;">'password'</span>];
+</pre>
+</div>
+</li>
+<li><a href="http://dev.mysql.com/doc/refman/5.7/en/adding-users.html">附指定权限</a>
+<div class="org-src-container">
+
+<pre class="src src-sql"><span style="color: #66D9EF;">grant</span> <span style="color: #66D9EF;">all</span> <span style="color: #66D9EF;">privileges</span> <span style="color: #66D9EF;">on</span> [database].[<span style="color: #66D9EF;">table</span>] <span style="color: #66D9EF;">to</span> [<span style="color: #E6DB74;">'username'</span>]@[<span style="color: #E6DB74;">'localhost'</span>];
+</pre>
+</div>
+</li>
+<li><a href="http://dev.mysql.com/doc/refman/5.7/en/removing-users.html">删除用户</a>
+<div class="org-src-container">
+
+<pre class="src src-sql"><span style="color: #66D9EF;">drop</span> <span style="color: #A6E22E;">user</span> [<span style="color: #E6DB74;">'username'</span>]@[<span style="color: #E6DB74;">'localhost'</span>];
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</li></ol>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> Java</h3>
+<div class="outline-text-3" id="text-1-4">
+</div><div id="outline-container-sec-1-4-1" class="outline-4">
+<h4 id="sec-1-4-1"><span class="section-number-4">1.4.1</span> Java</h4>
+<div class="outline-text-4" id="text-1-4-1">
+</div><ol class="org-ol"><li><a id="sec-1-4-1-1" name="sec-1-4-1-1"></a>操作 jar 包<br  /><div class="outline-text-5" id="text-1-4-1-1">
+<pre class="example">
+- 查看 jar 包中的内容
+  $ jar -tf *.jar
+- 解压出 jar 包中的内容
+  $ jar -xf *.jar
+</pre>
+</div>
+</li>
+<li><a id="sec-1-4-1-2" name="sec-1-4-1-2"></a>byte 数组与 int 互转<br  /><div class="outline-text-5" id="text-1-4-1-2">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">byteArrayToInt</span>(<span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672;">bytes</span>) {
+    <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">value</span> = <span style="color: #ffa07a;">0</span>;
+    <span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span> = <span style="color: #ffa07a;">0</span>; i &lt; <span style="color: #ffa07a;">4</span>; i++) {
+        <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">shift</span> = (<span style="color: #ffa07a;">4</span> - <span style="color: #ffa07a;">1</span> - i) * <span style="color: #ffa07a;">8</span>;
+        value += (bytes[i] &amp; <span style="color: #ffa07a;">0x000000FF</span>) &lt;&lt; shift;
+    }
+    <span style="color: #66D9EF;">return</span> value;
+}
+
+<span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672; font-style: italic;">intToByteArray</span>(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span>) {
+    <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672;">result</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">byte</span>[<span style="color: #ffa07a;">4</span>];
+    result[<span style="color: #ffa07a;">0</span>] = (<span style="color: #66D9EF;">byte</span>) ((i &gt;&gt; <span style="color: #ffa07a;">24</span>) &amp; <span style="color: #ffa07a;">0xFF</span>);
+    result[<span style="color: #ffa07a;">1</span>] = (<span style="color: #66D9EF;">byte</span>) ((i &gt;&gt; <span style="color: #ffa07a;">16</span>) &amp; <span style="color: #ffa07a;">0xFF</span>);
+    result[<span style="color: #ffa07a;">2</span>] = (<span style="color: #66D9EF;">byte</span>) ((i &gt;&gt; <span style="color: #ffa07a;">8</span>) &amp; <span style="color: #ffa07a;">0xFF</span>);
+    result[<span style="color: #ffa07a;">3</span>] = (<span style="color: #66D9EF;">byte</span>) (i &amp; <span style="color: #ffa07a;">0xFF</span>);
+    <span style="color: #66D9EF;">return</span> result;
+}
+</pre>
+</div>
+</div>
+</li>
+<li><a id="sec-1-4-1-3" name="sec-1-4-1-3"></a>倒序遍历 LinkedHashMap 集合<br  /><div class="outline-text-5" id="text-1-4-1-3">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">Map</span>&lt;<span style="color: #66D9EF;">Integer</span>, <span style="color: #66D9EF;">String</span>&gt; <span style="color: #F92672;">data</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">LinkedHashMap</span>&lt;&gt;();
+<span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span> = <span style="color: #ffa07a;">0</span>; i &lt; <span style="color: #ffa07a;">5</span>; i++) {
+    data.put(i, <span style="color: #E6DB74;">"A"</span> + i);
+}
+<span style="color: #66D9EF;">ListIterator</span>&lt;<span style="color: #AE81FF;">Map</span>.<span style="color: #66D9EF;">Entry</span>&lt;<span style="color: #66D9EF;">Integer</span>, <span style="color: #66D9EF;">String</span>&gt;&gt; <span style="color: #F92672;">it</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">ArrayList</span>&lt;&gt;(data.entrySet()).listIterator(data.size());
+<span style="color: #66D9EF;">while</span> (it.hasPrevious()) {
+    <span style="color: #AE81FF;">Map</span>.<span style="color: #66D9EF;">Entry</span>&lt;<span style="color: #66D9EF;">Integer</span>, <span style="color: #66D9EF;">String</span>&gt; <span style="color: #F92672;">entry</span> = it.previous();
+    System.out.println(<span style="color: #E6DB74;">"key : "</span> + entry.getKey() + <span style="color: #E6DB74;">" value : "</span> + entry.getValue());
+}
+</pre>
+</div>
+</div>
+</li></ol>
+</div>
+
+<div id="outline-container-sec-1-4-2" class="outline-4">
+<h4 id="sec-1-4-2"><span class="section-number-4">1.4.2</span> Web</h4>
+<div class="outline-text-4" id="text-1-4-2">
+</div><ol class="org-ol"><li><a id="sec-1-4-2-1" name="sec-1-4-2-1"></a>前端页面传中文字符乱码解决方法<br  /><div class="outline-text-5" id="text-1-4-2-1">
+<ul class="org-ul">
+<li>修改 <a href="https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515">web.xml</a> 文件, 添加 <a href="http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html">CharacterEncodingFilter</a> 
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #F92672; font-style: italic;">filter</span>&gt;
+    &lt;<span style="color: #000000; background-color: #ff00ff; font-style: italic;">filter</span><span style="color: #F92672; font-style: italic;">-name</span>&gt;CharacterEncodingFilter&lt;/<span style="color: #F92672; font-style: italic;">filter-name</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">filter-class</span>&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/<span style="color: #F92672; font-style: italic;">filter-class</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">init-param</span>&gt;
+        &lt;<span style="color: #000000; background-color: #ff00ff; font-style: italic;">param</span><span style="color: #F92672; font-style: italic;">-name</span>&gt;encoding&lt;/<span style="color: #F92672; font-style: italic;">param-name</span>&gt;
+        &lt;<span style="color: #F92672; font-style: italic;">param-value</span>&gt;UTF-8&lt;/<span style="color: #F92672; font-style: italic;">param-value</span>&gt;
+    &lt;/<span style="color: #F92672; font-style: italic;">init-param</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">init-param</span>&gt;
+        &lt;<span style="color: #000000; background-color: #ff00ff; font-style: italic;">param</span><span style="color: #F92672; font-style: italic;">-name</span>&gt;forceEncoding&lt;/<span style="color: #F92672; font-style: italic;">param-name</span>&gt;
+        &lt;<span style="color: #F92672; font-style: italic;">param-value</span>&gt;true&lt;/<span style="color: #F92672; font-style: italic;">param-value</span>&gt;
+    &lt;/<span style="color: #F92672; font-style: italic;">init-param</span>&gt;
+&lt;/<span style="color: #F92672; font-style: italic;">filter</span>&gt;
+
+&lt;<span style="color: #000000; background-color: #ff00ff; font-style: italic;">filter</span><span style="color: #F92672; font-style: italic;">-mapping</span>&gt;
+      &lt;<span style="color: #F92672; font-style: italic;">filter-name</span>&gt;CharacterEncodingFilter&lt;/<span style="color: #F92672; font-style: italic;">filter-name</span>&gt;
+      &lt;<span style="color: #F92672; font-style: italic;">url-pattern</span>&gt;/*&lt;/<span style="color: #F92672; font-style: italic;">url-pattern</span>&gt;
+&lt;/<span style="color: #F92672; font-style: italic;">filter-mapping</span>&gt;
+</pre>
+</div>
+</li>
+<li>filter 需要放在所有 filter 的前面才会生效
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-1-4-2-2" name="sec-1-4-2-2"></a>常见 ContentType 与文件后缀名对应关系<br  /><div class="outline-text-5" id="text-1-4-2-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">文件扩展名</th>
+<th scope="col" class="left">ContentType</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">.html</td>
+<td class="left">text/html</td>
+</tr>
+
+<tr>
+<td class="left">.doc</td>
+<td class="left">application/msword</td>
+</tr>
+
+<tr>
+<td class="left">.ppt</td>
+<td class="left">application/vnd.ms-powerpoint</td>
+</tr>
+
+<tr>
+<td class="left">.xls</td>
+<td class="left">application/vnd.ms-excel</td>
+</tr>
+
+<tr>
+<td class="left">.xlsx</td>
+<td class="left">application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</td>
+</tr>
+
+<tr>
+<td class="left">.xml</td>
+<td class="left">text/xml</td>
+</tr>
+
+<tr>
+<td class="left">.txt</td>
+<td class="left">text/plain</td>
+</tr>
+
+<tr>
+<td class="left">.pdf</td>
+<td class="left">application/pdf</td>
+</tr>
+
+<tr>
+<td class="left">.jpeg</td>
+<td class="left">image/jpeg</td>
+</tr>
+
+<tr>
+<td class="left">.js</td>
+<td class="left">application/x-javascript</td>
+</tr>
+
+<tr>
+<td class="left">.css</td>
+<td class="left">text/css</td>
+</tr>
+
+<tr>
+<td class="left">.*(未知二进制流)</td>
+<td class="left">application/octet-stream</td>
+</tr>
+</tbody>
+</table>
+<p>
+<a href="http://tool.oschina.net/commons">更多</a>
+</p>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-1-4-3" class="outline-4">
+<h4 id="sec-1-4-3"><span class="section-number-4">1.4.3</span> Maven</h4>
+<div class="outline-text-4" id="text-1-4-3">
+</div><ol class="org-ol"><li><a id="sec-1-4-3-1" name="sec-1-4-3-1"></a>Maven 基本操作<br  /><div class="outline-text-5" id="text-1-4-3-1">
+<pre class="example">
+- 创建Maven的普通java项目
+  $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[projectName]
+- 创建Maven的Web项目
+  $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[webappName] -DarchetypeArtfactId=maven-archetype-webapp
+- 编译源码
+  $ mvn compile
+- 打包
+  $ mvn package
+- 在本地Repository中安装jar
+  $ mvn install
+- 清理项目
+  $ mvn clean
+- 生成eclipse/idea项目
+  $ mvn eclipse:eclipse
+  $ mvn idea:idea
+- 生成站点信息
+  $ mvn site
+</pre>
+</div>
+</li>
+<li><a id="sec-1-4-3-2" name="sec-1-4-3-2"></a>Maven 跳单元测试<br  /><div class="outline-text-5" id="text-1-4-3-2">
+<ul class="org-ul">
+<li>跳过单元测试
+<pre class="example">
+$ mvn install -Dmaven.test.skip=true
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-1-4-3-3" name="sec-1-4-3-3"></a>Maven 指定编译版本<br  /><div class="outline-text-5" id="text-1-4-3-3">
+<ul class="org-ul">
+<li>添加编译插件
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #F92672; font-style: italic;">build</span>&gt;
+  &lt;<span style="color: #F92672; font-style: italic;">plugins</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">plugin</span>&gt;
+      &lt;<span style="color: #F92672; font-style: italic;">groupId</span>&gt;org.apache.maven.plugins&lt;/<span style="color: #F92672; font-style: italic;">groupId</span>&gt;
+      &lt;<span style="color: #F92672; font-style: italic;">artifactId</span>&gt;maven-compiler-plugin&lt;/<span style="color: #F92672; font-style: italic;">artifactId</span>&gt;
+      &lt;<span style="color: #F92672; font-style: italic;">version</span>&gt;3.5.1&lt;/<span style="color: #F92672; font-style: italic;">version</span>&gt;
+      &lt;<span style="color: #F92672; font-style: italic;">configuration</span>&gt;  
+        &lt;<span style="color: #F92672; font-style: italic;">source</span>&gt;1.X&lt;/<span style="color: #F92672; font-style: italic;">source</span>&gt;  
+        &lt;<span style="color: #F92672; font-style: italic;">target</span>&gt;1.X&lt;/<span style="color: #F92672; font-style: italic;">target</span>&gt;  
+        &lt;<span style="color: #F92672; font-style: italic;">encoding</span>&gt;UTF-8&lt;/<span style="color: #F92672; font-style: italic;">encoding</span>&gt;  
+      &lt;/<span style="color: #F92672; font-style: italic;">configuration</span>&gt;  
+    &lt;/<span style="color: #F92672; font-style: italic;">plugin</span>&gt;
+  &lt;/<span style="color: #F92672; font-style: italic;">plugins</span>&gt;
+&lt;/<span style="color: #F92672; font-style: italic;">build</span>&gt;
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-1-4-4" class="outline-4">
+<h4 id="sec-1-4-4"><span class="section-number-4">1.4.4</span> Tomcat</h4>
+<div class="outline-text-4" id="text-1-4-4">
+</div><ol class="org-ol"><li><a id="sec-1-4-4-1" name="sec-1-4-4-1"></a>导入 Web 项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X&#x2026;<br  /><div class="outline-text-5" id="text-1-4-4-1">
+<ul class="org-ul">
+<li>其主要原因为当前 Tomcat 版本与该 Web 项目的Web版本不兼容，Tomcat 6支持 Web 2.5及以下版本，tomcat 7支持 Web 3.0及以下版本
+</li>
+<li>在 Eclipse 中：Project -&gt; Properties -&gt; Project Facets -&gt; Dynamic Web Module，检查 Web 项目的Web版本
+</li>
+<li>Eclipse 环境下的修改方法为：项目根目录找到 .setting 文件夹中的 org.eclipse.wst.common.project.facet.core.xml 文件，修改其中 jst.web 的 version 的值至当前 Tomcat 支持的版本
+</li>
+<li>更新 Tomcat 版本，使其与 Web 版本兼容
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-1-4-4-2" name="sec-1-4-4-2"></a>配置从根目录访问 Tomcat 下的 Web 项目<br  /><div class="outline-text-5" id="text-1-4-4-2">
+<div class="org-src-container">
+
+<pre class="src src-xml"><span style="color: #465457; font-style: italic;">&lt;!--</span><span style="color: #465457; font-style: italic;"> docBase&#20026;webapp&#30340;&#36335;&#24452; path&#20026;&#21457;&#24067;&#30340;&#36335;&#24452;&#65292;&#26681;&#30446;&#24405;&#35775;&#38382;&#36825;&#37324;&#30041;&#31354;  </span><span style="color: #465457; font-style: italic;">--&gt;</span>
+<span style="color: #465457; font-style: italic;">&lt;!--</span><span style="color: #465457; font-style: italic;"> Context &#26631;&#31614;&#37197;&#32622;&#22312; Tomcat &#30446;&#24405;&#19979; conf &#25991;&#20214;&#37324;&#30340; Server.xml &#37197;&#32622;&#25991;&#20214;&#20013;  </span><span style="color: #465457; font-style: italic;">--&gt;</span>
+&lt;<span style="color: #F92672; font-style: italic;">Server</span>&gt;
+  &lt;<span style="color: #F92672; font-style: italic;">Service</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">Engine</span>&gt;
+      &lt;<span style="color: #F92672; font-style: italic;">Host</span>&gt;
+        &lt;<span style="color: #F92672; font-style: italic;">Context</span> <span style="color: #F92672;">docBase</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">[webapp_path]</span><span style="color: #E6DB74;">"</span> <span style="color: #000000; background-color: #ff00ff;">path</span>=<span style="color: #E6DB74;">""</span> <span style="color: #F92672;">reloadable</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">true</span><span style="color: #E6DB74;">"</span>/&gt;
+      &lt;/<span style="color: #F92672; font-style: italic;">Host</span>&gt;
+    &lt;/<span style="color: #F92672; font-style: italic;">Engine</span>&gt;
+  &lt;/<span style="color: #F92672; font-style: italic;">Service</span>&gt;
+&lt;/<span style="color: #F92672; font-style: italic;">Server</span>&gt;
+</pre>
+</div>
+</div>
+</li>
+<li><a id="sec-1-4-4-3" name="sec-1-4-4-3"></a>eclipse 中 Web 项目配置根目录访问<br  /><div class="outline-text-5" id="text-1-4-4-3">
+<ul class="org-ul">
+<li>修改 Web 项目的 Context Path
+</li>
+<li>打开 web project folder &gt;&gt; .setting &gt;&gt; org.eclipse.wst.common.component 文件
+</li>
+<li>编辑该文件，修改其中 content-root 属性为空值
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #F92672; font-style: italic;">project-modules</span> <span style="color: #F92672;">id</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">moduleCoreId</span><span style="color: #E6DB74;">"</span> <span style="color: #F92672;">project-version</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">1.5.0</span><span style="color: #E6DB74;">"</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">wb-module</span> <span style="color: #F92672;">deploy-name</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">webapp</span><span style="color: #E6DB74;">"</span>&gt;
+        ...
+        &lt;<span style="color: #F92672; font-style: italic;">property</span> <span style="color: #F92672;">name</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">context-root</span><span style="color: #E6DB74;">"</span> <span style="color: #F92672;">value</span>=<span style="color: #E6DB74;">""</span>/&gt;
+    &lt;/<span style="color: #F92672; font-style: italic;">wb-module</span>&gt;
+&lt;/<span style="color: #F92672; font-style: italic;">project-modules</span>&gt;
+</pre>
+</div>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-1-4-5" class="outline-4">
+<h4 id="sec-1-4-5"><span class="section-number-4">1.4.5</span> JNI</h4>
+<div class="outline-text-4" id="text-1-4-5">
+</div><ol class="org-ol"><li><a id="sec-1-4-5-1" name="sec-1-4-5-1"></a>使用 javah 生成头文件问题 - Error: Could not find class file for "X"<br  /><div class="outline-text-5" id="text-1-4-5-1">
+<pre class="example">
+- HelloWorld.class 在 net.saisimon.jni 包中
+  $ javah HelloWorld
+  Error: Could not find class file for 'HelloWorld'.
+- HelloWorld 在 Java 包中，需要到包的根目录执行 javah 命令
+  $ cd ../../../
+  $ javah net.saisimon.jni.HelloWorld
+- 即可生成头文件 net_saisimon_jni_HelloWorld.h
+</pre>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-1-4-6" class="outline-4">
+<h4 id="sec-1-4-6"><span class="section-number-4">1.4.6</span> 多线程</h4>
+<div class="outline-text-4" id="text-1-4-6">
+</div><ol class="org-ol"><li><a id="sec-1-4-6-1" name="sec-1-4-6-1"></a>统计所有线程消耗的总时间<br  /><div class="outline-text-5" id="text-1-4-6-1">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">package</span> <span style="color: #63b8ff;">net.saisimon.test</span>
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.util.concurrent.</span><span style="color: #66D9EF;">CountDownLatch</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.util.concurrent.</span><span style="color: #66D9EF;">ExecutorService</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.util.concurrent.</span><span style="color: #66D9EF;">Executors</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.apache.commons.codec.digest.</span><span style="color: #66D9EF;">DigestUtils</span>;
+
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Test</span> <span style="color: #66D9EF;">implements</span> <span style="color: #66D9EF;">Runnable</span> {
+
+    <span style="color: #b0c4de;">volatile</span> <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">vote</span> = <span style="color: #ffa07a;">0</span>;
+    <span style="color: #66D9EF;">CountDownLatch</span> <span style="color: #F92672;">cdl</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">CountDownLatch</span>(<span style="color: #ffa07a;">5</span>);
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">run</span>() {
+        parse();
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#36882;&#20943;&#35745;&#25968;&#22120;</span>
+        cdl.countDown();
+    }
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">parse</span>() {
+        <span style="color: #66D9EF;">while</span> (vote &lt; <span style="color: #ffa07a;">10</span>) {
+            <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">x</span> = <span style="color: #ffa07a;">0</span>;
+            <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">v</span> = vote;
+            vote++;
+            <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">tmp</span> = <span style="color: #E6DB74;">"Saisimon"</span> + v + x;
+            <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">md5</span> = DigestUtils.md5Hex(tmp);
+            <span style="color: #66D9EF;">while</span> (<span style="font-weight: bold;">!</span>md5.startsWith(<span style="color: #E6DB74;">"000000"</span>)) {
+                x++;
+                tmp = <span style="color: #E6DB74;">"Saisimon"</span> + v + x;
+                md5 = DigestUtils.md5Hex(tmp);
+            }
+            System.out.println(<span style="color: #E6DB74;">"thread : "</span> + Thread.currentThread().getName() + <span style="color: #E6DB74;">" , vote : "</span> + v + <span style="color: #E6DB74;">" , x : "</span> + x);
+        }
+    }
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">main</span>(<span style="color: #66D9EF;">String</span>[] <span style="color: #F92672;">args</span>) {
+        <span style="color: #66D9EF;">Test</span> <span style="color: #F92672;">t</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">Test</span>();
+        <span style="color: #66D9EF;">long</span> <span style="color: #F92672;">start</span> = System.currentTimeMillis();
+        <span style="color: #66D9EF;">ExecutorService</span> <span style="color: #F92672;">es</span> = Executors.newFixedThreadPool(<span style="color: #ffa07a;">5</span>);
+        <span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span> = <span style="color: #ffa07a;">0</span>; i &lt; <span style="color: #ffa07a;">5</span>; i++) {
+            es.execute(t);
+        }
+        es.shutdown();
+        <span style="color: #66D9EF;">try</span> {
+            <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35745;&#25968;&#22120;&#20943;&#33267;&#38646;&#26102;&#65292;await &#20250;&#34987;&#25191;&#34892;</span>
+            p.cdl.await();
+        } <span style="color: #66D9EF;">catch</span> (<span style="color: #66D9EF;">InterruptedException</span> <span style="color: #F92672;">e</span>) {
+            e.printStackTrace();
+        }
+        System.out.println(<span style="color: #E6DB74;">"&#22810;&#32447;&#31243;&#32791;&#26102;:"</span> + (System.currentTimeMillis() - start));
+    }
+}
+</pre>
+</div>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-1-4-7" class="outline-4">
+<h4 id="sec-1-4-7"><span class="section-number-4">1.4.7</span> Solr</h4>
+<div class="outline-text-4" id="text-1-4-7">
+</div><ol class="org-ol"><li><a id="sec-1-4-7-1" name="sec-1-4-7-1"></a>Solr 导入 csv 文件数据<br  /><div class="outline-text-5" id="text-1-4-7-1">
+<pre class="example">
+http://localhost:8983/solr/item/update?commit=true&amp;stream.file=d:/tmp/solr_data.csv&amp;stream.contentType=application/csv
+</pre>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-1-4-8" class="outline-4">
+<h4 id="sec-1-4-8"><span class="section-number-4">1.4.8</span> Eclipse</h4>
+<div class="outline-text-4" id="text-1-4-8">
+</div><ol class="org-ol"><li><a id="sec-1-4-8-1" name="sec-1-4-8-1"></a>显示 Eclipse 内存堆占用条，手动 GC<br  /><div class="outline-text-5" id="text-1-4-8-1">
+<ul class="org-ul">
+<li>修改配置文件 {workspaceHome}/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs 
+</li>
+</ul>
+<pre class="example">
+SHOW_MEMORY_MONITOR=true
+</pre>
+</div>
+</li></ol>
+</div>
+</div>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> Python</h3>
+<div class="outline-text-3" id="text-1-5">
+</div><div id="outline-container-sec-1-5-1" class="outline-4">
+<h4 id="sec-1-5-1"><span class="section-number-4">1.5.1</span> SCons</h4>
+<div class="outline-text-4" id="text-1-5-1">
+</div><ol class="org-ol"><li><a id="sec-1-5-1-1" name="sec-1-5-1-1"></a>CentOS 下编译安装 SCons<br  /><div class="outline-text-5" id="text-1-5-1-1">
+<pre class="example">
+- 确定系统中安装了 Python
+  $ python -V
+  Python 2.6.6
+- 方式一: 使用 yum 安装 SCons
+  $ yum install scons
+- 方式二: 使用安装包安装 SCons
+  - 去官网下载 SCons 安装包，解压
+  $ tar -xzvf scons-2.4.1.tar.gz
+  - 编译安装，默认安装路径 /usr/lib/scons-2.4.1
+  $ python setup.py install [--prefix=/xx/xx]
+- 查看版本号
+  $ scons -v
+</pre>
+</div>
+</li></ol>
+</div>
+</div>
+
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6"><span class="section-number-3">1.6</span> JavaScript</h3>
+<div class="outline-text-3" id="text-1-6">
+</div><div id="outline-container-sec-1-6-1" class="outline-4">
+<h4 id="sec-1-6-1"><span class="section-number-4">1.6.1</span> JavaScript</h4>
+<div class="outline-text-4" id="text-1-6-1">
+</div><ol class="org-ol"><li><a id="sec-1-6-1-1" name="sec-1-6-1-1"></a>JavaScript 类型判断<br  /><div class="outline-text-5" id="text-1-6-1-1">
+<ul class="org-ul">
+<li>是否为数字
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">isNumber</span>(<span style="color: #F92672;">obj</span>) {
+    <span style="color: #66D9EF;">return</span> obj === +obj;
+}
+</pre>
+</div>
+</li>
+<li>是否为字符串
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">isString</span>(<span style="color: #F92672;">obj</span>) {
+    <span style="color: #66D9EF;">return</span> obj === obj + <span style="color: #E6DB74;">''</span>;
+}
+</pre>
+</div>
+</li>
+<li>是否为布尔类型
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">isBoolean</span>(<span style="color: #F92672;">obj</span>) {
+    <span style="color: #66D9EF;">return</span> obj === !!obj;
+}
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-1-6-1-2" name="sec-1-6-1-2"></a>JavaScript 首字母大写<br  /><div class="outline-text-5" id="text-1-6-1-2">
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">toCapitalizeCase</span>(<span style="color: #F92672;">str</span>) {
+    <span style="color: #66D9EF;">if</span> (!str || str.length === 0) {
+        <span style="color: #66D9EF;">return</span> str;
+    }
+    <span style="color: #66D9EF;">if</span> (str.length == 1) {
+        <span style="color: #66D9EF;">return</span> str.toUpperCase();
+    } <span style="color: #66D9EF;">else</span> {
+        <span style="color: #66D9EF;">return</span> str[0].toUpperCase() + str.substring(1);
+    }
+}
+</pre>
+</div>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-1-6-2" class="outline-4">
+<h4 id="sec-1-6-2"><span class="section-number-4">1.6.2</span> JQuery</h4>
+<div class="outline-text-4" id="text-1-6-2">
+</div><ol class="org-ol"><li><a id="sec-1-6-2-1" name="sec-1-6-2-1"></a>JQuery 与 Prototype 中 $ 符号冲突解决方法<br  /><div class="outline-text-5" id="text-1-6-2-1">
+<ul class="org-ul">
+<li>JQuery 在 prototype 之后引入，即：
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #F92672; font-style: italic;">script</span> <span style="color: #F92672;">src</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">prototype.js</span><span style="color: #E6DB74;">"</span> <span style="color: #F92672;">type</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">text/javascript</span><span style="color: #E6DB74;">"</span>/&gt; 
+&lt;<span style="color: #F92672; font-style: italic;">script</span> <span style="color: #F92672;">src</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">jquery.js</span><span style="color: #E6DB74;">"</span> <span style="color: #F92672;">type</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">text/javascript</span><span style="color: #E6DB74;">"</span>/&gt;
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#25913;&#21464; JQuery &#30340;&#36873;&#25321;&#26631;&#35782;&#31526;&#65292;&#23558; $ &#30340;&#25511;&#21046;&#26435;&#20132;&#36824;&#32473; Prototype &#12290;</span>
+<span style="color: #66D9EF;">var</span> <span style="color: #F92672;">jq</span> = JQuery.noConflict();
+<span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#20351;&#29992; JQuery &#36873;&#25321;&#22120;&#30340;&#26041;&#24335;&#25913;&#20026;&#22914;&#19979;&#65306;</span>
+jq(<span style="color: #E6DB74;">"#id"</span>).text();
+</pre>
+</div>
+</li>
+<li>JQuery 在 prototype 之前引入，即：
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #F92672; font-style: italic;">script</span> <span style="color: #F92672;">src</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">jquery.js</span><span style="color: #E6DB74;">"</span> <span style="color: #F92672;">type</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">text/javascript</span><span style="color: #E6DB74;">"</span>/&gt; 
+&lt;<span style="color: #F92672; font-style: italic;">script</span> <span style="color: #F92672;">src</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">prototype.js</span><span style="color: #E6DB74;">"</span> <span style="color: #F92672;">type</span>=<span style="color: #E6DB74;">"</span><span style="color: #E6DB74;">text/javascript</span><span style="color: #E6DB74;">"</span>/&gt;
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#36825;&#31181;&#24773;&#20917; $ &#20026; Prototype &#20013;&#23450;&#20041;&#30340;&#26631;&#35782;&#31526;&#65292;&#35201;&#24819;&#20351;&#29992; JQuery &#30340;&#36873;&#25321;&#22120;&#65292;&#38656;&#29992;&#22914;&#19979;&#24418;&#24335;&#65306;</span>
+JQuery(<span style="color: #E6DB74;">"#id"</span>).text();
+</pre>
+</div>
+</li>
+<li>通用解决方案，不管引入的先后顺序：
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">JQuery &#25918;&#24323; $ &#25152;&#26377;&#26435;</span>
+JQuery.noConflict();
+(<span style="color: #66D9EF;">function</span>(<span style="color: #F92672;">$</span>){ 
+        .....
+        <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">&#27492;&#26102;&#22312;&#36825;&#20010;&#35821;&#21477;&#22359;&#20013;&#20351;&#29992;&#30340;&#37117;&#26159; JQuery &#20013;&#23450;&#20041;&#30340; $</span>
+        $(<span style="color: #E6DB74;">'#id'</span>).text(); 
+})(JQuery)
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</li>
+
+<li><a id="sec-1-6-2-2" name="sec-1-6-2-2"></a>JQuery 获取 url 参数<br  /><div class="outline-text-5" id="text-1-6-2-2">
+<div class="org-src-container">
+
+<pre class="src src-javascript">$.extend({
+    <span style="color: #F92672; font-style: italic;">getUrlVars</span>: <span style="color: #66D9EF;">function</span>(){
+        <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">vars</span> = [], <span style="color: #F92672;">hash</span>;
+        <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">hashes</span> = window.location.href.slice(window.location.href.indexOf(<span style="color: #E6DB74;">'?'</span>) + 1).split(<span style="color: #E6DB74;">'&amp;'</span>);
+        <span style="color: #66D9EF;">for</span>(<span style="color: #66D9EF;">var</span> <span style="color: #F92672;">i</span> = 0; i &lt; hashes.length; i++) {
+            hash = hashes[i].split(<span style="color: #E6DB74;">'='</span>);
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        <span style="color: #66D9EF;">return</span> vars;
+    },
+    <span style="color: #F92672; font-style: italic;">getUrlVar</span>: <span style="color: #66D9EF;">function</span>(<span style="color: #F92672;">name</span>){
+        <span style="color: #66D9EF;">return</span> $.getUrlVars()[name];
+    }
+});
+
+<span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35843;&#29992;&#26041;&#27861;</span>
+$(document).ready(<span style="color: #66D9EF;">function</span>() {
+    <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">args</span> = $.getUrlVars();
+    <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">arg1</span> = $.getUrlVar(<span style="color: #E6DB74;">'argName1'</span>);
+    <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">arg2</span> = $.getUrlVar(<span style="color: #E6DB74;">'argName2'</span>);
+});
+</pre>
+</div>
+</div>
+</li></ol>
+</div>
+</div>
+
+<div id="outline-container-sec-1-7" class="outline-3">
+<h3 id="sec-1-7"><span class="section-number-3">1.7</span> Emacs</h3>
+<div class="outline-text-3" id="text-1-7">
+</div><div id="outline-container-sec-1-7-1" class="outline-4">
+<h4 id="sec-1-7-1"><span class="section-number-4">1.7.1</span> 安装 Emacs 时，error: The required function `tputs' was not found in any library</h4>
+<div class="outline-text-4" id="text-1-7-1">
+<ul class="org-ul">
+<li>缺少 libncurses-dev 包
+</li>
+</ul>
+<pre class="example">
+$ yum install libncurses-dev -y
+或
+$ apt-get install libncurses-dev
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-8" class="outline-3">
+<h3 id="sec-1-8"><span class="section-number-3">1.8</span> Git</h3>
+<div class="outline-text-3" id="text-1-8">
+</div><div id="outline-container-sec-1-8-1" class="outline-4">
+<h4 id="sec-1-8-1"><span class="section-number-4">1.8.1</span> Git 基本操作</h4>
+<div class="outline-text-4" id="text-1-8-1">
+<pre class="example">
+- 初始化
+  $ git init
+- clone别人的库
+  $ git clone ssh://user@domain.com/repo.git
+- 查看库的状态
+  $ git status
+- 查看工作区与暂存区文件的修改
+  $ git diff
+- 添加文件到暂存区
+  $ git add .
+- 提交文件到本地库
+  $ git commit
+- 提交历史纪录
+  $ git log
+- 查看库的分支
+  $ git branch
+- 切换分支
+  $ git checkout &lt;branch&gt;
+- 将本地库推送至远程库中
+  $ git push &lt;remote&gt; &lt;branch&gt;
+- 将指定分支合并至当前分支
+  $ git merge &lt;branch&gt;
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-8-2" class="outline-4">
+<h4 id="sec-1-8-2"><span class="section-number-4">1.8.2</span> 更新 .gitignore 后，清理 Git 仓库</h4>
+<div class="outline-text-4" id="text-1-8-2">
+<pre class="example">
+- 清理暂存区的文件
+  $ git rm -r --cached .
+- 添加所有文件
+  $ git add .
+- 提交
+  $ git commit -m ".gitignore is now working"
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-8-3" class="outline-4">
+<h4 id="sec-1-8-3"><span class="section-number-4">1.8.3</span> Git 在 push 之前撤回最近一次 commit 命令</h4>
+<div class="outline-text-4" id="text-1-8-3">
+<pre class="example">
+$ git reset --soft HEAD^
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-8-4" class="outline-4">
+<h4 id="sec-1-8-4"><span class="section-number-4">1.8.4</span> 修改 Git 别名</h4>
+<div class="outline-text-4" id="text-1-8-4">
+<ul class="org-ul">
+<li>修改 .gitconfig 文件中[alias]属性
+<pre class="example">
+$ vi ~/.gitconfig
+  [alias]
+      st = status
+      ci = commit
+      co = checkout
+      br = branch
+</pre>
+</li>
+<li>使用 git config &#x2013;global alias.[alias-name] [operation-name]
+<pre class="example">
+# 表示将 st 作为 status 的别名，可以直接使用 git st 命令
+$ git config --global alias.st status
+</pre>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1-8-5" class="outline-4">
+<h4 id="sec-1-8-5"><span class="section-number-4">1.8.5</span> Git 推送代码</h4>
+<div class="outline-text-4" id="text-1-8-5">
+<pre class="example">
+- 首次推送，添加远程代码库至配置
+  $ git remote add tip https://github.com/Saisimon/tip.git
+- 推送代码至远程代码库
+  $ git push tip master
+- 输入账号密码进行确认
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-8-6" class="outline-4">
+<h4 id="sec-1-8-6"><span class="section-number-4">1.8.6</span> Git 拉取代码</h4>
+<div class="outline-text-4" id="text-1-8-6">
+<pre class="example">
+- 暂存工作区
+ $ git stash
+- 拉取远程代码
+ $ git pull origin master
+- 还原最近一次工作区的内容
+ $ git stash pop
+- 出现冲突时，解决冲突提交即可
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-8-7" class="outline-4">
+<h4 id="sec-1-8-7"><span class="section-number-4">1.8.7</span> 添加新 ssh<sub>key</sub> 至 Github</h4>
+<div class="outline-text-4" id="text-1-8-7">
+<pre class="example">
+- 检查是否存在 .ssh 文件夹
+  $ cd ~/.ssh
+- 生成 ssh_key
+  $ ssh-keygen -t rsa -C "youremail@email.com"
+- 输入密码
+- 启动 ssh-agent
+  $ eval "$(ssh-agent -s)"
+- 添加 ssh_key 到 ssh-agent
+  $ ssh-add ~/.ssh/id_rsa
+- 将 id_rsa.pub 中的key添加进 Github 中
+  github &gt;&gt; Settings &gt;&gt; SSH and GPG keys &gt;&gt; new SSH key
+- 测试联通性
+  $ ssh git@github.com
+  Hi Saisimon! You've successfully authenticated, but GitHub does not provide shell access.
+  Connection to github.com closed.
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-8-8" class="outline-4">
+<h4 id="sec-1-8-8"><span class="section-number-4">1.8.8</span> Git status 输出中文为 UNICODE 解决方法</h4>
+<div class="outline-text-4" id="text-1-8-8">
+<ul class="org-ul">
+<li>修改 git config 属性
+<pre class="example">
+$ git config --global core.quotepath false
+</pre>
+</li>
+<li>修改修改 git 配置文件
+<pre class="example">
+$ vi ~/.gitconfig
+  [core]
+      quotepath = false
+</pre>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: <a href="http://blog.saisimon.net">Saisimon</a></p>
+<p class="date">Created: 2016-09-28 Wed 11:01</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -421,7 +421,7 @@
      #+END_SRC
 *** Eclipse
 **** 显示 Eclipse 内存堆占用条，手动 GC
-     - 修改配置文件 {workspace_home}/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs 
+     - 修改配置文件 {workspaceHome}/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs 
      #+BEGIN_SRC 
        SHOW_MEMORY_MONITOR=true
      #+END_SRC
