@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     print_size();
 
     THE_SIZE = 9;
-
+-
     log_info("THE SIZE is now: %d", THE_SIZE);
     print_size();
 
