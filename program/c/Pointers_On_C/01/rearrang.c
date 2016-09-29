@@ -27,6 +27,7 @@ int main(void) {
     /* 读取该串列标号 */
     n_columns = read_column_numbers(columns, MAX_INPUT);
 
+    puts("输入待重组的字符串：");
     /* 读取、处理和打印剩余的输入行 */
     while(gets(input) != NULL) {
         printf("Origina Input : %s\n", input);
@@ -41,6 +42,7 @@ int read_column_numbers(int columns[], int max) {
     int num = 0;
     int ch;
     /* 如果读取的数小于零则停止 */
+    puts("请输入数字，输入负数结束：");
     while (num < max && scanf("%d", &columns[num]) == 1 && columns[num] >= 0) {
         num++;
     }
