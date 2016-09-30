@@ -189,6 +189,23 @@
             drop user ['username']@['localhost'];
       #+END_SRC
       
+** C
+*** C
+**** 位操作
+     #+BEGIN_SRC c
+     int value;
+     // 将指定位设置为1
+     value = value | (1 << bit_number);
+     // 将指定位设置为0
+     value = value & ~ (1 << bit_number);
+     // 判断指定位是否为1，为1时表达式结果为非零，0时表达式结果为0
+     int flag = value & (1 << bit_number);
+     if (flag) {
+             printf("第%d位值为1", bit_number);
+     } else {
+             printf("第%d位值为0", bit_number);
+     }
+     #+END_SRC
 ** Java
 *** Java
 **** 操作 jar 包
