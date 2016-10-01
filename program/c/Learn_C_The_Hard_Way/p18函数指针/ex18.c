@@ -77,7 +77,12 @@ int strange_order(int a ,int b )
  */
 void test_sorting(int *numbers, int count,compare_cb cmp)
 {
+    unsigned char *data = (unsigned char *)cmp;
 	int i = 0;
+    for(i = 0; i < 25; i++) {
+        printf("%02x:", data[i]);
+    }
+    printf("\n");
 	int *sorted = bubble_sort(numbers, count, cmp)	;
 
 	if(!sorted) die("Failed to sort as requested");
