@@ -468,7 +468,7 @@
 ** Python
 *** SCons
 **** CentOS 下编译安装 SCons
-     #+BEGIN_SRC 
+     #+BEGIN_SRC
      - 确定系统中安装了 Python
        $ python -V
        Python 2.6.6
@@ -640,7 +640,7 @@
          $ git config --global alias.st status
        #+END_SRC
 *** Git 推送代码
-    #+BEGIN_SRC 
+    #+BEGIN_SRC
     - 首次推送，添加远程代码库至配置
       $ git remote add tip https://github.com/Saisimon/tip.git
     - 推送代码至远程代码库
@@ -648,7 +648,7 @@
     - 输入账号密码进行确认
     #+END_SRC
 *** Git 拉取代码
-    #+BEGIN_SRC 
+    #+BEGIN_SRC
     - 暂存工作区
      $ git stash
     - 拉取远程代码
@@ -658,7 +658,7 @@
     - 出现冲突时，解决冲突提交即可
     #+END_SRC
 *** 添加新 ssh_key 至 Github
-    #+BEGIN_SRC 
+    #+BEGIN_SRC
     - 检查是否存在 .ssh 文件夹
       $ cd ~/.ssh
     - 生成 ssh_key
@@ -677,12 +677,17 @@
     #+END_SRC
 *** Git status 输出中文为 UNICODE 解决方法
     - 修改 git config 属性
-      #+BEGIN_SRC 
+      #+BEGIN_SRC
         $ git config --global core.quotepath false
       #+END_SRC
     - 修改修改 git 配置文件
-      #+BEGIN_SRC 
+      #+BEGIN_SRC
         $ vi ~/.gitconfig
           [core]
               quotepath = false
+      #+END_SRC
+*** Git push 时，fatal: Authentication failed
+    - 修改 remote 地址
+      #+BEGIN_SRC
+         $ git remote set-url origin <ssh url>
       #+END_SRC
