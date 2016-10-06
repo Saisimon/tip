@@ -247,7 +247,19 @@
          System.out.println("key : " + entry.getKey() + " value : " + entry.getValue());
      }
      #+END_SRC
-
+**** 使用异或操作交换两个数字
+     #+BEGIN_SRC java
+     /**
+       a = a ^ b;
+       b = b ^ a;
+       a = a ^ b;
+     */
+     private void swap(int[] nums, int a, int b) {
+             nums[a] = nums[a] ^ nums[b];
+             nums[b] = nums[b] ^ nums[a];
+             nums[a] = nums[a] ^ nums[b];
+     }
+     #+END_SRC
 *** Web
 **** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
