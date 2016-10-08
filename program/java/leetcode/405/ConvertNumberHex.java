@@ -60,9 +60,4 @@ public class ConvertNumberHex {
         }
         return result;
     }
-	
-	public static void main(String[] args) {
-		ConvertNumberHex cnh = new ConvertNumberHex();
-		System.out.println(cnh.toHexB(-1));
-	}
 }
