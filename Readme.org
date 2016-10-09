@@ -10,5 +10,5 @@ This project collect some tips.
 6. Yum Configuration
 7. C / C++ Tips
 8. Java Tips
-9. [[https://leetcode.com/][leetcode]] Java Solutions
-10. [[http://www.qlcoder.com/home][qlcoder]] Java Solutions
+9. [[https://leetcode.com/][leetcode]] Java Solutions [[https://github.com/Saisimon/tip/tree/master/program/java/leetcode][>>]]
+10. [[http://www.qlcoder.com/home][qlcoder]] Java Solutions [[https://github.com/Saisimon/tip/tree/master/program/java/qlcoder][>>]]
