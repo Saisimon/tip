@@ -1,11 +1,14 @@
 * Tip
 
 This project collect some tips.
-1. CheatSheet (Linux, Git)
-2. Eclipse Configuration
-3. Emacs Basic
-4. Hosts Configuration
-5. Vim Configuration
+
+1. CheatSheet ([[https://github.com/torvalds/linux][Linux]], [[https://git-scm.com/][Git]])
+2. [[http://www.eclipse.org/][Eclipse]] Configuration
+3. [[https://www.gnu.org/software/emacs/][Emacs]] Basic
+4. [[https://github.com/racaljk/hosts][Hosts]] Configuration
+5. [[http://www.vim.org/][Vim]] Configuration
 6. Yum Configuration
 7. C / C++ Tips
 8. Java Tips
+9. [[https://leetcode.com/][leetcode]] Java Solutions
+10. [[http://www.qlcoder.com/home][qlcoder]] Java Solutions
