@@ -1,4 +1,3 @@
-#+TITLE: Tips
 #+AUTHOR: [[http://blog.saisimon.net][Saisimon]]
 
 #+BEGIN_HTML
