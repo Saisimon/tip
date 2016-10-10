@@ -1,4 +1,4 @@
-* Tip
+* TIP
   This project collect some tips.
 
 [[https://github.com/Saisimon/tip/blob/master/Tip.org][Tips]]
@@ -12,3 +12,6 @@
 8. Java Tips [[https://github.com/Saisimon/tip/blob/master/Tip.org#java][>>]]
 9. [[https://leetcode.com/][leetcode]] Java Solutions [[https://github.com/Saisimon/tip/tree/master/program/java/leetcode][>>]]
 10. [[http://www.qlcoder.com/home][qlcoder]] Java Solutions [[https://github.com/Saisimon/tip/tree/master/program/java/qlcoder][>>]]
+
+* LICENSE
+  [[https://creativecommons.org/licenses/by-sa/4.0/][CC-BY-SA-4.0]]
