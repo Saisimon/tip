@@ -1,14 +1,14 @@
 * Tip
+  This project collect some tips.
 
-This project collect some tips.
-
-1. CheatSheet ([[https://github.com/torvalds/linux][Linux]], [[https://git-scm.com/][Git]])
-2. [[http://www.eclipse.org/][Eclipse]] Configuration
-3. [[https://www.gnu.org/software/emacs/][Emacs]] Basic
-4. [[https://github.com/racaljk/hosts][Hosts]] Configuration
-5. [[http://www.vim.org/][Vim]] Configuration
-6. Yum Configuration
-7. C / C++ Tips
-8. Java Tips
+[[https://github.com/Saisimon/tip/blob/master/Tip.org][Tips]]
+1. CheatSheet ([[https://github.com/torvalds/linux][Linux]], [[https://git-scm.com/][Git]]) [[https://github.com/Saisimon/tip/tree/master/cheatsheet][>>]]
+2. [[http://www.eclipse.org/][Eclipse]] Configuration [[https://github.com/Saisimon/tip/tree/master/eclipse][>>]]
+3. [[https://www.gnu.org/software/emacs/][Emacs]] Basic [[https://github.com/Saisimon/tip/tree/master/emacs][>>]]
+4. [[https://github.com/racaljk/hosts][Hosts]] Configuration [[https://github.com/Saisimon/tip/tree/master/hosts][>>]]
+5. [[http://www.vim.org/][Vim]] Configuration [[https://github.com/Saisimon/tip/tree/master/vim][>>]]
+6. Yum Configuration [[https://github.com/Saisimon/tip/tree/master/yum][>>]]
+7. C / C++ Tips [[https://github.com/Saisimon/tip/blob/master/Tip.org#c][>>]]
+8. Java Tips [[https://github.com/Saisimon/tip/blob/master/Tip.org#java][>>]]
 9. [[https://leetcode.com/][leetcode]] Java Solutions [[https://github.com/Saisimon/tip/tree/master/program/java/leetcode][>>]]
 10. [[http://www.qlcoder.com/home][qlcoder]] Java Solutions [[https://github.com/Saisimon/tip/tree/master/program/java/qlcoder][>>]]
