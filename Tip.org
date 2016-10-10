@@ -1,5 +1,9 @@
 #+AUTHOR: [[http://blog.saisimon.net][Saisimon]]
 
+#+BEGIN_HTML
+<link rel="stylesheet" href="css/main.css" >
+#+END_HTML
+
 * Tip
 ** Windows
 *** 右键添加命令提示符(CMD)
