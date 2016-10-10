@@ -1,4 +1,9 @@
+#+TITLE: Tips
 #+AUTHOR: [[http://blog.saisimon.net][Saisimon]]
+
+#+BEGIN_HTML
+<link rel="stylesheet" href="css/main.css" >
+#+END_HTML
 
 * Tip
 ** Windows
