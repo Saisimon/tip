@@ -264,6 +264,15 @@
              nums[a] = nums[a] ^ nums[b];
      }
      #+END_SRC
+**** 分页计算页数
+     #+BEGIN_SRC java
+     // 每页记录数
+     int pageSize;
+     // 总记录数
+     int rowCount;
+     // 页数
+     int pageCount = (rowCount - 1) / pageSize + 1;
+     #+END_SRC
 *** Web
 **** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
