@@ -10,12 +10,12 @@ int print_a_message(const char *msg)
 }
 
 
-int uppercase(const char *msg)
+//int uppercase(const char *msg)
+int uppercase(const char *msg,int msg_len)
 {
     int i = 0;
 
-    // BUG: \0 termination problems
-    for(i = 0; msg[i] != '\0'; i++) {
+    for(i = 0; i < msg_len; i++) {
         printf("%c", toupper(msg[i]));
     }
 
@@ -24,12 +24,11 @@ int uppercase(const char *msg)
     return 0;
 }
 
-int lowercase(const char *msg)
+int lowercase(const char *msg,int msg_len)
 {
     int i = 0;
 
-    // BUG: \0 termination problems
-    for(i = 0; msg[i] != '\0'; i++) {
+    for(i = 0; i < msg_len; i++) {
         printf("%c", tolower(msg[i]));
     }
 
