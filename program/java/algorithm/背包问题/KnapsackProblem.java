@@ -26,6 +26,7 @@ public class KnapsackProblem {
 	
 	/**
 	 * 求解01背包问题
+	 * 	递归求解
 	 * 
 	 * @param items 物品列表
 	 * @param maxVolume 背包最大容量
@@ -54,6 +55,38 @@ public class KnapsackProblem {
 			return Math.max(tmp < 0 ? 0 : getMaxWorth(subItems, tmp) + last.getWorth(), 
 					getMaxWorth(subItems, maxVolume));
 		}
+	}
+	
+	/**
+	 * 求解01背包问题
+	 * 	遍历求解
+	 * 
+	 * @param items 物品列表
+	 * @param maxVolume 背包最大容量
+	 * @return 返回最优解
+	 */
+	public int getMaxWorthB(List<Item> items, int maxVolume) {
+		// 最优值二维矩阵
+		int[][] solution = new int[items.size() + 1][maxVolume + 1];
+		// 遍历矩阵
+		for (int i = 0; i <= items.size(); i++) {
+			for (int j = 0; j <= maxVolume; j++) {
+				if (i != 0 && j != 0) {
+					// 第 i 个物品的体积
+					int volume = items.get(i - 1).getVolume();
+					// 第 i 个物品的价值
+					int worth = items.get(i - 1).getWorth();
+					if (j < volume) {
+						// 第 i 个物品的体积大于当前总体积，则最优解在前 i - 1 个物品中
+						solution[i][j] = solution[i-1][j];
+					} else {
+						// 否则，选择不拿第 i 个物品的最优解或者拿第 i 个物品的最优解中的最大值
+						solution[i][j] = Math.max(solution[i - 1][j], solution[i - 1][j - volume] + worth);
+					}
+				}
+			}
+		}
+		return solution[items.size()][maxVolume];
 	}
 	
 }
