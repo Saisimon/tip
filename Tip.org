@@ -273,6 +273,31 @@
      // 页数
      int pageCount = (rowCount - 1) / pageSize + 1;
      #+END_SRC
+**** 分割 Map
+     #+BEGIN_SRC java
+     /**
+     ,* 当数据量较少时，该方法较全部遍历的效率要低
+     ,* 当数据量较大且分割大小远小于总数据量时，该方法效率较高
+     ,*/
+     import com.google.common.base.Predicates;
+     import com.google.common.collect.Maps;
+
+     // map 为待分割 map 集合
+     // 分割大小
+     int size = 10000;
+     // map 总大小
+     int all = map.size();
+     // 分割结果
+     List<Map<String, Integer>> res = new ArrayList<>();
+     // key 的 list 集合
+     List<String> list = new ArrayList<>(map.keySet());
+     // 遍历次数
+     for (int j = 0; j < all / size; j++) {
+             // Maps，Predicates 为 Google 的 guava 库中的类
+             Map<String, Integer> subMap = Maps.filterKeys(map, Predicates.in(list.subList(j * size, (j + 1) * size)));
+             res.add(subMap);
+     }
+     #+END_SRC
 *** Web
 **** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
