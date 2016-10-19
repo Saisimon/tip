@@ -613,6 +613,14 @@
         var arg2 = $.getUrlVar('argName2');
     });
     #+END_SRC
+*** Prototype
+**** Prototype 获取 select 选择框中选中文本
+     #+BEGIN_SRC javascript
+     // 选择框中选中文本的下标
+     var idx = $(id).selectedIndex;
+     // 获取文本
+     var text = $(id).options[idx].text.strip();
+     #+END_SRC
 
 ** Emacs
 *** 安装 Emacs 时，error: The required function `tputs' was not found in any library
