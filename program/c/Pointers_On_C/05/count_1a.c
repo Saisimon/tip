@@ -19,19 +19,5 @@ int main(int argc, char *argv[]) {
     int input = atoi(argv[1]);
     int ones = count_one_bits(input);
     printf("ones : %d\n", ones);
-    int b, *a;
-    b = &a;
-    *a = 20;
-    printf("b的地址 : %p\n", b);
-    printf("b的值 : %d\n", b);
-    printf("a的值 : %p\n", a);
-    printf("&a的地址 : %p\n", &a);
-    printf("&a的值 : %d\n", &a);
-    printf("*a的值 : %d\n", *a);
-    printf("*a的地址 : %p\n", *a);
-
-    int i = 123456789;
-    float f = i;
-    printf("%f", f);
     return 0;
 }
