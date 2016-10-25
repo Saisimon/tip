@@ -20,9 +20,6 @@
 
 #define log_info(M, ...) fprintf(stderr, "[INFO] (%s:%d) " M "\n", __FILE__, __LINE__, ##__VA_ARGS__)
 
-//如果 A 是真，就不打印错误信息
-//如果 A 是假，就输出 log_err 信息
-//并且重置 errno ，然后调用 error 标签
 #define check(A, M, ...) if(!(A)) { log_err(M, ##__VA_ARGS__); errno=0; goto error; }
 
 #define sentinel(M, ...)  { log_err(M, ##__VA_ARGS__); errno=0; goto error; }
