@@ -23,8 +23,8 @@ public class MaximumSubarray {
 	public int maxSubArray(int[] nums) {
 		// 存放数组的所有子数组，方便递归时获取，避免重复截取子数组
 		subArrays = new int[nums.length - 1][];
-		int len = nums.length - 1;
 		for (int i = nums.length - 1; i > 0; i--) {
+			int len = nums.length - 1;
 			int tmp = i;
 			while (tmp > 0) {
 				if (subArrays[tmp - 1] == null) {
