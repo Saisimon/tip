@@ -503,6 +503,8 @@
      #+BEGIN_SRC 
        SHOW_MEMORY_MONITOR=true
      #+END_SRC
+**** 修改 Eclipse 格式化代码自动换行
+     Project - Properties - Java Code Style - Formatter - Enable project specific settings - 新建一个配置 - Line Wrapping - 设置 Maximum line width
 ** Python
 *** SCons
 **** CentOS 下编译安装 SCons
