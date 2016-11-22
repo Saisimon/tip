@@ -505,6 +505,21 @@
      #+END_SRC
 **** 修改 Eclipse 格式化代码自动换行
      Project - Properties - Java Code Style - Formatter - Enable project specific settings - 新建一个配置 - Line Wrapping - 设置 Maximum line width
+**** Eclipse console 控制台 log4j 日志支持多种颜色
+     - 在 Eclipse Marketplace 安装 ANSI Escape in Console 插件 
+     - 下载 [[https://github.com/mihnita/java-color-loggers/releases/download/v1.0.4.1/color-loggers-1.0.4.1.jar][java-color-loggers.jar]] 包，并加入到 build path 中
+     - 在 log4j.properties 文件中添加如下代码
+     #+BEGIN_SRC
+         log4j.appender.CONSOLE=com.colorlog.log4j.AnsiColorConsoleAppender
+         
+         # You can change the default colors  
+         # log4j.appender.CONSOLE.FatalColour={esc}[1;35m  
+         # log4j.appender.CONSOLE.ErrorColour={esc}[0;31m  
+         # log4j.appender.CONSOLE.WarnColour ={esc}[0;33m  
+         # log4j.appender.CONSOLE.InfoColour ={esc}[1;32m  
+         # log4j.appender.CONSOLE.DebugColour={esc}[1;36m  
+         # log4j.appender.CONSOLE.TraceColour={esc}[1;30m
+     #+END_SRC
 ** Python
 *** SCons
 **** CentOS 下编译安装 SCons
