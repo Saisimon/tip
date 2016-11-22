@@ -337,6 +337,28 @@
      | .css             | text/css                                                          |
      | .*(未知二进制流)  | application/octet-stream                                          |
      [[http://tool.oschina.net/commons][更多]]
+**** xpath 基础
+     #+BEGIN_SRC java
+     /*
+         <body>
+           <div>
+             <ul id="meun">
+               <li class="sub_meun" name="food"></li>
+               <li class="sub_meun" name="phone">
+                 <p>// Phone</p>
+                  <span>
+                    <a>    go   </a>
+                  <span>
+                </li>
+                <li class="sub_meun" name="ring"></li>
+              </ul>
+            </div>
+          </body>
+          选取内容为 go 的 a 标签‘
+      */
+     String xpath = "//ul[@id='meun']/li[@class='sub_meun' and @name='phone']/p/parent::li/span/a[normalize-space(text())='go']";
+     #+END_SRC
+     [[http://www.zvon.org/xxl/XPathTutorial/General_chi/examples.html][XPath 教程]]
 *** Maven
 **** Maven 基本操作
      #+BEGIN_SRC
