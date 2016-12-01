@@ -354,7 +354,7 @@
               </ul>
             </div>
           </body>
-          选取内容为 go 的 a 标签‘
+          选取内容为 go 的 a 标签
       */
      String xpath = "//ul[@id='meun']/li[@class='sub_meun' and @name='phone']/p/parent::li/span/a[normalize-space(text())='go']";
      #+END_SRC
@@ -593,6 +593,36 @@
              return str[0].toUpperCase() + str.substring(1);
          }
      }
+     #+END_SRC
+**** JavaScript 日期格式化
+     #+BEGIN_SRC javascript
+     Date.prototype.format = function(style) {
+         var o = {
+             "M+" : this.getMonth() + 1, //month
+             "d+" : this.getDate(),      //day
+             "h+" : this.getHours(),     //hour
+             "m+" : this.getMinutes(),   //minute
+             "s+" : this.getSeconds(),   //second
+             "w+" : "\u65e5\u4e00\u4e8c\u4e09\u56db\u4e94\u516d".charAt(this.getDay()),   //week
+             "q+" : Math.floor((this.getMonth() + 3) / 3),  //quarter
+             "S"  : this.getMilliseconds() //millisecond
+         }
+         if (/(y+)/.test(style)) {
+             style = style.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+         }
+         for(var k in o){
+             if (new RegExp("("+ k +")").test(style)){
+                 style = style.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+             }
+         }
+         return style;
+     };
+
+     /*
+      ,* 示例
+      ,* 2016-12-01 19:12:28
+      ,*/
+     var formatDate = new Date().format("yyyy-MM-dd hh:mm:ss");
      #+END_SRC
 *** JQuery
 **** JQuery 与 Prototype 中 $ 符号冲突解决方法
