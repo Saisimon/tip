@@ -2,7 +2,7 @@
 #include "../dbg.h"
 #include <dlfcn.h>
 
-typedef int (*lib_function)(const char *data);
+typedef int (*lib_function)(const char *data,int len);
 
 
 int main(int argc, char *argv[])
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     lib_function func = dlsym(lib, func_to_run);
     check(func != NULL, "Did not find %s function in the library %s: %s", func_to_run, lib_file, dlerror());
 
-    rc = func(data);
+    rc = func(data,sizeof(data));
     check(rc == 0, "Function %s return %d for data: %s", func_to_run, rc, data);
 
     rc = dlclose(lib);
