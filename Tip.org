@@ -27,10 +27,10 @@
     | exe            | 4D 5A 90 00 03                | psd         | 38 42 50 53    |
     [[https://en.wikipedia.org/wiki/Magic_number_(programming)][更多]]
 ** Linux
-*** 查看 linux 内存占用
+*** 查看 Linux 内存占用
     1. 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
     2. 按 Shift + m ,即 M 按内存占用率排序
-*** linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
+*** Linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
     #+BEGIN_SRC
       1. 解压 .tar 文件
       $ tar -xf *.tar
@@ -58,7 +58,7 @@
       $ tar -xzvf *.tar.gz -C ~/dic/
       $ unzip *.zip -d ~/dic/
     #+END_SRC
-*** linux 下 nginx 安装、启动、重启、停止
+*** Linux 下 nginx 安装、启动、重启、停止
     安装
     #+BEGIN_SRC 
       tar -xzf nginx-${version}.tar.gz
@@ -88,7 +88,7 @@
     #+BEGIN_SRC 
       ${nginx_path}/sbin/nginx -s stop
     #+END_SRC
-*** nginx 反向代理配置
+*** Nginx 反向代理配置
     在 http-server-location / 下填写反向代理配置
     #+BEGIN_SRC
       proxy_pass http://localhost:8080;
@@ -96,7 +96,7 @@
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     #+END_SRC
-*** linux 下安装 cheat 命令
+*** Linux 下安装 cheat 命令
     - 通过 pip 安装 cheat
     #+BEGIN_SRC 
     - 安装 python 和 pip
@@ -121,7 +121,7 @@
     - 编译安装 cheat
       $ python setup.py install
     #+END_SRC
-*** linux 设置命令别名
+*** Linux 设置命令别名
     - 列出目前所有的别名设置
       #+BEGIN_SRC 
       $ alias
