@@ -154,7 +154,17 @@
       # 重新加载配置文件
       $ source .bash_profile
       #+END_SRC
-
+*** Shell 脚本中运用 Linux 中设置的别名
+    #+BEGIN_SRC
+    #!/bin/bash
+    
+    # 引入加载存有 alias 的 profile
+    source ~/.bash_profile
+    # 设置别名在 shell 脚本中可用
+    shopt -s expand_aliases
+    # 运用 alias
+    ...
+    #+END_SRC
 ** Database
 *** Mysql
 **** 查询 Mysql 数据库大小
