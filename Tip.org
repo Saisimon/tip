@@ -308,6 +308,11 @@
              res.add(subMap);
      }
      #+END_SRC
+**** Java 获取系统的临时文件夹路径
+     #+BEGIN_SRC java
+     // 获取系统的临时文件夹路径
+     String tmp = System.getProperty("java.io.tmpdir");
+     #+END_SRC
 *** Web
 **** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
