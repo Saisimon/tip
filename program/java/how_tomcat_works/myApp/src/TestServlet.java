@@ -1,7 +1,6 @@
-package net.saisimon.tomcat.servlet;
-
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -9,7 +8,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-public class HelloServlet implements Servlet {
+import org.apache.log4j.Logger;
+
+public class TestServlet implements Servlet {
+	
+	private static Logger log = Logger.getLogger(TestServlet.class);
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -25,7 +28,12 @@ public class HelloServlet implements Servlet {
 	public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 		System.out.println("Servlet Run!");
 		PrintWriter writer = res.getWriter();
-		writer.println("Hello");
+		Enumeration<?> names = req.getParameterNames();
+		while (names.hasMoreElements()) {
+			String name = (String)names.nextElement();
+			log.info(name + " : " + req.getParameter(name));
+		}
+		writer.println("Test");
 		writer.println("OK!");
 		writer.flush();
 	}
@@ -39,5 +47,5 @@ public class HelloServlet implements Servlet {
 	public void destroy() {
 		System.out.println("Servlet Destroy!");
 	}
-
+	
 }

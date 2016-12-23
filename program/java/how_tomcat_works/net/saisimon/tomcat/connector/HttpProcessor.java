@@ -11,46 +11,189 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
-import net.saisimon.tomcat.core.ServletProcessor;
-import net.saisimon.tomcat.core.StaticResourceProcessor;
+import org.apache.catalina.Lifecycle;
+import org.apache.catalina.LifecycleException;
+import org.apache.catalina.LifecycleListener;
+import org.apache.catalina.util.FastHttpDateFormat;
+import org.apache.catalina.util.LifecycleSupport;
 
-public class HttpProcessor {
+public class HttpProcessor implements Lifecycle, Runnable {
 	
+	private LifecycleSupport support = new LifecycleSupport(this);
+	private Socket socket;
+	private boolean available;
+	private boolean stopped;
+	private boolean started;
+	private Thread thread;
 	private HttpConnector connector;
 	private HttpRequest request;
 	private HttpResponse response;
-	
+	private int proxyPort;
+	private int serverPort;
+	private InputStream input;
+	private OutputStream output;
+
 	public HttpProcessor(HttpConnector connector) {
-		this.connector = connector;
-	}
-	
-	public void process(Socket socket) {
-		InputStream input = null;
-		OutputStream output = null;
-		try {
-			input = socket.getInputStream();
-			request = new HttpRequest(input);
-			response = new HttpResponse(output);
-			response.setRequest(request);
-			response.setHeader("Server", "Hello Servlet Container!");
-			parseRequest(input, output);
-			if (request.getRequestURI().startsWith("/servlet/")) {
-				ServletProcessor processor = new ServletProcessor();
-				processor.process(request, response);
-			} else {
-				StaticResourceProcessor processor = new StaticResourceProcessor();
-				processor.process(request, response);
-			}
-			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ServletException e) {
-			e.printStackTrace();
-		}
+		super();
+        this.connector = connector;
+        this.request = (HttpRequest) connector.createRequest();
+        this.response = (HttpResponse) connector.createResponse();
 	}
 
-	private void parseRequest(InputStream input, OutputStream output) throws IOException, ServletException {
+	@Override
+	public void run() {
+		boolean ok = true;
+		
+		while (!stopped) {
+			Socket socket = await();
+			if (socket == null) {
+				continue;
+			}
+			try {
+				input = socket.getInputStream();
+				request.setStream(input);
+                request.setResponse(response);
+                output = socket.getOutputStream();
+                response.setStream(output);
+                response.setRequest(request);
+				process(socket);
+				if (connector.isChunkingAllowed()) {
+                    response.setAllowChunking(true);
+				}
+			} catch (IOException e) {
+				try {
+                    ((HttpServletResponse) response.getResponse()).sendError
+                        (HttpServletResponse.SC_BAD_REQUEST);
+                } catch (Exception f) {
+                    ;
+                }
+                ok = false;
+			} catch (ServletException e) {
+				try {
+                    ((HttpServletResponse) response.getResponse()).sendError
+                        (HttpServletResponse.SC_BAD_REQUEST);
+                } catch (Exception f) {
+                    ;
+                }
+                ok = false;
+			}
+			((HttpServletResponse) response).setHeader("Date", FastHttpDateFormat.getCurrentDate());
+	        if (ok) {
+	            try {
+					connector.getContainer().invoke(request, response);
+				} catch (IOException e) {
+					try {
+	                    ((HttpServletResponse) response.getResponse()).sendError
+	                        (HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	                } catch (Exception f) {
+	                    ;
+	                }
+	                ok = false;
+				} catch (ServletException e) {
+					try {
+	                    ((HttpServletResponse) response.getResponse()).sendError
+	                        (HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	                } catch (Exception f) {
+	                    ;
+	                }
+	                ok = false;
+				}
+	        }
+	        try {
+				response.finishResponse();
+				request.finishRequest();
+				if (output != null) {
+					output.flush();
+				}
+			} catch (IOException e) {
+				ok = false;
+			}
+	        connector.recycle(this);
+		}
+		if (socket != null) {
+			try {
+				socket.close();
+			} catch (IOException e) {
+				
+			}
+		}
+		socket = null;
+	}
+
+	private void process(Socket socket) throws IOException, ServletException {
+		parseConnection(socket);
+		parseRequest(socket);
+	}
+
+	@Override
+	public void addLifecycleListener(LifecycleListener listener) {
+		support.addLifecycleListener(listener);
+	}
+
+	@Override
+	public LifecycleListener[] findLifecycleListeners() {
+		return support.findLifecycleListeners();
+	}
+
+	@Override
+	public void removeLifecycleListener(LifecycleListener listener) {
+		support.removeLifecycleListener(listener);
+	}
+
+	@Override
+	public void start() throws LifecycleException {
+		support.fireLifecycleEvent(START_EVENT, null);
+        started = true;
+        thread = new Thread(this);
+        thread.setDaemon(true);
+        thread.start();
+	}
+
+	@Override
+	public void stop() throws LifecycleException {
+		stopped = true;
+        assign(null);
+        thread = null;
+	}
+	
+	private synchronized Socket await() {
+		while (!available) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+            }
+        }
+		Socket socket = this.socket;
+        available = false;
+        notifyAll();
+        return socket;
+	}
+	
+	synchronized void assign(Socket socket) {
+		while (available) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+			}
+		}
+		this.socket = socket;
+		available = true;
+        notifyAll();
+	}
+	
+	private void parseConnection(Socket socket) throws IOException, ServletException {
+        ((HttpRequest) request).setInet(socket.getInetAddress());
+        if (proxyPort != 0) {
+            request.setServerPort(proxyPort);
+        } else {
+            request.setServerPort(serverPort);
+        }
+        request.setSocket(socket);
+    }
+	
+	private void parseRequest(Socket socket) throws IOException, ServletException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(input));
 		String line = br.readLine();
 		parse(line);
@@ -60,7 +203,7 @@ public class HttpProcessor {
 			parseHeader(line);
 		}
 	}
-
+	
 	private void parse(String line) throws ServletException {
 		if (line == null) {
 			return;
@@ -172,5 +315,5 @@ public class HttpProcessor {
 		}
 		return list.toArray(new Cookie[list.size()]);
 	}
-	
+
 }

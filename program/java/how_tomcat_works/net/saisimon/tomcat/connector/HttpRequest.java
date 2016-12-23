@@ -3,24 +3,37 @@ package net.saisimon.tomcat.connector;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.Connector;
+import org.apache.catalina.Context;
+import org.apache.catalina.Response;
+import org.apache.catalina.Wrapper;
+import org.apache.catalina.util.Enumerator;
+import org.apache.catalina.util.RequestUtil;
+import org.apache.commons.lang.StringUtils;
+
 import net.saisimon.tomcat.util.ParameterMap;
 
-public class HttpRequest implements HttpServletRequest {
+public class HttpRequest implements HttpServletRequest, org.apache.catalina.HttpRequest {
 	
 	private static final String DEFAULT_ENCODE = "UTF-8";
 	
@@ -36,41 +49,27 @@ public class HttpRequest implements HttpServletRequest {
 	private boolean requestedSessionIdFromURL;
 	private boolean requestedSessionIdFromCookie;
 	private boolean parsed;
-	
-	protected ParameterMap<String, Object> parameterMap;
-	protected List<Cookie> cookies = new ArrayList<>();
-	protected Map<String, String> headers = new HashMap<String, String>();
-	
-	public HttpRequest(InputStream input) {
-		this.input = input;
-	}
-	
-	public void setContentLength(int contentLength) {
-		this.contentLength = contentLength;
-	}
+	private String scheme;
+	private Connector connector = null;
+	private ParameterMap<String, Object> parameterMap;
+	private List<Cookie> cookies = new ArrayList<>();
+	private Map<String, List<Object>> headers = new HashMap<String, List<Object>>();
+	private Response response;
+	private Context context;
+	private Socket socket;
+	private int serverPort;
+	private String serverName;
+	private String contextPath = "";
+	private Map<String, Object> attributes = new HashMap<>();
+	private Wrapper wrapper = null;
+	private BufferedReader reader = null;
+	private String servletPath;
+	private InetAddress inet = null;
 
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-
+	private String decodedRequestURI;
+	
 	public void setRequestURL(String requestURL) {
 		this.requestURL = requestURL;
-	}
-
-	public void setMethod(String method) {
-		this.method = method;
-	}
-
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
-	}
-
-	public void setQueryString(String queryString) {
-		this.queryString = queryString;
-	}
-	
-	public void setRequestedSessionId(String requestedSessionId) {
-		this.requestedSessionId = requestedSessionId;
 	}
 	
 	public void setRequestedSessionIdFromURL(boolean requestedSessionIdFromURL) {
@@ -79,14 +78,6 @@ public class HttpRequest implements HttpServletRequest {
 	
 	public void setRequestedSessionIdFromCookie(boolean requestedSessionIdFromCookie) {
 		this.requestedSessionIdFromCookie = requestedSessionIdFromCookie;
-	}
-	
-	public void addCookie(Cookie cookie) {
-		cookies.add(cookie);
-	}
-	
-	public void addHeader(String key, String value) {
-		headers.put(key, value);
 	}
 	
 	public void parseParameterMap() {
@@ -105,7 +96,6 @@ public class HttpRequest implements HttpServletRequest {
 				e.printStackTrace();
 			}
 		}
-		String queryString = getQueryString();
 		String contentType = getContentType();
 		if (contentType == null) {
 			contentType = "";
@@ -124,20 +114,44 @@ public class HttpRequest implements HttpServletRequest {
 		parameterMap = result;
 	}
 	
-	private void parseQuery(String query) {
-		
+	@Override
+	public void setContentLength(int contentLength) {
+		this.contentLength = contentLength;
+	}
+	
+	@Override
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+	
+	@Override
+	public void setMethod(String method) {
+		this.method = method;
+	}
+	
+	@Override
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
+	}
+	
+	@Override
+	public void setQueryString(String queryString) {
+		this.queryString = queryString;
+	}
+	
+	@Override
+	public void setRequestedSessionId(String requestedSessionId) {
+		this.requestedSessionId = requestedSessionId;
 	}
 
 	@Override
 	public Object getAttribute(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return attributes.get(name);
 	}
 
 	@Override
 	public Enumeration<?> getAttributeNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Enumerator(attributes.keySet());
 	}
 
 	@Override
@@ -147,6 +161,9 @@ public class HttpRequest implements HttpServletRequest {
 
 	@Override
 	public void setCharacterEncoding(String characterEncoding) throws UnsupportedEncodingException {
+		if (StringUtils.isEmpty(characterEncoding)) {
+			characterEncoding = DEFAULT_ENCODE;
+		}
 		this.characterEncoding = characterEncoding;
 	}
 
@@ -159,6 +176,22 @@ public class HttpRequest implements HttpServletRequest {
 	public String getContentType() {
 		return contentType;
 	}
+	
+	@Override
+	public void addCookie(Cookie cookie) {
+		cookies.add(cookie);
+	}
+	
+	@Override
+	public void addHeader(String key, String value) {
+		key = key.toLowerCase();
+        List<Object> values = headers.get(key);
+        if (values == null) {
+            values = new ArrayList<>();
+            headers.put(key, values);
+        }
+        values.add(value);
+	}
 
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
@@ -168,18 +201,29 @@ public class HttpRequest implements HttpServletRequest {
 	@Override
 	public String getParameter(String name) {
 		parseParameterMap();
-		return (String) parameterMap.get(name);
+        String values[] = (String[]) parameterMap.get(name);
+        if (values != null) {
+        	return values[0];
+        } else {
+        	return null;
+        }
 	}
 
 	@Override
 	public Enumeration<?> getParameterNames() {
-		// TODO Auto-generated method stub
-		return null;
+		parseParameterMap();
+		return new Enumerator(parameterMap.keySet());
 	}
 
 	@Override
 	public String[] getParameterValues(String name) {
-		return null;
+		parseParameterMap();
+        String values[] = (String[]) parameterMap.get(name);
+        if (values != null) {
+        	return values;
+        } else {
+        	return null;
+        }
 	}
 
 	@Override
@@ -195,25 +239,30 @@ public class HttpRequest implements HttpServletRequest {
 
 	@Override
 	public String getScheme() {
-		return null;
+		return scheme;
 	}
 
 	@Override
 	public String getServerName() {
-		// TODO Auto-generated method stub
-		return null;
+		return serverName;
 	}
 
 	@Override
 	public int getServerPort() {
-		// TODO Auto-generated method stub
-		return 0;
+		return serverPort;
 	}
 
 	@Override
 	public BufferedReader getReader() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		if (reader == null) {
+            String encoding = getCharacterEncoding();
+            if (encoding == null)
+                encoding = "ISO-8859-1";
+            InputStreamReader isr =
+                new InputStreamReader(createInputStream(), encoding);
+            reader = new BufferedReader(isr);
+        }
+        return (reader);
 	}
 
 	@Override
@@ -230,14 +279,12 @@ public class HttpRequest implements HttpServletRequest {
 
 	@Override
 	public void setAttribute(String name, Object o) {
-		// TODO Auto-generated method stub
-		
+		attributes.put(name, o);
 	}
 
 	@Override
 	public void removeAttribute(String name) {
-		// TODO Auto-generated method stub
-		
+		attributes.remove(name);
 	}
 
 	@Override
@@ -302,8 +349,10 @@ public class HttpRequest implements HttpServletRequest {
 
 	@Override
 	public Cookie[] getCookies() {
-		// TODO Auto-generated method stub
-		return null;
+		if (cookies.size() < 1) {
+			return null;
+		}
+        return cookies.toArray(new Cookie[cookies.size()]);
 	}
 
 	@Override
@@ -314,20 +363,29 @@ public class HttpRequest implements HttpServletRequest {
 
 	@Override
 	public String getHeader(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		name = name.toLowerCase();
+        List<Object> values = headers.get(name);
+        if (values != null) {
+            return (String) values.get(0);
+        } else {
+            return null;
+        }
 	}
 
 	@Override
 	public Enumeration<?> getHeaders(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		name = name.toLowerCase();
+        List<Object> values = headers.get(name);
+        if (values != null) {
+            return new Enumerator(values);
+        } else {
+            return new Enumerator(new ArrayList<>());
+        }
 	}
 
 	@Override
 	public Enumeration<?> getHeaderNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Enumerator(headers.keySet());
 	}
 
 	@Override
@@ -355,8 +413,7 @@ public class HttpRequest implements HttpServletRequest {
 
 	@Override
 	public String getContextPath() {
-		// TODO Auto-generated method stub
-		return null;
+		return contextPath;
 	}
 
 	@Override
@@ -400,8 +457,7 @@ public class HttpRequest implements HttpServletRequest {
 
 	@Override
 	public String getServletPath() {
-		// TODO Auto-generated method stub
-		return null;
+		return servletPath;
 	}
 
 	@Override
@@ -436,6 +492,260 @@ public class HttpRequest implements HttpServletRequest {
 	@Deprecated
 	public boolean isRequestedSessionIdFromUrl() {
 		return requestedSessionIdFromURL;
+	}
+
+	@Override
+	public String getAuthorization() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setAuthorization(String authorization) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Connector getConnector() {
+		return connector;
+	}
+
+	@Override
+	public void setConnector(Connector connector) {
+		this.connector = connector;
+	}
+
+	@Override
+	public Context getContext() {
+		return context;
+	}
+
+	@Override
+	public void setContext(Context context) {
+		this.context = context;
+	}
+
+	@Override
+	public String getInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServletRequest getRequest() {
+		return this;
+	}
+
+	@Override
+	public Response getResponse() {
+		return response;
+	}
+
+	@Override
+	public void setResponse(Response response) {
+		this.response = response;
+	}
+
+	@Override
+	public Socket getSocket() {
+		return socket;
+	}
+
+	@Override
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
+
+	@Override
+	public InputStream getStream() {
+		return input;
+	}
+
+	@Override
+	public void setStream(InputStream input) {
+		this.input = input;
+	}
+
+	@Override
+	public Wrapper getWrapper() {
+		return wrapper;
+	}
+
+	@Override
+	public void setWrapper(Wrapper wrapper) {
+		this.wrapper = wrapper;
+	}
+
+	@Override
+	public ServletInputStream createInputStream() throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void finishRequest() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object getNote(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterator<?> getNoteNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void recycle() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeNote(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setNote(String name, Object value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setRemoteAddr(String remote) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setScheme(String scheme) {
+		this.scheme = scheme;
+	}
+
+	@Override
+	public void setSecure(boolean secure) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
+	}
+
+	@Override
+	public void setServerPort(int port) {
+		this.serverPort = port;
+	}
+
+	@Override
+	public void addLocale(Locale locale) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addParameter(String name, String[] values) {
+		parameterMap.put(name, values);
+	}
+
+	@Override
+	public void clearCookies() {
+		cookies.clear();
+	}
+
+	@Override
+	public void clearHeaders() {
+		headers.clear();
+	}
+
+	@Override
+	public void clearLocales() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearParameters() {
+		if (parameterMap != null) {
+			parameterMap.setLocked(false);
+			parameterMap.clear();
+        } else {
+        	parameterMap = new ParameterMap<>();
+        }
+	}
+
+	@Override
+	public void setAuthType(String type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setContextPath(String contextPath) {
+		this.contextPath = contextPath;
+	}
+
+	@Override
+	public void setPathInfo(String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setRequestedSessionCookie(boolean flag) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setRequestedSessionURL(boolean flag) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setRequestURI(String uri) {
+		this.requestURL = uri;
+	}
+
+	@Override
+	public void setDecodedRequestURI(String uri) {
+		this.decodedRequestURI = uri;
+	}
+
+	@Override
+	public String getDecodedRequestURI() {
+		if (decodedRequestURI == null)
+            decodedRequestURI = RequestUtil.URLDecode(getRequestURI());
+        return decodedRequestURI;
+	}
+
+	@Override
+	public void setServletPath(String servletPath) {
+		this.servletPath = servletPath;
+	}
+
+	@Override
+	public void setUserPrincipal(Principal principal) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public InetAddress getInet() {
+		return inet;
+	}
+
+	public void setInet(InetAddress inet) {
+		this.inet = inet;
 	}
 
 }
