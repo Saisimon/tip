@@ -26,7 +26,9 @@ public class HttpProcessor implements Lifecycle, Runnable {
 	private boolean available;
 	private boolean stopped;
 	private boolean started;
+	private boolean keepAlive = false;
 	private Thread thread;
+	private String proxyName = null;
 	private HttpConnector connector;
 	private HttpRequest request;
 	private HttpResponse response;
@@ -46,7 +48,9 @@ public class HttpProcessor implements Lifecycle, Runnable {
 	public void run() {
 		boolean ok = true;
 		
-		while (!stopped) {
+		keepAlive = true;
+		
+		while (!stopped && ok && keepAlive) {
 			Socket socket = await();
 			if (socket == null) {
 				continue;
@@ -286,7 +290,36 @@ public class HttpProcessor implements Lifecycle, Runnable {
 			request.setContentLength(length);
 		} else if ("content-type".equalsIgnoreCase(key)) {
 			request.setContentType(value.trim());
-		}
+		} else if ("host".equalsIgnoreCase(key)) {
+            int n = value.indexOf(':');
+            if (n < 0) {
+                if (connector.getScheme().equals("http")) {
+                    request.setServerPort(80);
+                } else if (connector.getScheme().equals("https")) {
+                    request.setServerPort(443);
+                }
+                if (proxyName != null)
+                    request.setServerName(proxyName);
+                else
+                    request.setServerName(value);
+            } else {
+                if (proxyName != null)
+                    request.setServerName(proxyName);
+                else
+                    request.setServerName(value.substring(0, n).trim());
+                if (proxyPort != 0)
+                    request.setServerPort(proxyPort);
+                else {
+                    int port = 80;
+                    try {
+                        port = Integer.parseInt(value.substring(n + 1).trim());
+                    } catch (Exception e) {
+                    	e.printStackTrace();
+                    }
+                    request.setServerPort(port);
+                }
+            }
+        }
 		request.addHeader(key, value);
 	}
 	
