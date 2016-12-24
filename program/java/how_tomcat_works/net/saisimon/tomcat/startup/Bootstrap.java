@@ -25,7 +25,18 @@ import net.saisimon.tomcat.core.SimpleWrapper;
 
 public final class Bootstrap {
 	
+	private static Bootstrap bootstrap;
+	
+	private Server server;
+	
 	public static void main(String[] args) {
+		if (bootstrap == null) {
+			bootstrap = new Bootstrap();
+		}
+		bootstrap.start();
+	}
+	
+	public void start() {
 		System.setProperty("catalina.base", System.getProperty("user.dir"));
 		
 		// 配置连接器
@@ -82,8 +93,11 @@ public final class Bootstrap {
 		service.setContainer(engine);
 		
 		// 设置服务器
-		Server server = new StandardServer();
+		server = new StandardServer();
 		server.addService(service);
+		
+		// 设置关机 Hook
+		Thread shutdownHook = new ShutdownHook();
 		
 		if (server instanceof Lifecycle) {
 			try {
@@ -91,6 +105,8 @@ public final class Bootstrap {
 				server.initialize();
 				// 启动服务器
 				((Lifecycle)server).start();
+				// 设置关机 Hook
+				Runtime.getRuntime().addShutdownHook(shutdownHook);
 				// 监听停机端口
 				server.await();
 			} catch (LifecycleException e) {
@@ -99,12 +115,30 @@ public final class Bootstrap {
 		}
 		if (server instanceof Lifecycle) {
 			try {
+				// 关机前，去除关机 Hook，避免执行两次
+				Runtime.getRuntime().removeShutdownHook(shutdownHook);
 				// 停止服务器
 				((Lifecycle)server).stop();
 			} catch (LifecycleException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private class ShutdownHook extends Thread {
+
+		@Override
+		public void run() {
+			if (server != null) {
+                try {
+                	// 停止服务器
+                    ((Lifecycle) server).stop();
+                } catch (LifecycleException e) {
+                    e.printStackTrace();
+                }
+            }
+		}
+		
 	}
 	
 }
