@@ -1,0 +1,14 @@
+$def with (info)
+
+<html>
+	<head>
+		<title>$info</title>
+	</head>
+	<body>
+		$if info == 'success':
+			<span style="color:green; font-size: 2em;">
+		$else:
+			<span style="color:red; font-size: 2em;">
+		$info</span>
+	</body>
+</html>
