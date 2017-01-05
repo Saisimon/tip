@@ -581,6 +581,10 @@
      # 指定 Python3 解释器 写在代码第一行
      #! python3
      #+END_SRC
+**** 指定 Python 源码编码
+     #+BEGIN_SRC python
+     # -*- coding:utf-8 -*-
+     #+END_SRC
 *** SCons
 **** CentOS 下编译安装 SCons
      #+BEGIN_SRC
