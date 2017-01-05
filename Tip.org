@@ -564,6 +564,23 @@
 **** Eclipse 部署 web 项目时 lib 为空
      - Project - Predicates - Deployment Assembly - Add 添加 Libraries
 ** Python
+*** Python
+**** Windows 上 Python2 和 Python3 兼容
+     - 使用 -2 和 -3 区分 Python 版本
+     #+BEGIN_SRC
+         # python2 运行 main.py
+         py -2 main.py
+         # python3 运行 main.py
+         py -3 main.py
+     #+END_SRC
+     - 代码中指明使用的 Python 解释器版本
+     #+BEGIN_SRC python
+     # 指定 Python2 解释器 写在代码第一行
+     #! python2
+
+     # 指定 Python3 解释器 写在代码第一行
+     #! python3
+     #+END_SRC
 *** SCons
 **** CentOS 下编译安装 SCons
      #+BEGIN_SRC
