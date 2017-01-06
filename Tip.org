@@ -585,6 +585,12 @@
      #+BEGIN_SRC python
      # -*- coding:utf-8 -*-
      #+END_SRC
+**** Windows 平台读取和打开二进制文件模式选择
+     #+BEGIN_SRC python
+     # Python 在 Windows 平台上区分文本文件和二进制文件；读取或写入文本文件中时， 行尾字符会被自动地稍加改变。
+     # 在读写二进制文件时，要选择二进制模式打开。
+     file = open(filename, 'wb')
+     #+END_SRC
 *** SCons
 **** CentOS 下编译安装 SCons
      #+BEGIN_SRC
