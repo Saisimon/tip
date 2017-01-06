@@ -37,7 +37,7 @@ class upload:
 		form = web.input(uploadFile = {})
 		filepath = form.uploadFile.filename.replace('\\', '/')
 		filename = filepath.split('/')[-1]
-		tmp = open(filename, 'w')
+		tmp = open(filename, 'wb')
 		tmp.write(form.uploadFile.file.read())
 		tmp.close()
 		return render.info(info = "success")
