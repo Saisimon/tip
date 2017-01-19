@@ -730,6 +730,19 @@
         var arg2 = $.getUrlVar('argName2');
     });
     #+END_SRC
+
+**** JQuery 重复绑定问题
+     #+BEGIN_SRC javascript
+     $("#id").die().live("click", function() {
+         // click event
+         ...
+     );
+
+     $("#id").unbind("click").click(function() {
+         // click event
+         ...
+     });
+     #+END_SRC
 *** Prototype
 **** Prototype 获取 select 选择框中选中文本
      #+BEGIN_SRC javascript
