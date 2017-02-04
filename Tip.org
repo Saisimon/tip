@@ -313,6 +313,63 @@
      // 获取系统的临时文件夹路径
      String tmp = System.getProperty("java.io.tmpdir");
      #+END_SRC
+**** Java 通过反射获取泛型的类型
+     - 由于 Java 的泛型在运行时会被擦除，不能够直接获取泛型的类型，但是其实在 class 字节码中还是保存着泛型的信息，可以通过特殊的方式获取到泛型的类型
+     #+BEGIN_SRC java
+     /**
+      ,* 定义一个抽象的父类
+      ,* 获取父类中的泛型类型 T
+      ,*/
+     public abstract class SuperClass<T> {
+
+         // 泛型类型
+         private Class<T> clazz;
+
+         public SuperClass() {
+             super();
+             // 根据实现类反射获取包含泛型的父类，然后获取泛型的类型
+             this.clazz = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+         }
+
+         public Class<T> getClazz() {
+             return this.clazz;
+         }
+
+         public static void main(String[] args) {
+             // 构造匿名子类
+             SuperClass<String> superClassString = new SuperClass<String>(){};
+             System.out.println(superClassString.getClazz()); // class java.lang.String
+
+             // 构造匿名子类
+             SuperClass<Entity> superClassEntity = new SuperClass<Entity>(){};
+             System.out.println(superClassEntity.getClazz()); // class Entity
+         }
+         
+     }
+
+     /**
+      ,* 简单 Java 对象 POJO
+      ,*/
+     class Entity {
+         
+         private int id;
+         private String name;
+         
+         public int getId() {
+             return id;
+         }
+         public void setId(int id) {
+             this.id = id;
+         }
+         public String getName() {
+             return name;
+         }
+         public void setName(String name) {
+             this.name = name;
+         }
+         
+     }
+     #+END_SRC
 *** Web
 **** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
