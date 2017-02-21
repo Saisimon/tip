@@ -27,10 +27,10 @@
     | exe            | 4D 5A 90 00 03                | psd         | 38 42 50 53    |
     [[https://en.wikipedia.org/wiki/Magic_number_(programming)][更多]]
 ** Linux
-*** 查看 linux 内存占用
+*** 查看 Linux 内存占用
     1. 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
     2. 按 Shift + m ,即 M 按内存占用率排序
-*** linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
+*** Linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
     #+BEGIN_SRC
       1. 解压 .tar 文件
       $ tar -xf *.tar
@@ -58,7 +58,7 @@
       $ tar -xzvf *.tar.gz -C ~/dic/
       $ unzip *.zip -d ~/dic/
     #+END_SRC
-*** linux 下 nginx 安装、启动、重启、停止
+*** Linux 下 nginx 安装、启动、重启、停止
     安装
     #+BEGIN_SRC 
       tar -xzf nginx-${version}.tar.gz
@@ -88,7 +88,7 @@
     #+BEGIN_SRC 
       ${nginx_path}/sbin/nginx -s stop
     #+END_SRC
-*** nginx 反向代理配置
+*** Nginx 反向代理配置
     在 http-server-location / 下填写反向代理配置
     #+BEGIN_SRC
       proxy_pass http://localhost:8080;
@@ -96,7 +96,7 @@
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     #+END_SRC
-*** linux 下安装 cheat 命令
+*** Linux 下安装 cheat 命令
     - 通过 pip 安装 cheat
     #+BEGIN_SRC 
     - 安装 python 和 pip
@@ -121,7 +121,7 @@
     - 编译安装 cheat
       $ python setup.py install
     #+END_SRC
-*** linux 设置命令别名
+*** Linux 设置命令别名
     - 列出目前所有的别名设置
       #+BEGIN_SRC 
       $ alias
@@ -154,7 +154,17 @@
       # 重新加载配置文件
       $ source .bash_profile
       #+END_SRC
-
+*** Shell 脚本中运用 Linux 中设置的别名
+    #+BEGIN_SRC
+    #!/bin/bash
+    
+    # 引入加载存有 alias 的 profile
+    source ~/.bash_profile
+    # 设置别名在 shell 脚本中可用
+    shopt -s expand_aliases
+    # 运用 alias
+    ...
+    #+END_SRC
 ** Database
 *** Mysql
 **** 查询 Mysql 数据库大小
@@ -296,6 +306,68 @@
              // Maps，Predicates 为 Google 的 guava 库中的类
              Map<String, Integer> subMap = Maps.filterKeys(map, Predicates.in(list.subList(j * size, (j + 1) * size)));
              res.add(subMap);
+     }
+     #+END_SRC
+**** Java 获取系统的临时文件夹路径
+     #+BEGIN_SRC java
+     // 获取系统的临时文件夹路径
+     String tmp = System.getProperty("java.io.tmpdir");
+     #+END_SRC
+**** Java 通过反射获取泛型的类型
+     - 由于 Java 的泛型在运行时会被擦除，不能够直接获取泛型的类型，但是其实在 class 字节码中还是保存着泛型的信息，可以通过特殊的方式获取到泛型的类型
+     #+BEGIN_SRC java
+     /**
+      ,* 定义一个抽象的父类
+      ,* 获取父类中的泛型类型 T
+      ,*/
+     public abstract class SuperClass<T> {
+
+         // 泛型类型
+         private Class<T> clazz;
+
+         public SuperClass() {
+             super();
+             // 根据实现类反射获取包含泛型的父类，然后获取泛型的类型
+             this.clazz = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+         }
+
+         public Class<T> getClazz() {
+             return this.clazz;
+         }
+
+         public static void main(String[] args) {
+             // 构造匿名子类
+             SuperClass<String> superClassString = new SuperClass<String>(){};
+             System.out.println(superClassString.getClazz()); // class java.lang.String
+
+             // 构造匿名子类
+             SuperClass<Entity> superClassEntity = new SuperClass<Entity>(){};
+             System.out.println(superClassEntity.getClazz()); // class Entity
+         }
+         
+     }
+
+     /**
+      ,* 简单 Java 对象 POJO
+      ,*/
+     class Entity {
+         
+         private int id;
+         private String name;
+         
+         public int getId() {
+             return id;
+         }
+         public void setId(int id) {
+             this.id = id;
+         }
+         public String getName() {
+             return name;
+         }
+         public void setName(String name) {
+             this.name = name;
+         }
+         
      }
      #+END_SRC
 *** Web
@@ -542,7 +614,40 @@
          # log4j.appender.CONSOLE.DebugColour={esc}[1;36m  
          # log4j.appender.CONSOLE.TraceColour={esc}[1;30m
      #+END_SRC
+**** Eclipse 导入项目未自动识别为 web 项目
+     - Project - Predicates - Project Facets - 选择 Java 和 Dynamic Web Module (选择对应版本)
+     - 当选择了 Dynamic Web Module 后，下方选择 Further Configuration availabe (没有这个选项的话，删除项目中 eclipse 生成的 .settings 文件夹，在 eclipse 中 refresh 项目，然后重复上一步)
+     - 设置 classes 路径 和 webroot 的路径 - 保存
+**** Eclipse 部署 web 项目时 lib 为空
+     - Project - Predicates - Deployment Assembly - Add 添加 Libraries
 ** Python
+*** Python
+**** Windows 上 Python2 和 Python3 兼容
+     - 使用 -2 和 -3 区分 Python 版本
+     #+BEGIN_SRC
+         # python2 运行 main.py
+         py -2 main.py
+         # python3 运行 main.py
+         py -3 main.py
+     #+END_SRC
+     - 代码中指明使用的 Python 解释器版本
+     #+BEGIN_SRC python
+     # 指定 Python2 解释器 写在代码第一行
+     #! python2
+
+     # 指定 Python3 解释器 写在代码第一行
+     #! python3
+     #+END_SRC
+**** 指定 Python 源码编码
+     #+BEGIN_SRC python
+     # -*- coding:utf-8 -*-
+     #+END_SRC
+**** Windows 平台读取和打开二进制文件模式选择
+     #+BEGIN_SRC python
+     # Python 在 Windows 平台上区分文本文件和二进制文件；读取或写入文本文件中时， 行尾字符会被自动地稍加改变。
+     # 在读写二进制文件时，要选择二进制模式打开。
+     file = open(filename, 'wb')
+     #+END_SRC
 *** SCons
 **** CentOS 下编译安装 SCons
      #+BEGIN_SRC
@@ -682,6 +787,19 @@
         var arg2 = $.getUrlVar('argName2');
     });
     #+END_SRC
+
+**** JQuery 重复绑定问题
+     #+BEGIN_SRC javascript
+     $("#id").die().live("click", function() {
+         // click event
+         ...
+     );
+
+     $("#id").unbind("click").click(function() {
+         // click event
+         ...
+     });
+     #+END_SRC
 *** Prototype
 **** Prototype 获取 select 选择框中选中文本
      #+BEGIN_SRC javascript
