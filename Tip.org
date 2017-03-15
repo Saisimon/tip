@@ -800,6 +800,32 @@
          ...
      });
      #+END_SRC
+**** JQuery 动态加载 JavaScript 文件
+     1. 加载单个 JavaScript 文件
+        #+BEGIN_SRC javascript
+        $.ajax({
+            url : "js file path",
+            dataType : "script",
+            cache : true,
+            success : function () {
+                // 成功加载 js 文件后的回调函数
+            }
+        });
+
+        $.getScript("js file path", function() {
+            // 成功加载 js 文件后的回调函数
+        });
+        #+END_SRC
+     2. 加载多个 Javascript 文件
+        #+BEGIN_SRC javascript
+        $.when(
+            $.getScript("js file path 1"),
+            $.getScript("js file path 2"),
+            $.getScript("js file path 3")
+        ).done(function() {
+            // 全部 js 文件加载后的回调函数
+        });
+        #+END_SRC
 *** Prototype
 **** Prototype 获取 select 选择框中选中文本
      #+BEGIN_SRC javascript
