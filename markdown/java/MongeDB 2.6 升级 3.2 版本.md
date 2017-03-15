@@ -1,9 +1,5 @@
 ﻿# MongeDB 2.6 升级 3.2 版本
 
-标签（空格分隔）： MongoDB Java Spring-Data-MongoDB
-
----
-[TOC]
 ### 修改 pom.xml 文件
 根据[下表](#spring-data-mongodb-版本与-spring-版本兼容性)，修改 `Spring`、`Spring Data MongoDB`、`Mongodb Java Driver` 版本以支持 `MongoDB 3.0`，避免兼容性的问题。
 > [Spring Data MongoDB](http://docs.spring.io/spring-data/data-mongodb/docs/1.7.2.RELEASE/reference/html/#new-features.1-7-0) 从 1.7 开始支持 `MongoDB Java Driver 3.0`
