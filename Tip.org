@@ -165,6 +165,18 @@
     # 运用 alias
     ...
     #+END_SRC
+*** 判断用户是否登录 Linux
+    #+BEGIN_SRC 
+    #!/bin/bash
+
+    # x 表示 username 的次数
+    x=$(who | grep -c $username)
+    if [ $x -lt 1 ]
+    then
+        echo "$username not login"
+    else
+        echo "$username login"
+    #+END_SRC
 ** Database
 *** Mysql
 **** 查询 Mysql 数据库大小
