@@ -26,6 +26,16 @@
     | avi            | 41 56 49 20                   | class       | ca fe ba be    |
     | exe            | 4D 5A 90 00 03                | psd         | 38 42 50 53    |
     [[https://en.wikipedia.org/wiki/Magic_number_(programming)][更多]]
+*** 批处理脚本运行程序
+    #+BEGIN_SRC 
+    ECHO "Start QQ..."
+    CALL ${qq path}
+    ECHO "Start Chrome..."
+    START ${chrome path} ${url path}
+    ECHO "Start Xshell..."
+    START ${xshell path} ${session path}
+    ECHO "..."
+    #+END_SRC
 ** Linux
 *** 查看 Linux 内存占用
     1. 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
