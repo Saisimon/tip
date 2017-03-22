@@ -194,6 +194,20 @@
     sudo adduser --home /home/username username # 创建名为 username 的新用户，并指定 home 目录位置
     sudo usermod -aG sudo username # 加入 sudo 组
     #+END_SRC
+*** 重置 Mysql root 密码
+    #+BEGIN_SRC 
+    # 停止 Mysql 服务
+    sudo service mysql stop
+    # 以 mysql 的安全模式启动服务
+    sudo mysqld_safe --skip-grant-tables&
+    # 直接登录 mysql 
+    mysql -uroot mysql
+    # 修改 root 密码
+    mysql > UPDATE user SET password=PASSWORD("password") WHERE user="root";
+    mysql > FLUSH PRIVILIGES;
+    # 重启 mysql 服务
+    sudo service mysql restart
+    #+END_SRC
 ** Database
 *** Mysql
 **** 查询 Mysql 数据库大小
