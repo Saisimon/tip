@@ -258,6 +258,12 @@
      load data local infile '${filepath}' into table ${tablename} character set utf8 fields terminated by ',' lines terminated by '\n' (username, age) set id = NULL;
      #+END_SRC
      [[https://dev.mysql.com/doc/refman/5.7/en/load-data.html ][LOAD DATA INFILE Syntax]]
+**** Mysql 导出表数据到指定文件
+     #+BEGIN_SRC sql
+     -- 导出表数据到指定文件
+     select * info outfile '${filepath}' fields terminated by ',' optionally enclosed by '"' lines terminated by '\n' from ${tablename};
+     #+END_SRC
+     [[https://dev.mysql.com/doc/refman/5.7/en/select-into.html ][SELECT ... INTO Syntax]]
 ** C
 *** C
 **** 位操作
