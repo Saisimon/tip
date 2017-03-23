@@ -179,7 +179,7 @@
     #+BEGIN_SRC 
     #!/bin/bash
 
-    # x 表示 username 的次数
+    # x 表示 username 当前在线的个数
     x=$(who | grep -c $username)
     if [ $x -lt 1 ]
     then
@@ -189,8 +189,9 @@
     #+END_SRC
 *** Linux 创建新用户，并设置 sudo 权限
     #+BEGIN_SRC
+    # one
     sudo useradd -m -g sudo username # 创建名为 username 的新用户，创建默认 home 目录，指定用户组为 sudo
-    # 或
+    # two
     sudo adduser --home /home/username username # 创建名为 username 的新用户，并指定 home 目录位置
     sudo usermod -aG sudo username # 加入 sudo 组
     #+END_SRC
@@ -245,7 +246,18 @@
       #+BEGIN_SRC sql
             drop user ['username']@['localhost'];
       #+END_SRC
-      
+**** Mysql 导入本地指定文件数据
+     #+BEGIN_SRC sql
+     -- 登录时开启导入本地文件功能。不开启这个功能，导入文件时会报“当前 mysql 版本不支持导入文件功能”的错误
+     mysql -u ${username} --local-infile=1 -p
+
+     -- 建表
+     create table ${tablename}(id int auto_increment not null, username varchar(20) not null, age int not null, primary key(id));
+
+     -- 导入 cvs 文件数据。指定编码为 utf-8 ，按照','隔开字段，'\n'换行符隔开一行，指定对应导入的字段，id 字段自增长
+     load data local infile '${filepath}' into table ${tablename} character set utf8 fields terminated by ',' lines terminated by '\n' (username, age) set id = NULL;
+     #+END_SRC
+     [[https://dev.mysql.com/doc/refman/5.7/en/load-data.html ][LOAD DATA INFILE Syntax]]
 ** C
 *** C
 **** 位操作
