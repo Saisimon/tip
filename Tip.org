@@ -37,9 +37,23 @@
     ECHO "..."
     #+END_SRC
 ** Linux
-*** 查看 Linux 内存占用
-    1. 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
-    2. 按 Shift + m ,即 M 按内存占用率排序
+*** 查看 Linux 系统信息
+    - 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
+    | 常用交互命令 | 解释                             |
+    |--------------+----------------------------------|
+    | q            | 退出程序                         |
+    | I            | 切换显示平均负载和启动时间的信息 |
+    | P            | 根据CPU使用百分比大小进行排序    |
+    | M            | 根据驻留内存大小进行排序         |
+    | k            | 终止一个进程，系统提示输入 PID   |
+    | i            | 忽略闲置和僵死的进程             |
+    - 查看 CPU 的个数与核心数
+    #+BEGIN_SRC 
+    # 查看物理 CPU 的个数
+    cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l
+    # 查看每个 CPU 的核心数
+    cat /proc/cpuinfo | grep "physical id" | grep "0" | wc -l
+    #+END_SRC
 *** Linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
     #+BEGIN_SRC
       1. 解压 .tar 文件
