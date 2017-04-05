@@ -7,6 +7,7 @@ import java.lang.Thread.State;
 import java.util.concurrent.TimeUnit;
 
 import net.saisimon.main.concurrent.Calculator;
+import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileSearch;
 import net.saisimon.main.concurrent.PrimeGenerator;
 
@@ -15,7 +16,8 @@ public class Main {
 	public static void main(String[] args) {
 //		calculatorMain();
 //		primeGeneratorMain();
-		fileSearchMain();
+//		fileSearchMain();
+		fileClockMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -108,6 +110,22 @@ public class Main {
 		// 等待10秒，然后中断线程
 		try {
 			TimeUnit.SECONDS.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		thread.interrupt();
+	}
+	
+	/**
+	 * @see FileClock
+	 */
+	public static void fileClockMain() {
+		FileClock fileClock = new FileClock();
+		Thread thread = new Thread(fileClock);
+		thread.start();
+		// 等待5秒，然后中断线程
+		try {
+			Thread.sleep(5500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
