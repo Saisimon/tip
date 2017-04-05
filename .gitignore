@@ -4,3 +4,8 @@
 core
 *.out
 *.o
+.classpath
+.project
+.settings
+*.class
+.gitignore
