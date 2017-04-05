@@ -4,11 +4,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.Thread.State;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import net.saisimon.main.concurrent.Calculator;
+import net.saisimon.main.concurrent.DataSourcesLoader;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileSearch;
+import net.saisimon.main.concurrent.NetworkConnectionsLoader;
 import net.saisimon.main.concurrent.PrimeGenerator;
 
 public class Main {
@@ -17,7 +20,8 @@ public class Main {
 //		calculatorMain();
 //		primeGeneratorMain();
 //		fileSearchMain();
-		fileClockMain();
+//		fileClockMain();
+		dateSourcesLoaderAndNetworkConnectionsLoaderMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -117,6 +121,8 @@ public class Main {
 	}
 	
 	/**
+	 * http://ifeve.com/thread-management-6/
+	 * 
 	 * @see FileClock
 	 */
 	public static void fileClockMain() {
@@ -130,6 +136,31 @@ public class Main {
 			e.printStackTrace();
 		}
 		thread.interrupt();
+	}
+	
+	/**
+	 * http://ifeve.com/thread-management-7/
+	 * 
+	 * @see DataSourcesLoader
+	 * @see NetworkConnectionsLoader
+	 */
+	public static void dateSourcesLoaderAndNetworkConnectionsLoaderMain() {
+		DataSourcesLoader dataSourcesLoader = new DataSourcesLoader();
+		Thread dataSourcesLoaderThread = new Thread(dataSourcesLoader, "DataSourcesLoaderThread");
+		NetworkConnectionsLoader networkConnectionsLoader = new NetworkConnectionsLoader();
+		Thread networkConnectionsLoaderThread = new Thread(networkConnectionsLoader, "NetworkConnectionsLoaderThread");
+		
+		dataSourcesLoaderThread.start();
+		networkConnectionsLoaderThread.start();
+		
+		// 2个线程都使用 join() 方法等待终结
+		try {
+			dataSourcesLoaderThread.join();
+			networkConnectionsLoaderThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main : Configuration has been loaded : %s\n", new Date());
 	}
 	
 }
