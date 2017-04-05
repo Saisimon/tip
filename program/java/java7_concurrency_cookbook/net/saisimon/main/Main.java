@@ -18,7 +18,9 @@ import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileSearch;
 import net.saisimon.main.concurrent.NetworkConnectionsLoader;
 import net.saisimon.main.concurrent.PrimeGenerator;
+import net.saisimon.main.concurrent.SafeTask;
 import net.saisimon.main.concurrent.ThrowUncaughtExceptionTask;
+import net.saisimon.main.concurrent.UnsafeTask;
 import net.saisimon.main.concurrent.WriterTask;
 
 /**
@@ -36,7 +38,9 @@ public class Main {
 //		fileClockMain();
 //		dateSourcesLoaderAndNetworkConnectionsLoaderMain();
 //		writerTaskAndCleanerTaskMain();
-		throwUncaughtExceptionTaskMain();
+//		throwUncaughtExceptionTaskMain();
+		unsafeTaskMain();
+		safeTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -212,6 +216,42 @@ public class Main {
 		Thread thread = new Thread(task);
 		thread.setUncaughtExceptionHandler(new ExceptionHandler());
 		thread.start();
+	}
+	
+	/**
+	 * http://ifeve.com/thread-management-10/
+	 * 
+	 * @see UnsafeTask
+	 */
+	public static void unsafeTaskMain() {
+		UnsafeTask task = new UnsafeTask();
+		for (int i = 0; i < 10; i++) {
+			Thread thread = new Thread(task);
+			thread.start();
+			try {
+				TimeUnit.SECONDS.sleep(2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * http://ifeve.com/thread-management-10/
+	 * 
+	 * @see SafeTask
+	 */
+	public static void safeTaskMain() {
+		SafeTask task = new SafeTask();
+		for (int i = 0; i < 10; i++) {
+			Thread thread = new Thread(task);
+			thread.start();
+			try {
+				TimeUnit.SECONDS.sleep(2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }
