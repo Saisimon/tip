@@ -6,16 +6,21 @@ import java.io.PrintWriter;
 import java.lang.Thread.State;
 
 import net.saisimon.main.concurrent.Calculator;
+import net.saisimon.main.concurrent.PrimeGenerator;
 
 public class Main {
 	
 	public static void main(String[] args) {
-		calculatorMain();
+//		calculatorMain();
+		primeGeneratorMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
 	
 	/**
+	 * http://ifeve.com/thread-management-2/
+	 * http://ifeve.com/thread-management-3/
+	 * 
 	 * @see Calculator
 	 */
 	public static void calculatorMain() {
@@ -68,6 +73,24 @@ public class Main {
 		printWriter.printf("Main : Old State: %s\n", state);
 		printWriter.printf("Main : New State: %s\n", thread.getState());
 		printWriter.printf("Main : *****************************************************\n");
+	}
+	
+	/**
+	 * http://ifeve.com/thread-management-4/
+	 * 
+	 * @see PrimeGenerator
+	 */
+	public static void primeGeneratorMain() {
+		Thread task = new PrimeGenerator();
+		task.start();
+		try {
+			// 等待5秒
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		// 中断 PrimeGenerator
+		task.interrupt();
 	}
 	
 }
