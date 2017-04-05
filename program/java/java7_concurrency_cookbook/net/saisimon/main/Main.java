@@ -13,12 +13,20 @@ import net.saisimon.main.concurrent.Calculator;
 import net.saisimon.main.concurrent.CleanerTask;
 import net.saisimon.main.concurrent.DataSourcesLoader;
 import net.saisimon.main.concurrent.Event;
+import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileSearch;
 import net.saisimon.main.concurrent.NetworkConnectionsLoader;
 import net.saisimon.main.concurrent.PrimeGenerator;
+import net.saisimon.main.concurrent.ThrowUncaughtExceptionTask;
 import net.saisimon.main.concurrent.WriterTask;
 
+/**
+ * http://ifeve.com/java-7-concurrency-cookbook/
+ * 
+ * @author Saisimon
+ *
+ */
 public class Main {
 	
 	public static void main(String[] args) {
@@ -27,7 +35,8 @@ public class Main {
 //		fileSearchMain();
 //		fileClockMain();
 //		dateSourcesLoaderAndNetworkConnectionsLoaderMain();
-		writerTaskAndCleanerTaskMain();
+//		writerTaskAndCleanerTaskMain();
+		throwUncaughtExceptionTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -190,6 +199,19 @@ public class Main {
 		CleanerTask cleanerTask = new CleanerTask(eventDeque);
 		Thread cleanerThread = new Thread(cleanerTask);
 		cleanerThread.start();
+	}
+	
+	/**
+	 * http://ifeve.com/thread-management-9/
+	 * 
+	 * @see ThrowUncaughtExceptionTask
+	 * @see ExceptionHandler
+	 */
+	public static void throwUncaughtExceptionTaskMain() {
+		ThrowUncaughtExceptionTask task = new ThrowUncaughtExceptionTask();
+		Thread thread = new Thread(task);
+		thread.setUncaughtExceptionHandler(new ExceptionHandler());
+		thread.start();
 	}
 	
 }
