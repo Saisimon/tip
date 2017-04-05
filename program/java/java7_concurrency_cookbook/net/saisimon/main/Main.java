@@ -4,15 +4,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.Thread.State;
+import java.util.ArrayDeque;
 import java.util.Date;
+import java.util.Deque;
 import java.util.concurrent.TimeUnit;
 
 import net.saisimon.main.concurrent.Calculator;
+import net.saisimon.main.concurrent.CleanerTask;
 import net.saisimon.main.concurrent.DataSourcesLoader;
+import net.saisimon.main.concurrent.Event;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileSearch;
 import net.saisimon.main.concurrent.NetworkConnectionsLoader;
 import net.saisimon.main.concurrent.PrimeGenerator;
+import net.saisimon.main.concurrent.WriterTask;
 
 public class Main {
 	
@@ -21,7 +26,8 @@ public class Main {
 //		primeGeneratorMain();
 //		fileSearchMain();
 //		fileClockMain();
-		dateSourcesLoaderAndNetworkConnectionsLoaderMain();
+//		dateSourcesLoaderAndNetworkConnectionsLoaderMain();
+		writerTaskAndCleanerTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -161,6 +167,29 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.printf("Main : Configuration has been loaded : %s\n", new Date());
+	}
+	
+	/**
+	 * http://ifeve.com/thread-management-8/
+	 * 
+	 * @see WriterTask
+	 * @see CleanerTask
+	 */
+	public static void writerTaskAndCleanerTaskMain() {
+		Deque<Event> eventDeque = new ArrayDeque<>();
+		WriterTask writerTask = new WriterTask(eventDeque);
+		for (int i = 0; i < 3; i++) {
+			Thread writerThread = new Thread(writerTask);
+			writerThread.start();
+		}
+		try {
+			TimeUnit.SECONDS.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		CleanerTask cleanerTask = new CleanerTask(eventDeque);
+		Thread cleanerThread = new Thread(cleanerTask);
+		cleanerThread.start();
 	}
 	
 }
