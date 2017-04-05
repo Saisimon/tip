@@ -4,15 +4,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.Thread.State;
+import java.util.concurrent.TimeUnit;
 
 import net.saisimon.main.concurrent.Calculator;
+import net.saisimon.main.concurrent.FileSearch;
 import net.saisimon.main.concurrent.PrimeGenerator;
 
 public class Main {
 	
 	public static void main(String[] args) {
 //		calculatorMain();
-		primeGeneratorMain();
+//		primeGeneratorMain();
+		fileSearchMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -91,6 +94,24 @@ public class Main {
 		}
 		// 中断 PrimeGenerator
 		task.interrupt();
+	}
+	
+	/**
+	 * http://ifeve.com/thread-management-5/
+	 * 
+	 * @see FileSearch
+	 */
+	public static void fileSearchMain() {
+		FileSearch fileSearch = new FileSearch("C:\\", "setup.exe");
+		Thread thread = new Thread(fileSearch);
+		thread.start();
+		// 等待10秒，然后中断线程
+		try {
+			TimeUnit.SECONDS.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		thread.interrupt();
 	}
 	
 }
