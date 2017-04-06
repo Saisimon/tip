@@ -9,8 +9,11 @@ import java.util.Date;
 import java.util.Deque;
 import java.util.concurrent.TimeUnit;
 
+import net.saisimon.main.concurrent.Account;
+import net.saisimon.main.concurrent.Bank;
 import net.saisimon.main.concurrent.Calculator;
 import net.saisimon.main.concurrent.CleanerTask;
+import net.saisimon.main.concurrent.Company;
 import net.saisimon.main.concurrent.DataSourcesLoader;
 import net.saisimon.main.concurrent.Event;
 import net.saisimon.main.concurrent.ExceptionHandler;
@@ -49,7 +52,8 @@ public class Main {
 //		safeTaskMain();
 //		searchTaskMain();
 //		myThreadGroupTaskMain();
-		myThreadFactoryTaskMain();
+//		myThreadFactoryTaskMain();
+		bankAndCompanyMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -335,6 +339,31 @@ public class Main {
 		}
 		System.out.println("Factory Stats : ");
 		System.out.println(factory.getStatistics());
+	}
+	
+	/**
+	 * http://ifeve.com/basic-thread-synchroinzation-2/
+	 * 
+	 * @see Account
+	 * @see Bank
+	 * @see Company
+	 */
+	public static void bankAndCompanyMain() {
+		Account account = new Account(1000);
+		Company company = new Company(account);
+		Thread companyThread = new Thread(company, "company");
+		Bank bank = new Bank(account);
+		Thread bankThread = new Thread(bank, "bank");
+		System.out.printf("Account : Initial Balance: %.2f\n", account.getBalance());
+		companyThread.start();
+		bankThread.start();
+		try {
+			companyThread.join();
+			bankThread.join();
+			System.out.printf("Account : Final Balance: %.2f\n", account.getBalance());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
