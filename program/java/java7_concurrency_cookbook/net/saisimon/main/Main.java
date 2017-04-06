@@ -68,7 +68,8 @@ public class Main {
 //		cinemaAndTicketOfficeMain();
 //		producerAndConsumerMain();
 //		printQueueAndJobMain();
-		readerAndWriterLockMain();
+//		readerAndWriterLockMain();
+		printQueueTrueAndJobMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -463,6 +464,28 @@ public class Main {
 			threadReaders[i].start();
 		}
 		threadWriter.start();
+	}
+	
+	/**
+	 * private final Lock queueLock = new ReentrantLock(true);
+	 * 
+	 * @see PrintQueue
+	 * @see Job
+	 */
+	public static void printQueueTrueAndJobMain() {
+		PrintQueue printQueue = new PrintQueue();
+		Thread[] threads = new Thread[10];
+		for (int i = 0; i < threads.length; i++) {
+			threads[i] = new Thread(new Job(printQueue), "Thread " + i);
+		}
+		for (int i = 0; i < threads.length; i++) {
+			threads[i].start();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }
