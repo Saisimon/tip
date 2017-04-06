@@ -15,8 +15,10 @@ import net.saisimon.main.concurrent.Calculator;
 import net.saisimon.main.concurrent.Cinema;
 import net.saisimon.main.concurrent.CleanerTask;
 import net.saisimon.main.concurrent.Company;
+import net.saisimon.main.concurrent.Consumer;
 import net.saisimon.main.concurrent.DataSourcesLoader;
 import net.saisimon.main.concurrent.Event;
+import net.saisimon.main.concurrent.EventStorage;
 import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileSearch;
@@ -26,6 +28,7 @@ import net.saisimon.main.concurrent.MyThreadGroup;
 import net.saisimon.main.concurrent.MyThreadGroupTask;
 import net.saisimon.main.concurrent.NetworkConnectionsLoader;
 import net.saisimon.main.concurrent.PrimeGenerator;
+import net.saisimon.main.concurrent.Producer;
 import net.saisimon.main.concurrent.Result;
 import net.saisimon.main.concurrent.SafeTask;
 import net.saisimon.main.concurrent.SearchTask;
@@ -57,7 +60,8 @@ public class Main {
 //		myThreadGroupTaskMain();
 //		myThreadFactoryTaskMain();
 //		bankAndCompanyMain();
-		cinemaAndTicketOfficeMain();
+//		cinemaAndTicketOfficeMain();
+		producerAndConsumerMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -394,6 +398,25 @@ public class Main {
 		System.out.printf("Room 1 Vacancies: %d\n",cinema.getVacanciesCinema1());
 		System.out.printf("Room 2 Vacancies: %d\n",cinema.getVacanciesCinema2());
 
+	}
+	
+	/**
+	 * http://ifeve.com/basic-thread-synchronization-4/
+	 * 
+	 * 生产者与消费者问题
+	 * 
+	 * @see EventStorage
+	 * @see Producer
+	 * @see Consumer
+	 */
+	public static void producerAndConsumerMain() {
+		EventStorage eventStorage = new EventStorage();
+		Producer producer = new Producer(eventStorage);
+		Consumer consumer = new Consumer(eventStorage);
+		Thread consumerThread = new Thread(consumer);
+		consumerThread.start();
+		Thread producerThread = new Thread(producer);
+		producerThread.start();
 	}
 	
 }
