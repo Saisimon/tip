@@ -22,12 +22,14 @@ import net.saisimon.main.concurrent.EventStorage;
 import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileSearch;
+import net.saisimon.main.concurrent.Job;
 import net.saisimon.main.concurrent.MyThreadFactory;
 import net.saisimon.main.concurrent.MyThreadFactoryTask;
 import net.saisimon.main.concurrent.MyThreadGroup;
 import net.saisimon.main.concurrent.MyThreadGroupTask;
 import net.saisimon.main.concurrent.NetworkConnectionsLoader;
 import net.saisimon.main.concurrent.PrimeGenerator;
+import net.saisimon.main.concurrent.PrintQueue;
 import net.saisimon.main.concurrent.Producer;
 import net.saisimon.main.concurrent.Result;
 import net.saisimon.main.concurrent.SafeTask;
@@ -61,7 +63,8 @@ public class Main {
 //		myThreadFactoryTaskMain();
 //		bankAndCompanyMain();
 //		cinemaAndTicketOfficeMain();
-		producerAndConsumerMain();
+//		producerAndConsumerMain();
+		printQueueAndJobMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -417,6 +420,25 @@ public class Main {
 		consumerThread.start();
 		Thread producerThread = new Thread(producer);
 		producerThread.start();
+	}
+	
+	/**
+	 * http://ifeve.com/basic-thread-synchronization-5/
+	 * 
+	 * private final Lock queueLock = new ReentrantLock();
+	 * 
+	 * @see PrintQueue
+	 * @see Job
+	 */
+	public static void printQueueAndJobMain() {
+		PrintQueue printQueue = new PrintQueue();
+		Thread[] threads = new Thread[10];
+		for (int i = 0; i < threads.length; i++) {
+			threads[i] = new Thread(new Job(printQueue), "Thread " + i);
+		}
+		for (int i = 0; i < threads.length; i++) {
+			threads[i].start();
+		}
 	}
 	
 }
