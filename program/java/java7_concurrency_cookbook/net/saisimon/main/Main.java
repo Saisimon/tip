@@ -28,9 +28,11 @@ import net.saisimon.main.concurrent.MyThreadFactoryTask;
 import net.saisimon.main.concurrent.MyThreadGroup;
 import net.saisimon.main.concurrent.MyThreadGroupTask;
 import net.saisimon.main.concurrent.NetworkConnectionsLoader;
+import net.saisimon.main.concurrent.PricesInfo;
 import net.saisimon.main.concurrent.PrimeGenerator;
 import net.saisimon.main.concurrent.PrintQueue;
 import net.saisimon.main.concurrent.Producer;
+import net.saisimon.main.concurrent.Reader;
 import net.saisimon.main.concurrent.Result;
 import net.saisimon.main.concurrent.SafeTask;
 import net.saisimon.main.concurrent.SearchTask;
@@ -38,6 +40,7 @@ import net.saisimon.main.concurrent.ThrowUncaughtExceptionTask;
 import net.saisimon.main.concurrent.TicketOffice1;
 import net.saisimon.main.concurrent.TicketOffice2;
 import net.saisimon.main.concurrent.UnsafeTask;
+import net.saisimon.main.concurrent.Writer;
 import net.saisimon.main.concurrent.WriterTask;
 
 /**
@@ -64,7 +67,8 @@ public class Main {
 //		bankAndCompanyMain();
 //		cinemaAndTicketOfficeMain();
 //		producerAndConsumerMain();
-		printQueueAndJobMain();
+//		printQueueAndJobMain();
+		readerAndWriterLockMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -439,6 +443,26 @@ public class Main {
 		for (int i = 0; i < threads.length; i++) {
 			threads[i].start();
 		}
+	}
+	
+	/**
+	 * http://ifeve.com/basic-thread-synchronization-6/
+	 * 
+	 * @see PricesInfo
+	 * @see Reader
+	 * @see Writer
+	 */
+	public static void readerAndWriterLockMain() {
+		PricesInfo pricesInfo = new PricesInfo();
+		Thread[] threadReaders = new Thread[2];
+		for (int i = 0; i < threadReaders.length; i++) {
+			threadReaders[i] = new Thread(new Reader(pricesInfo), "Reader Thread" + i);
+		}
+		Thread threadWriter = new Thread(new Writer(pricesInfo), "Writer Thread");
+		for (int i = 0; i < threadReaders.length; i++) {
+			threadReaders[i].start();
+		}
+		threadWriter.start();
 	}
 	
 }
