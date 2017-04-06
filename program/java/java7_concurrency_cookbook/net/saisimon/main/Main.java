@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import net.saisimon.main.concurrent.Account;
 import net.saisimon.main.concurrent.Bank;
 import net.saisimon.main.concurrent.Calculator;
+import net.saisimon.main.concurrent.Cinema;
 import net.saisimon.main.concurrent.CleanerTask;
 import net.saisimon.main.concurrent.Company;
 import net.saisimon.main.concurrent.DataSourcesLoader;
@@ -29,6 +30,8 @@ import net.saisimon.main.concurrent.Result;
 import net.saisimon.main.concurrent.SafeTask;
 import net.saisimon.main.concurrent.SearchTask;
 import net.saisimon.main.concurrent.ThrowUncaughtExceptionTask;
+import net.saisimon.main.concurrent.TicketOffice1;
+import net.saisimon.main.concurrent.TicketOffice2;
 import net.saisimon.main.concurrent.UnsafeTask;
 import net.saisimon.main.concurrent.WriterTask;
 
@@ -53,7 +56,8 @@ public class Main {
 //		searchTaskMain();
 //		myThreadGroupTaskMain();
 //		myThreadFactoryTaskMain();
-		bankAndCompanyMain();
+//		bankAndCompanyMain();
+		cinemaAndTicketOfficeMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -364,6 +368,32 @@ public class Main {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * http://ifeve.com/basic-thread-synchronization-3/
+	 * 
+	 * @see Cinema
+	 * @see TicketOffice1
+	 * @see TicketOffice2
+	 */
+	public static void cinemaAndTicketOfficeMain() {
+		Cinema cinema = new Cinema();
+		TicketOffice1 office1 = new TicketOffice1(cinema);
+		TicketOffice2 office2 = new TicketOffice2(cinema);
+		Thread thread1 = new Thread(office1);
+		Thread thread2 = new Thread(office2);
+		thread1.start();
+		thread2.start();
+		try {
+			thread1.join();
+			thread2.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Room 1 Vacancies: %d\n",cinema.getVacanciesCinema1());
+		System.out.printf("Room 2 Vacancies: %d\n",cinema.getVacanciesCinema2());
+
 	}
 	
 }
