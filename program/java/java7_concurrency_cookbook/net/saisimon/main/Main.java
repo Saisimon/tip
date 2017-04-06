@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Deque;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Phaser;
 import java.util.concurrent.TimeUnit;
 
 import net.saisimon.main.concurrent.Account;
@@ -28,6 +29,7 @@ import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileMock;
 import net.saisimon.main.concurrent.FileSearch;
+import net.saisimon.main.concurrent.FileSearchPhaser;
 import net.saisimon.main.concurrent.Grouper;
 import net.saisimon.main.concurrent.Job;
 import net.saisimon.main.concurrent.JobSemaphore;
@@ -90,7 +92,8 @@ public class Main {
 //		printQueueAndJobAndSemaphoreMain();
 //		printQueueAndJobAndSemaphoreMultipleMain();
 //		videoConferenceAndParticipantMain();
-		matrixMockAndCyclicBarrierMain();
+//		matrixMockAndCyclicBarrierMain();
+		fileSearchAndPhaserMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -633,6 +636,35 @@ public class Main {
 		}
 		System.out.printf("Total result: %d\n", count);
 		System.out.printf("Another Time : %d ms\n", (System.currentTimeMillis() - startTime));
+	}
+	
+	/**
+	 * http://ifeve.com/thread-synchronization-utilities-6-2/
+	 * 
+	 * @see FileSearchPhaser
+	 */
+	public static void fileSearchAndPhaserMain() {
+		// 创建 含3个参与者的 Phaser 对象
+		Phaser phaser = new Phaser(3);
+		// 创建3个 FileSearch 对象
+		FileSearchPhaser system = new FileSearchPhaser("C:\\Windows", "log", phaser);
+		FileSearchPhaser apps = new FileSearchPhaser("C:\\Program Files", "log", phaser);
+		FileSearchPhaser documents = new FileSearchPhaser("C:\\Documents And Settings", "log", phaser);
+		Thread systemThread = new Thread(system, "System");
+		systemThread.start();
+		Thread appsThread = new Thread(apps, "Apps");
+		appsThread.start();
+		Thread documentsThread = new Thread(documents, "Documents");
+		documentsThread.start();
+		try {
+			// 等待3个线程结束
+			systemThread.join();
+			appsThread.join();
+			documentsThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Terminated: " + phaser.isTerminated());
 	}
 	
 }
