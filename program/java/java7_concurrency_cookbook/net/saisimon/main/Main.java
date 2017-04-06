@@ -7,6 +7,8 @@ import java.lang.Thread.State;
 import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.Deque;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 
 import net.saisimon.main.concurrent.Account;
@@ -26,9 +28,11 @@ import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileMock;
 import net.saisimon.main.concurrent.FileSearch;
+import net.saisimon.main.concurrent.Grouper;
 import net.saisimon.main.concurrent.Job;
 import net.saisimon.main.concurrent.JobSemaphore;
 import net.saisimon.main.concurrent.JobSemaphoreMultiple;
+import net.saisimon.main.concurrent.MatrixMock;
 import net.saisimon.main.concurrent.MyThreadFactory;
 import net.saisimon.main.concurrent.MyThreadFactoryTask;
 import net.saisimon.main.concurrent.MyThreadGroup;
@@ -43,8 +47,10 @@ import net.saisimon.main.concurrent.PrintQueueSemaphoreMultiple;
 import net.saisimon.main.concurrent.Producer;
 import net.saisimon.main.concurrent.Reader;
 import net.saisimon.main.concurrent.Result;
+import net.saisimon.main.concurrent.Results;
 import net.saisimon.main.concurrent.SafeTask;
 import net.saisimon.main.concurrent.SearchTask;
+import net.saisimon.main.concurrent.Searcher;
 import net.saisimon.main.concurrent.ThrowUncaughtExceptionTask;
 import net.saisimon.main.concurrent.TicketOffice1;
 import net.saisimon.main.concurrent.TicketOffice2;
@@ -83,7 +89,8 @@ public class Main {
 //		fileMockAndBufferMain();
 //		printQueueAndJobAndSemaphoreMain();
 //		printQueueAndJobAndSemaphoreMultipleMain();
-		videoConferenceAndParticipantMain();
+//		videoConferenceAndParticipantMain();
+		matrixMockAndCyclicBarrierMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -577,6 +584,55 @@ public class Main {
 			Thread thread = new Thread(new Participant(videoConference, "Participant " + i));
 			thread.start();
 		}
+	}
+	
+	/**
+	 * http://ifeve.com/thread-synchronization-utilities-5/
+	 * 
+	 * @see MatrixMock
+	 * @see Results
+	 * @see Grouper
+	 * @see Searcher
+	 */
+	public static void matrixMockAndCyclicBarrierMain() {
+		final int ROWS = 10000;
+		final int NUMBERS = 3000;
+		final int SEARCH = 14;
+		final int PARTICIPANTS = 5;
+		final int LINES_PARTICIPANT = 2000;
+		CountDownLatch countDownLatch = new CountDownLatch(PARTICIPANTS);
+
+		MatrixMock mock = new MatrixMock(ROWS, NUMBERS, SEARCH);
+		long startTime = System.currentTimeMillis();
+		Results results = new Results(ROWS);
+		Grouper grouper = new Grouper(results);
+		CyclicBarrier barrier = new CyclicBarrier(PARTICIPANTS, grouper);
+		Searcher searchers[] = new Searcher[PARTICIPANTS];
+		for (int i = 0; i < PARTICIPANTS; i++) {
+			searchers[i] = new Searcher(i * LINES_PARTICIPANT, (i * LINES_PARTICIPANT) + LINES_PARTICIPANT, mock,
+					results, SEARCH, barrier, countDownLatch);
+			Thread thread = new Thread(searchers[i]);
+			thread.start();
+		}
+		try {
+			countDownLatch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: The main thread has finished.Time : %d ms\n", (System.currentTimeMillis() - startTime));
+		
+		startTime = System.currentTimeMillis();
+		int[][] data = mock.getData();
+		int count = 0;
+		for (int i = 0; i < data.length; i++) {
+			for (int j = 0; j < data[i].length; j++) {
+				if (data[i][j] == SEARCH) {
+					count++;
+				}
+			}
+		}
+		System.out.printf("Total result: %d\n", count);
+		System.out.printf("Another Time : %d ms\n", (System.currentTimeMillis() - startTime));
 	}
 	
 }
