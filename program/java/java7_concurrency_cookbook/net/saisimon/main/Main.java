@@ -34,6 +34,7 @@ import net.saisimon.main.concurrent.MyThreadFactoryTask;
 import net.saisimon.main.concurrent.MyThreadGroup;
 import net.saisimon.main.concurrent.MyThreadGroupTask;
 import net.saisimon.main.concurrent.NetworkConnectionsLoader;
+import net.saisimon.main.concurrent.Participant;
 import net.saisimon.main.concurrent.PricesInfo;
 import net.saisimon.main.concurrent.PrimeGenerator;
 import net.saisimon.main.concurrent.PrintQueue;
@@ -48,6 +49,7 @@ import net.saisimon.main.concurrent.ThrowUncaughtExceptionTask;
 import net.saisimon.main.concurrent.TicketOffice1;
 import net.saisimon.main.concurrent.TicketOffice2;
 import net.saisimon.main.concurrent.UnsafeTask;
+import net.saisimon.main.concurrent.VideoConference;
 import net.saisimon.main.concurrent.Writer;
 import net.saisimon.main.concurrent.WriterTask;
 
@@ -80,7 +82,8 @@ public class Main {
 //		printQueueTrueAndJobMain();
 //		fileMockAndBufferMain();
 //		printQueueAndJobAndSemaphoreMain();
-		printQueueAndJobAndSemaphoreMultipleMain();
+//		printQueueAndJobAndSemaphoreMultipleMain();
+		videoConferenceAndParticipantMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -557,6 +560,22 @@ public class Main {
 		}
 		for (int i = 0; i < threads.length; i++) {
 			threads[i].start();
+		}
+	}
+	
+	/**
+	 * http://ifeve.com/thread-synchronization-utilities-4/
+	 * 
+	 * @see VideoConference
+	 * @see Participant
+	 */
+	public static void videoConferenceAndParticipantMain() {
+		VideoConference videoConference = new VideoConference(10);
+		Thread videoConferenceThread = new Thread(videoConference);
+		videoConferenceThread.start();
+		for (int i = 0; i < 10; i++) {
+			Thread thread = new Thread(new Participant(videoConference, "Participant " + i));
+			thread.start();
 		}
 	}
 	
