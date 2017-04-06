@@ -27,6 +27,7 @@ import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileMock;
 import net.saisimon.main.concurrent.FileSearch;
 import net.saisimon.main.concurrent.Job;
+import net.saisimon.main.concurrent.JobSemaphore;
 import net.saisimon.main.concurrent.MyThreadFactory;
 import net.saisimon.main.concurrent.MyThreadFactoryTask;
 import net.saisimon.main.concurrent.MyThreadGroup;
@@ -35,6 +36,7 @@ import net.saisimon.main.concurrent.NetworkConnectionsLoader;
 import net.saisimon.main.concurrent.PricesInfo;
 import net.saisimon.main.concurrent.PrimeGenerator;
 import net.saisimon.main.concurrent.PrintQueue;
+import net.saisimon.main.concurrent.PrintQueueSemaphore;
 import net.saisimon.main.concurrent.Producer;
 import net.saisimon.main.concurrent.Reader;
 import net.saisimon.main.concurrent.Result;
@@ -74,7 +76,8 @@ public class Main {
 //		printQueueAndJobMain();
 //		readerAndWriterLockMain();
 //		printQueueTrueAndJobMain();
-		fileMockAndBufferMain();
+//		fileMockAndBufferMain();
+		printQueueAndJobAndSemaphoreMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -517,6 +520,23 @@ public class Main {
 		producerThread.start();
 		for (int i = 0; i < consumerThreads.length; i++) {
 			consumerThreads[i].start();
+		}
+	}
+	
+	/**
+	 * http://ifeve.com/thread-synchronization-utilities-2/
+	 * 
+	 * @see PrintQueueSemaphore
+	 * @see JobSemaphore
+	 */
+	public static void printQueueAndJobAndSemaphoreMain() {
+		PrintQueueSemaphore printQueue = new PrintQueueSemaphore();
+		Thread[] threads = new Thread[10];
+		for (int i = 0; i < threads.length; i++) {
+			threads[i] = new Thread(new JobSemaphore(printQueue));
+		}
+		for (int i = 0; i < threads.length; i++) {
+			threads[i].start();
 		}
 	}
 	
