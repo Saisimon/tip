@@ -11,6 +11,9 @@ import java.util.concurrent.TimeUnit;
 
 import net.saisimon.main.concurrent.Account;
 import net.saisimon.main.concurrent.Bank;
+import net.saisimon.main.concurrent.Buffer;
+import net.saisimon.main.concurrent.BufferConsumer;
+import net.saisimon.main.concurrent.BufferProducer;
 import net.saisimon.main.concurrent.Calculator;
 import net.saisimon.main.concurrent.Cinema;
 import net.saisimon.main.concurrent.CleanerTask;
@@ -21,6 +24,7 @@ import net.saisimon.main.concurrent.Event;
 import net.saisimon.main.concurrent.EventStorage;
 import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.FileClock;
+import net.saisimon.main.concurrent.FileMock;
 import net.saisimon.main.concurrent.FileSearch;
 import net.saisimon.main.concurrent.Job;
 import net.saisimon.main.concurrent.MyThreadFactory;
@@ -69,7 +73,8 @@ public class Main {
 //		producerAndConsumerMain();
 //		printQueueAndJobMain();
 //		readerAndWriterLockMain();
-		printQueueTrueAndJobMain();
+//		printQueueTrueAndJobMain();
+		fileMockAndBufferMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -467,6 +472,8 @@ public class Main {
 	}
 	
 	/**
+	 * http://ifeve.com/basic-thread-synchronization-7/
+	 * 
 	 * private final Lock queueLock = new ReentrantLock(true);
 	 * 
 	 * @see PrintQueue
@@ -485,6 +492,31 @@ public class Main {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	/**
+	 * http://ifeve.com/basic-thread-synchronization-8/
+	 * 
+	 * 生产者与消费者问题
+	 * 
+	 * @see FileMock
+	 * @see Buffer
+	 * @see BufferProducer
+	 * @see BufferConsumer
+	 */
+	public static void fileMockAndBufferMain() {
+		FileMock fileMock = new FileMock(100, 10);
+		Buffer buffer = new Buffer(20);
+		BufferProducer producer = new BufferProducer(fileMock, buffer);
+		Thread producerThread = new Thread(producer, "producer");
+		Thread[] consumerThreads = new Thread[3];
+		for (int i = 0; i < consumerThreads.length; i++) {
+			consumerThreads[i] = new Thread(new BufferConsumer(buffer), "consumer " + i);
+		}
+		producerThread.start();
+		for (int i = 0; i < consumerThreads.length; i++) {
+			consumerThreads[i].start();
 		}
 	}
 	
