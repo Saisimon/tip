@@ -16,6 +16,8 @@ import net.saisimon.main.concurrent.Event;
 import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileSearch;
+import net.saisimon.main.concurrent.MyThreadGroup;
+import net.saisimon.main.concurrent.MyThreadGroupTask;
 import net.saisimon.main.concurrent.NetworkConnectionsLoader;
 import net.saisimon.main.concurrent.PrimeGenerator;
 import net.saisimon.main.concurrent.Result;
@@ -43,7 +45,8 @@ public class Main {
 //		throwUncaughtExceptionTaskMain();
 //		unsafeTaskMain();
 //		safeTaskMain();
-		searchTaskMain();
+//		searchTaskMain();
+		myThreadGroupTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -295,6 +298,21 @@ public class Main {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	/**
+	 * http://ifeve.com/thread-management-12/
+	 * 
+	 * @see MyThreadGroup
+	 * @see MyThreadGroupTask
+	 */
+	public static void myThreadGroupTaskMain() {
+		MyThreadGroup myThreadGroup = new MyThreadGroup("myThreadGroup");
+		MyThreadGroupTask task = new MyThreadGroupTask();
+		for (int i = 0; i < 2; i++) {
+			Thread thread = new Thread(myThreadGroup, task);
+			thread.start();
 		}
 	}
 	
