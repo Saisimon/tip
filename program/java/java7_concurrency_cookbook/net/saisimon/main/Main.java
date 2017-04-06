@@ -16,6 +16,8 @@ import net.saisimon.main.concurrent.Event;
 import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileSearch;
+import net.saisimon.main.concurrent.MyThreadFactory;
+import net.saisimon.main.concurrent.MyThreadFactoryTask;
 import net.saisimon.main.concurrent.MyThreadGroup;
 import net.saisimon.main.concurrent.MyThreadGroupTask;
 import net.saisimon.main.concurrent.NetworkConnectionsLoader;
@@ -46,7 +48,8 @@ public class Main {
 //		unsafeTaskMain();
 //		safeTaskMain();
 //		searchTaskMain();
-		myThreadGroupTaskMain();
+//		myThreadGroupTaskMain();
+		myThreadFactoryTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -314,6 +317,24 @@ public class Main {
 			Thread thread = new Thread(myThreadGroup, task);
 			thread.start();
 		}
+	}
+	
+	/**
+	 * http://ifeve.com/thread-management-13/
+	 * 
+	 * @see MyThreadFactory
+	 * @see MyThreadFactoryTask
+	 */
+	public static void myThreadFactoryTaskMain() {
+		MyThreadFactory factory = new MyThreadFactory("myThreadFactory");
+		MyThreadFactoryTask task = new MyThreadFactoryTask();
+		System.out.println("Starting the Threads...");
+		for (int i = 0; i < 10; i++) {
+			Thread thread = factory.newThread(task);
+			thread.interrupt();
+		}
+		System.out.println("Factory Stats : ");
+		System.out.println(factory.getStatistics());
 	}
 	
 }
