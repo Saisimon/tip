@@ -35,6 +35,7 @@ import net.saisimon.main.concurrent.Job;
 import net.saisimon.main.concurrent.JobSemaphore;
 import net.saisimon.main.concurrent.JobSemaphoreMultiple;
 import net.saisimon.main.concurrent.MatrixMock;
+import net.saisimon.main.concurrent.MyPhaser;
 import net.saisimon.main.concurrent.MyThreadFactory;
 import net.saisimon.main.concurrent.MyThreadFactoryTask;
 import net.saisimon.main.concurrent.MyThreadGroup;
@@ -53,6 +54,7 @@ import net.saisimon.main.concurrent.Results;
 import net.saisimon.main.concurrent.SafeTask;
 import net.saisimon.main.concurrent.SearchTask;
 import net.saisimon.main.concurrent.Searcher;
+import net.saisimon.main.concurrent.Student;
 import net.saisimon.main.concurrent.ThrowUncaughtExceptionTask;
 import net.saisimon.main.concurrent.TicketOffice1;
 import net.saisimon.main.concurrent.TicketOffice2;
@@ -93,7 +95,8 @@ public class Main {
 //		printQueueAndJobAndSemaphoreMultipleMain();
 //		videoConferenceAndParticipantMain();
 //		matrixMockAndCyclicBarrierMain();
-		fileSearchAndPhaserMain();
+//		fileSearchAndPhaserMain();
+		myPhaserAndStudentMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -665,6 +668,37 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.println("Terminated: " + phaser.isTerminated());
+	}
+	
+	/**
+	 * http://ifeve.com/thread-synchronization-utilities-7/
+	 * 
+	 * @see MyPhaser
+	 * @see Student
+	 */
+	public static void myPhaserAndStudentMain() {
+		Phaser phaser = new MyPhaser();
+		Student[] students = new Student[5];
+		for (int i = 0; i < students.length; i++) {
+			students[i] = new Student(phaser);
+			phaser.register();
+		}
+		
+		Thread[] threads = new Thread[5];
+		for (int i = 0; i < threads.length; i++) {
+			threads[i] = new Thread(students[i], "Student " + i);
+			threads[i].start();
+		}
+		
+		for (int i = 0; i < threads.length; i++) {
+			try {
+				threads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		System.out.printf("Main: The phaser has finished: %s.\n", phaser.isTerminated());
 	}
 	
 }
