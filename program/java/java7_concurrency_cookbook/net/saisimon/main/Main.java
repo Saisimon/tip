@@ -31,6 +31,8 @@ import net.saisimon.main.concurrent.EventStorage;
 import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.ExchangerConsumer;
 import net.saisimon.main.concurrent.ExchangerProducer;
+import net.saisimon.main.concurrent.ExecutorServer;
+import net.saisimon.main.concurrent.ExecutorTask;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileMock;
 import net.saisimon.main.concurrent.FileSearch;
@@ -102,7 +104,8 @@ public class Main {
 //		matrixMockAndCyclicBarrierMain();
 //		fileSearchAndPhaserMain();
 //		myPhaserAndStudentMain();
-		producerAndConsumerAndExchangerMain();
+//		producerAndConsumerAndExchangerMain();
+		executorAndTaskAndServerMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -727,5 +730,20 @@ public class Main {
 		
 		producerThread.start();
 		consumerThread.start();
+	}
+	
+	/**
+	 * http://ifeve.com/thread-executors-2/
+	 * 
+	 * @see ExecutorServer
+	 * @see ExecutorTask
+	 */
+	public static void executorAndTaskAndServerMain() {
+		ExecutorServer server = new ExecutorServer();
+		for (int i = 0; i < 100; i++) {
+			ExecutorTask task = new ExecutorTask("Task " + i);
+			server.executeTask(task);
+		}
+		server.endServer();
 	}
 }
