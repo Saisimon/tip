@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.Thread.State;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Exchanger;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +29,8 @@ import net.saisimon.main.concurrent.DataSourcesLoader;
 import net.saisimon.main.concurrent.Event;
 import net.saisimon.main.concurrent.EventStorage;
 import net.saisimon.main.concurrent.ExceptionHandler;
+import net.saisimon.main.concurrent.ExchangerConsumer;
+import net.saisimon.main.concurrent.ExchangerProducer;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileMock;
 import net.saisimon.main.concurrent.FileSearch;
@@ -96,7 +101,8 @@ public class Main {
 //		videoConferenceAndParticipantMain();
 //		matrixMockAndCyclicBarrierMain();
 //		fileSearchAndPhaserMain();
-		myPhaserAndStudentMain();
+//		myPhaserAndStudentMain();
+		producerAndConsumerAndExchangerMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -701,4 +707,25 @@ public class Main {
 		System.out.printf("Main: The phaser has finished: %s.\n", phaser.isTerminated());
 	}
 	
+	/**
+	 * http://ifeve.com/thread-synchronization-utilities-8/
+	 * 
+	 * @see ExchangerProducer
+	 * @see ExchangerConsumer
+	 */
+	public static void producerAndConsumerAndExchangerMain() {
+		List<String> buffer1 = new ArrayList<>();
+		List<String> buffer2 = new ArrayList<>();
+		
+		Exchanger<List<String>> exchanger = new Exchanger<>();
+		
+		ExchangerProducer producer = new ExchangerProducer(buffer1, exchanger);
+		ExchangerConsumer consumer = new ExchangerConsumer(buffer2, exchanger);
+		
+		Thread producerThread = new Thread(producer);
+		Thread consumerThread = new Thread(consumer);
+		
+		producerThread.start();
+		consumerThread.start();
+	}
 }
