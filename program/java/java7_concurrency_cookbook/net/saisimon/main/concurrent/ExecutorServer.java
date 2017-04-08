@@ -9,7 +9,8 @@ public class ExecutorServer {
 	
 	public ExecutorServer() {
 		// 使用 Executors 工厂方法实例化 ThreadPoolExecutor 对象
-		executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+//		executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
 	}
 	
 	public void executeTask(ExecutorTask task) {
@@ -17,6 +18,7 @@ public class ExecutorServer {
 		executor.execute(task);
 		System.out.printf("Server: Pool Size: %d\n", executor.getPoolSize());
 		System.out.printf("Server: Active Count: %d\n", executor.getActiveCount());
+		System.out.printf("Server: Task Count: %d\n", executor.getTaskCount());
 		System.out.printf("Server: Completed Tasks: %d\n", executor.getCompletedTaskCount());
 	}
 	
