@@ -9,10 +9,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Exchanger;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.Phaser;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import net.saisimon.main.concurrent.Account;
@@ -33,6 +38,7 @@ import net.saisimon.main.concurrent.ExchangerConsumer;
 import net.saisimon.main.concurrent.ExchangerProducer;
 import net.saisimon.main.concurrent.ExecutorServer;
 import net.saisimon.main.concurrent.ExecutorTask;
+import net.saisimon.main.concurrent.FactorialCalculator;
 import net.saisimon.main.concurrent.FileClock;
 import net.saisimon.main.concurrent.FileMock;
 import net.saisimon.main.concurrent.FileSearch;
@@ -105,7 +111,8 @@ public class Main {
 //		fileSearchAndPhaserMain();
 //		myPhaserAndStudentMain();
 //		producerAndConsumerAndExchangerMain();
-		executorAndTaskAndServerMain();
+//		executorAndTaskAndServerMain();
+		fatorialCalculatorMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -746,5 +753,43 @@ public class Main {
 			server.executeTask(task);
 		}
 		server.endServer();
+	}
+	
+	/**
+	 * http://ifeve.com/thread-executors-4/
+	 * 
+	 * @see FactorialCalculator
+	 */
+	public static void fatorialCalculatorMain() {
+		ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
+		List<Future<Integer>> results = new ArrayList<>();
+		Random rand = new Random();
+		for (int i = 0; i < 10; i++) {
+			int number = rand.nextInt(10);
+			FactorialCalculator calculator = new FactorialCalculator(number);
+			results.add(executor.submit(calculator));
+		}
+		do {
+			System.out.printf("Main: Number of Completed Tasks:%d\n", executor.getCompletedTaskCount());
+			for (int i = 0; i < results.size(); i++) {
+				Future<Integer> result = results.get(i);
+				System.out.printf("Main: Task %d: %s\n", i, result.isDone());
+			}
+			try {
+				TimeUnit.MILLISECONDS.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} while (executor.getCompletedTaskCount() < results.size());
+		System.out.printf("Main: Results\n");
+		for (int i = 0; i < results.size(); i++) {
+			Future<Integer> result = results.get(i);
+			try {
+				System.out.printf("Main: Task %d: %d\n", i, result.get());
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		executor.shutdown();
 	}
 }
