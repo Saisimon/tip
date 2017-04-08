@@ -68,10 +68,12 @@ import net.saisimon.main.concurrent.SafeTask;
 import net.saisimon.main.concurrent.SearchTask;
 import net.saisimon.main.concurrent.Searcher;
 import net.saisimon.main.concurrent.Student;
+import net.saisimon.main.concurrent.TaskValidator;
 import net.saisimon.main.concurrent.ThrowUncaughtExceptionTask;
 import net.saisimon.main.concurrent.TicketOffice1;
 import net.saisimon.main.concurrent.TicketOffice2;
 import net.saisimon.main.concurrent.UnsafeTask;
+import net.saisimon.main.concurrent.UserValidator;
 import net.saisimon.main.concurrent.VideoConference;
 import net.saisimon.main.concurrent.Writer;
 import net.saisimon.main.concurrent.WriterTask;
@@ -112,7 +114,8 @@ public class Main {
 //		myPhaserAndStudentMain();
 //		producerAndConsumerAndExchangerMain();
 //		executorAndTaskAndServerMain();
-		fatorialCalculatorMain();
+//		fatorialCalculatorMain();
+		userAndTaskValidate();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -791,5 +794,37 @@ public class Main {
 			}
 		}
 		executor.shutdown();
+	}
+	
+	/**
+	 * http://ifeve.com/thread-executors-5/
+	 * 
+	 * @see UserValidator
+	 * @see TaskValidator
+	 */
+	public static void userAndTaskValidate() {
+		String name = "test";
+		String password = "test";
+		
+		UserValidator ldapValidator = new UserValidator("ldap");
+		UserValidator dbValidator = new UserValidator("db");
+
+		TaskValidator ldapTask = new TaskValidator(ldapValidator, name, password);
+		TaskValidator dbTask = new TaskValidator(dbValidator, name, password);
+		
+		List<TaskValidator> tasks = new ArrayList<>();
+		tasks.add(ldapTask);
+		tasks.add(dbTask);
+		
+		ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+		String result = null;
+		try {
+			result = executor.invokeAny(tasks);
+			System.out.printf("Main: Result: %s\n", result);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		executor.shutdown();
+		System.out.printf("Main: End of the Execution\n");
 	}
 }
