@@ -14,6 +14,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Exchanger;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.Phaser;
@@ -36,6 +37,8 @@ import net.saisimon.main.concurrent.EventStorage;
 import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.ExchangerConsumer;
 import net.saisimon.main.concurrent.ExchangerProducer;
+import net.saisimon.main.concurrent.ExecutorAllTask;
+import net.saisimon.main.concurrent.ExecutorResult;
 import net.saisimon.main.concurrent.ExecutorServer;
 import net.saisimon.main.concurrent.ExecutorTask;
 import net.saisimon.main.concurrent.FactorialCalculator;
@@ -115,7 +118,8 @@ public class Main {
 //		producerAndConsumerAndExchangerMain();
 //		executorAndTaskAndServerMain();
 //		fatorialCalculatorMain();
-		userAndTaskValidate();
+//		userAndTaskValidate();
+		executorResultAndAllTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -826,5 +830,38 @@ public class Main {
 		}
 		executor.shutdown();
 		System.out.printf("Main: End of the Execution\n");
+	}
+	
+	/**
+	 * http://ifeve.com/thread-executors-6/
+	 * 
+	 * @see ExecutorAllTask
+	 * @see ExecutorResult
+	 */
+	public static void executorResultAndAllTaskMain() {
+		ExecutorService service = Executors.newCachedThreadPool();
+		List<ExecutorAllTask> tasks = new ArrayList<>();
+		for (int i = 0; i < 3; i++) {
+			ExecutorAllTask task = new ExecutorAllTask(i + "");
+			tasks.add(task);
+		}
+		List<Future<ExecutorResult>> results = null;
+		try {
+			// 执行所有任务，直到所有任务返回
+			results = service.invokeAll(tasks);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		service.shutdown();
+		System.out.println("Main: Printing the results");
+		for (int i = 0; i < results.size(); i++) {
+			Future<ExecutorResult> result = results.get(i);
+			try {
+				ExecutorResult er = result.get();
+				System.out.println(er.getName() + ": " + er.getValue());
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
