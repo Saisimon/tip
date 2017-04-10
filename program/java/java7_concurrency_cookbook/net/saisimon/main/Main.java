@@ -40,6 +40,7 @@ import net.saisimon.main.concurrent.EventStorage;
 import net.saisimon.main.concurrent.ExceptionHandler;
 import net.saisimon.main.concurrent.ExchangerConsumer;
 import net.saisimon.main.concurrent.ExchangerProducer;
+import net.saisimon.main.concurrent.ExecutableTask;
 import net.saisimon.main.concurrent.ExecutorAllTask;
 import net.saisimon.main.concurrent.ExecutorResult;
 import net.saisimon.main.concurrent.ExecutorServer;
@@ -69,6 +70,7 @@ import net.saisimon.main.concurrent.PrintQueueSemaphoreMultiple;
 import net.saisimon.main.concurrent.Producer;
 import net.saisimon.main.concurrent.Reader;
 import net.saisimon.main.concurrent.Result;
+import net.saisimon.main.concurrent.ResultTask;
 import net.saisimon.main.concurrent.Results;
 import net.saisimon.main.concurrent.SafeTask;
 import net.saisimon.main.concurrent.ScheduledRunnable;
@@ -127,7 +129,8 @@ public class Main {
 //		executorResultAndAllTaskMain();
 //		scheduledTaskMain();
 //		scheduledTaskAndScheduledFutureMain();
-		cancelTaskMain();
+//		cancelTaskMain();
+		executableAndResultTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -948,5 +951,39 @@ public class Main {
 		System.out.printf("Main: Done: %s\n", result.isDone());
 		executor.shutdown();
 		System.out.printf("Main: The executor has finished\n");
+	}
+	
+	/**
+	 * http://ifeve.com/thread-executors-10/
+	 * 
+	 * @see ResultTask
+	 * @see ExecutableTask
+	 */
+	public static void executableAndResultTaskMain() {
+		ExecutorService executor = Executors.newCachedThreadPool();
+		ResultTask[] resultTasks = new ResultTask[5];
+		for (int i = 0; i < resultTasks.length; i++) {
+			ExecutableTask task = new ExecutableTask("Task " + i);
+			resultTasks[i] = new ResultTask(task);
+			executor.submit(resultTasks[i]);
+		}
+		try {
+			TimeUnit.SECONDS.sleep(5);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		for (int i = 0; i < resultTasks.length; i++) {
+			resultTasks[i].cancel(true);
+		}
+		for (int i = 0; i < resultTasks.length; i++) {
+			try {
+				if(!resultTasks[i].isCancelled()) {
+					System.out.printf("%s\n", resultTasks[i].get());
+				}
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		executor.shutdown();
 	}
 }
