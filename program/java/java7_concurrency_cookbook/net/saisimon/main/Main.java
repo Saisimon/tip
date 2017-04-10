@@ -29,6 +29,7 @@ import net.saisimon.main.concurrent.Buffer;
 import net.saisimon.main.concurrent.BufferConsumer;
 import net.saisimon.main.concurrent.BufferProducer;
 import net.saisimon.main.concurrent.Calculator;
+import net.saisimon.main.concurrent.CancelTask;
 import net.saisimon.main.concurrent.Cinema;
 import net.saisimon.main.concurrent.CleanerTask;
 import net.saisimon.main.concurrent.Company;
@@ -125,7 +126,8 @@ public class Main {
 //		userAndTaskValidate();
 //		executorResultAndAllTaskMain();
 //		scheduledTaskMain();
-		scheduledTaskAndScheduledFutureMain();
+//		scheduledTaskAndScheduledFutureMain();
+		cancelTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -921,5 +923,30 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.printf("Main : Finished at : %s\n", new Date());
+	}
+	
+	/**
+	 * http://ifeve.com/thread-executors-9/
+	 * 
+	 * @see CancelTask
+	 */
+	public static void cancelTaskMain() {
+		ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+		CancelTask task = new CancelTask();
+		System.out.printf("Main: Executing the Task\n");
+		// 提交任务
+		Future<String> result = executor.submit(task);
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: Canceling the Task\n");
+		// 取消任务
+		result.cancel(true);
+		System.out.printf("Main: Canceled: %s\n", result.isCancelled());
+		System.out.printf("Main: Done: %s\n", result.isDone());
+		executor.shutdown();
+		System.out.printf("Main: The executor has finished\n");
 	}
 }
