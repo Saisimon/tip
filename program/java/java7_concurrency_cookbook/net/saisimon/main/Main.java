@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.Phaser;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -68,6 +69,7 @@ import net.saisimon.main.concurrent.Reader;
 import net.saisimon.main.concurrent.Result;
 import net.saisimon.main.concurrent.Results;
 import net.saisimon.main.concurrent.SafeTask;
+import net.saisimon.main.concurrent.ScheduledTask;
 import net.saisimon.main.concurrent.SearchTask;
 import net.saisimon.main.concurrent.Searcher;
 import net.saisimon.main.concurrent.Student;
@@ -119,7 +121,8 @@ public class Main {
 //		executorAndTaskAndServerMain();
 //		fatorialCalculatorMain();
 //		userAndTaskValidate();
-		executorResultAndAllTaskMain();
+//		executorResultAndAllTaskMain();
+		scheduledTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -863,5 +866,28 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * http://ifeve.com/thread-executors-7/
+	 * 
+	 * @see ScheduledTask
+	 */
+	public static void scheduledTaskMain() {
+		ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1);
+		System.out.printf("Main : Start at : %s\n", new Date());
+		for (int i = 0; i < 5; i++) {
+			ScheduledTask task = new ScheduledTask("Task " + i);
+			// 延迟执行
+			executor.schedule(task, i + 1, TimeUnit.SECONDS);
+		}
+		executor.shutdown();
+		try {
+			// 等待所有任务完成
+			executor.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main : End at : %s", new Date());
 	}
 }
