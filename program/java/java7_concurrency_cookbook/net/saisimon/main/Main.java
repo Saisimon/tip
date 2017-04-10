@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.Phaser;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -69,6 +70,7 @@ import net.saisimon.main.concurrent.Reader;
 import net.saisimon.main.concurrent.Result;
 import net.saisimon.main.concurrent.Results;
 import net.saisimon.main.concurrent.SafeTask;
+import net.saisimon.main.concurrent.ScheduledRunnable;
 import net.saisimon.main.concurrent.ScheduledTask;
 import net.saisimon.main.concurrent.SearchTask;
 import net.saisimon.main.concurrent.Searcher;
@@ -122,7 +124,8 @@ public class Main {
 //		fatorialCalculatorMain();
 //		userAndTaskValidate();
 //		executorResultAndAllTaskMain();
-		scheduledTaskMain();
+//		scheduledTaskMain();
+		scheduledTaskAndScheduledFutureMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -889,5 +892,34 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.printf("Main : End at : %s", new Date());
+	}
+	
+	/**
+	 * http://ifeve.com/thread-executors-8/
+	 * 
+	 * @see ScheduledRunnable
+	 */
+	public static void scheduledTaskAndScheduledFutureMain() {
+		ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1);
+		System.out.printf("Main : Start at : %s\n", new Date());
+		ScheduledRunnable task = new ScheduledRunnable("Task");
+		// 延迟 1 秒，间隔 2 秒周期运行任务
+		ScheduledFuture<?> result = executor.scheduleAtFixedRate(task, 1, 2, TimeUnit.SECONDS);
+		for (int i = 0; i < 10; i++) {
+			// 获取下次执行任务的时间
+			System.out.printf("Main : Delay : %d\n", result.getDelay(TimeUnit.MILLISECONDS));
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		executor.shutdown();
+		try {
+			TimeUnit.SECONDS.sleep(5);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main : Finished at : %s\n", new Date());
 	}
 }
