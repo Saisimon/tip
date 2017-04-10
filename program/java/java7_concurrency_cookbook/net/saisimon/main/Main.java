@@ -10,10 +10,12 @@ import java.util.Date;
 import java.util.Deque;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletionService;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Exchanger;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -69,6 +71,8 @@ import net.saisimon.main.concurrent.PrintQueueSemaphore;
 import net.saisimon.main.concurrent.PrintQueueSemaphoreMultiple;
 import net.saisimon.main.concurrent.Producer;
 import net.saisimon.main.concurrent.Reader;
+import net.saisimon.main.concurrent.ReportProcessor;
+import net.saisimon.main.concurrent.ReportRequest;
 import net.saisimon.main.concurrent.Result;
 import net.saisimon.main.concurrent.ResultTask;
 import net.saisimon.main.concurrent.Results;
@@ -130,7 +134,8 @@ public class Main {
 //		scheduledTaskMain();
 //		scheduledTaskAndScheduledFutureMain();
 //		cancelTaskMain();
-		executableAndResultTaskMain();
+//		executableAndResultTaskMain();
+		reportGeneratorAndRequestAndProcessorMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -985,5 +990,43 @@ public class Main {
 			}
 		}
 		executor.shutdown();
+	}
+	
+	/**
+	 * http://ifeve.com/thread-executors-11/
+	 * 
+	 * @see ReportGenerator
+	 * @see ReportRequest
+	 * @see ReportProcessor
+	 */
+	public static void reportGeneratorAndRequestAndProcessorMain() {
+		ExecutorService executor = Executors.newCachedThreadPool();
+		CompletionService<String> service = new ExecutorCompletionService<>(executor);
+		ReportRequest faceReport = new ReportRequest("Face", service);
+		ReportRequest onlineReport = new ReportRequest("Online", service);
+		ReportProcessor processor = new ReportProcessor(service);
+		Thread faceThread = new Thread(faceReport);
+		Thread onlineThread = new Thread(onlineReport);
+		Thread processorThread = new Thread(processor);
+		System.out.printf("Main: Starting the Threads\n");
+		faceThread.start();
+		onlineThread.start();
+		processorThread.start();
+		try {
+			System.out.printf("Main: Waiting for the report generators.\n");
+			faceThread.join();
+			onlineThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: Shutting down the executor.\n");
+		executor.shutdown();
+		try {
+			executor.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		processor.setEnd(true);
+		System.out.println("Main: Ends");
 	}
 }
