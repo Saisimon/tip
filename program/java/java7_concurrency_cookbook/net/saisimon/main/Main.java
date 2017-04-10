@@ -71,6 +71,9 @@ import net.saisimon.main.concurrent.PrintQueueSemaphore;
 import net.saisimon.main.concurrent.PrintQueueSemaphoreMultiple;
 import net.saisimon.main.concurrent.Producer;
 import net.saisimon.main.concurrent.Reader;
+import net.saisimon.main.concurrent.RejectedTask;
+import net.saisimon.main.concurrent.RejectedTaskController;
+import net.saisimon.main.concurrent.ReportGenerator;
 import net.saisimon.main.concurrent.ReportProcessor;
 import net.saisimon.main.concurrent.ReportRequest;
 import net.saisimon.main.concurrent.Result;
@@ -135,7 +138,8 @@ public class Main {
 //		scheduledTaskAndScheduledFutureMain();
 //		cancelTaskMain();
 //		executableAndResultTaskMain();
-		reportGeneratorAndRequestAndProcessorMain();
+//		reportGeneratorAndRequestAndProcessorMain();
+		rejectedTaskControllerMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1028,5 +1032,29 @@ public class Main {
 		}
 		processor.setEnd(true);
 		System.out.println("Main: Ends");
+	}
+	
+	/**
+	 * http://ifeve.com/thread-executors-12/
+	 * 
+	 * @see RejectedTaskController
+	 * @see RejectedTask
+	 */
+	public static void rejectedTaskControllerMain() {
+		RejectedTaskController controller = new RejectedTaskController();
+		ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+		executor.setRejectedExecutionHandler(controller);
+		System.out.printf("Main: Starting.\n");
+		for (int i = 0; i < 3; i++) {
+			RejectedTask task = new RejectedTask("Task " + i);
+			executor.submit(task);
+		}
+		System.out.printf("Main: Shutting down the Executor.\n");
+		executor.shutdown();
+		System.out.printf("Main: Sending another Task.\n");
+		RejectedTask task=new RejectedTask("RejectedTask");
+		// 关闭执行器后再提交任务
+		executor.submit(task);
+		System.out.printf("Main: End\n");
 	}
 }
