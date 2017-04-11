@@ -38,6 +38,8 @@ import net.saisimon.main.concurrent.CleanerTask;
 import net.saisimon.main.concurrent.Company;
 import net.saisimon.main.concurrent.Consumer;
 import net.saisimon.main.concurrent.DataSourcesLoader;
+import net.saisimon.main.concurrent.Document;
+import net.saisimon.main.concurrent.DocumentTask;
 import net.saisimon.main.concurrent.Event;
 import net.saisimon.main.concurrent.EventStorage;
 import net.saisimon.main.concurrent.ExceptionHandler;
@@ -144,7 +146,8 @@ public class Main {
 //		executableAndResultTaskMain();
 //		reportGeneratorAndRequestAndProcessorMain();
 //		rejectedTaskControllerMain();
-		productAndRecursiveActionTaskMain();
+//		productAndRecursiveActionTaskMain();
+		documentAndLineTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1100,5 +1103,59 @@ public class Main {
 			}
 			System.out.println("Main: End of the program.\n");
 		}
+	}
+	
+	/**
+	 * http://ifeve.com/fork-join-3/
+	 * 
+	 * @see Document
+	 * @see DocumentTask
+	 * @see LineTask
+	 */
+	public static void documentAndLineTaskMain() {
+		Document document = new Document();
+		String targetWord = "the";
+		String[][] lines = document.generateDocument(100, 10000, targetWord);
+		long startTime = System.currentTimeMillis();
+		DocumentTask task = new DocumentTask(lines, 0, lines.length, targetWord);
+		ForkJoinPool pool = new ForkJoinPool();
+		pool.execute(task);
+		do {
+//			System.out.printf("******************************************\n");
+//			System.out.printf("Main: Parallelism: %d\n", pool.getParallelism());
+//			System.out.printf("Main: Active Threads: %d\n", pool.getActiveThreadCount());
+//			System.out.printf("Main: Task Count: %d\n", pool.getQueuedTaskCount());
+//			System.out.printf("Main: Steal Count: %d\n", pool.getStealCount());
+//			System.out.printf("******************************************\n");
+//			try {
+//				TimeUnit.SECONDS.sleep(1);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+		} while (!task.isDone());
+		pool.shutdown();
+		try {
+			pool.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			System.out.printf("Main: The word appears %d in the document\n", task.get());
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: Total Time : %d ms\n", System.currentTimeMillis() - startTime);
+		
+		startTime = System.currentTimeMillis();
+		int counter = 0;
+		for (int i = 0; i < lines.length; i++) {
+			for (int j = 0; j < lines[i].length; j++) {
+				if (lines[i][j].equals(targetWord)) {
+					counter++;
+				}
+			}
+		}
+		System.out.printf("Main: The word appears %d in the document\n", counter);
+		System.out.printf("Main: Total Time : %d ms\n", System.currentTimeMillis() - startTime);
 	}
 }
