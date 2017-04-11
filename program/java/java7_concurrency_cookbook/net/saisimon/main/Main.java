@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.ScheduledFuture;
@@ -70,7 +71,10 @@ import net.saisimon.main.concurrent.PrintQueue;
 import net.saisimon.main.concurrent.PrintQueueSemaphore;
 import net.saisimon.main.concurrent.PrintQueueSemaphoreMultiple;
 import net.saisimon.main.concurrent.Producer;
+import net.saisimon.main.concurrent.Product;
+import net.saisimon.main.concurrent.ProductListGenerator;
 import net.saisimon.main.concurrent.Reader;
+import net.saisimon.main.concurrent.RecursiveActionTask;
 import net.saisimon.main.concurrent.RejectedTask;
 import net.saisimon.main.concurrent.RejectedTaskController;
 import net.saisimon.main.concurrent.ReportGenerator;
@@ -139,7 +143,8 @@ public class Main {
 //		cancelTaskMain();
 //		executableAndResultTaskMain();
 //		reportGeneratorAndRequestAndProcessorMain();
-		rejectedTaskControllerMain();
+//		rejectedTaskControllerMain();
+		productAndRecursiveActionTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1056,5 +1061,44 @@ public class Main {
 		// 关闭执行器后再提交任务
 		executor.submit(task);
 		System.out.printf("Main: End\n");
+	}
+	
+	/**
+	 * http://ifeve.com/fork-join-2/
+	 * 
+	 * @see ProductListGenerator
+	 * @see Product
+	 * @see RecursiveActionTask
+	 */
+	public static void productAndRecursiveActionTaskMain() {
+		ProductListGenerator generator = new ProductListGenerator();
+		List<Product> products = generator.generate(10000);
+		if (products != null) {
+			RecursiveActionTask task = new RecursiveActionTask(products, 0, products.size(), 0.2);
+			ForkJoinPool pool = new ForkJoinPool();
+			pool.execute(task);
+
+			do {
+				System.out.printf("Main: Thread Count: %d\n", pool.getActiveThreadCount());
+				System.out.printf("Main: Thread Steal: %d\n", pool.getStealCount());
+				System.out.printf("Main: Parallelism: %d\n", pool.getParallelism());
+				try {
+					TimeUnit.MILLISECONDS.sleep(5);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} while (!task.isDone());
+			pool.shutdown();
+			if (task.isCompletedNormally()) {
+				System.out.printf("Main: The process has completed normally.\n");
+			}
+			for (int i = 0; i < products.size(); i++) {
+				Product product = products.get(i);
+				if (product.getPrice() != 12) {
+					System.out.printf("Product %s: %f\n", product.getName(), product.getPrice());
+				}
+			}
+			System.out.println("Main: End of the program.\n");
+		}
 	}
 }
