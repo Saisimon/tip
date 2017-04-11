@@ -75,7 +75,8 @@ public class Main {
 //		rejectedTaskControllerMain();
 //		productAndRecursiveActionTaskMain();
 //		documentAndLineTaskMain();
-		folderProcessorMain();
+//		folderProcessorMain();
+		arrayTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1120,5 +1121,28 @@ public class Main {
 		System.out.printf("Apps: %d files found.\n", results.size());
 		results = documents.join();
 		System.out.printf("Documents: %d files found.\n", results.size());
+	}
+	
+	/**
+	 * http://ifeve.com/fork-join-5/
+	 * 
+	 * @see ArrayTask
+	 */
+	public static void arrayTaskMain() {
+		int[] array = new int[100];
+		ArrayTask task = new ArrayTask(array, 0, array.length);
+		ForkJoinPool pool = new ForkJoinPool();
+		pool.execute(task);
+		pool.shutdown();
+		try {
+			pool.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if (task.isCompletedAbnormally()) {
+			System.out.printf("Main: An exception has ocurred\n");
+			System.out.printf("Main: %s\n", task.getException());
+		}
+		System.out.printf("Main: Result: %d", task.join());
 	}
 }
