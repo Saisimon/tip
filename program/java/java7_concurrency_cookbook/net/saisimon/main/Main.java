@@ -26,80 +26,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import net.saisimon.main.concurrent.Account;
-import net.saisimon.main.concurrent.Bank;
-import net.saisimon.main.concurrent.Buffer;
-import net.saisimon.main.concurrent.BufferConsumer;
-import net.saisimon.main.concurrent.BufferProducer;
-import net.saisimon.main.concurrent.Calculator;
-import net.saisimon.main.concurrent.CancelTask;
-import net.saisimon.main.concurrent.Cinema;
-import net.saisimon.main.concurrent.CleanerTask;
-import net.saisimon.main.concurrent.Company;
-import net.saisimon.main.concurrent.Consumer;
-import net.saisimon.main.concurrent.DataSourcesLoader;
-import net.saisimon.main.concurrent.Document;
-import net.saisimon.main.concurrent.DocumentTask;
-import net.saisimon.main.concurrent.Event;
-import net.saisimon.main.concurrent.EventStorage;
-import net.saisimon.main.concurrent.ExceptionHandler;
-import net.saisimon.main.concurrent.ExchangerConsumer;
-import net.saisimon.main.concurrent.ExchangerProducer;
-import net.saisimon.main.concurrent.ExecutableTask;
-import net.saisimon.main.concurrent.ExecutorAllTask;
-import net.saisimon.main.concurrent.ExecutorResult;
-import net.saisimon.main.concurrent.ExecutorServer;
-import net.saisimon.main.concurrent.ExecutorTask;
-import net.saisimon.main.concurrent.FactorialCalculator;
-import net.saisimon.main.concurrent.FileClock;
-import net.saisimon.main.concurrent.FileMock;
-import net.saisimon.main.concurrent.FileSearch;
-import net.saisimon.main.concurrent.FileSearchPhaser;
-import net.saisimon.main.concurrent.Grouper;
-import net.saisimon.main.concurrent.Job;
-import net.saisimon.main.concurrent.JobSemaphore;
-import net.saisimon.main.concurrent.JobSemaphoreMultiple;
-import net.saisimon.main.concurrent.MatrixMock;
-import net.saisimon.main.concurrent.MyPhaser;
-import net.saisimon.main.concurrent.MyThreadFactory;
-import net.saisimon.main.concurrent.MyThreadFactoryTask;
-import net.saisimon.main.concurrent.MyThreadGroup;
-import net.saisimon.main.concurrent.MyThreadGroupTask;
-import net.saisimon.main.concurrent.NetworkConnectionsLoader;
-import net.saisimon.main.concurrent.Participant;
-import net.saisimon.main.concurrent.PricesInfo;
-import net.saisimon.main.concurrent.PrimeGenerator;
-import net.saisimon.main.concurrent.PrintQueue;
-import net.saisimon.main.concurrent.PrintQueueSemaphore;
-import net.saisimon.main.concurrent.PrintQueueSemaphoreMultiple;
-import net.saisimon.main.concurrent.Producer;
-import net.saisimon.main.concurrent.Product;
-import net.saisimon.main.concurrent.ProductListGenerator;
-import net.saisimon.main.concurrent.Reader;
-import net.saisimon.main.concurrent.RecursiveActionTask;
-import net.saisimon.main.concurrent.RejectedTask;
-import net.saisimon.main.concurrent.RejectedTaskController;
-import net.saisimon.main.concurrent.ReportGenerator;
-import net.saisimon.main.concurrent.ReportProcessor;
-import net.saisimon.main.concurrent.ReportRequest;
-import net.saisimon.main.concurrent.Result;
-import net.saisimon.main.concurrent.ResultTask;
-import net.saisimon.main.concurrent.Results;
-import net.saisimon.main.concurrent.SafeTask;
-import net.saisimon.main.concurrent.ScheduledRunnable;
-import net.saisimon.main.concurrent.ScheduledTask;
-import net.saisimon.main.concurrent.SearchTask;
-import net.saisimon.main.concurrent.Searcher;
-import net.saisimon.main.concurrent.Student;
-import net.saisimon.main.concurrent.TaskValidator;
-import net.saisimon.main.concurrent.ThrowUncaughtExceptionTask;
-import net.saisimon.main.concurrent.TicketOffice1;
-import net.saisimon.main.concurrent.TicketOffice2;
-import net.saisimon.main.concurrent.UnsafeTask;
-import net.saisimon.main.concurrent.UserValidator;
-import net.saisimon.main.concurrent.VideoConference;
-import net.saisimon.main.concurrent.Writer;
-import net.saisimon.main.concurrent.WriterTask;
+import net.saisimon.main.concurrent.*;
 
 /**
  * http://ifeve.com/java-7-concurrency-cookbook/
@@ -147,7 +74,8 @@ public class Main {
 //		reportGeneratorAndRequestAndProcessorMain();
 //		rejectedTaskControllerMain();
 //		productAndRecursiveActionTaskMain();
-		documentAndLineTaskMain();
+//		documentAndLineTaskMain();
+		folderProcessorMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1157,5 +1085,40 @@ public class Main {
 		}
 		System.out.printf("Main: The word appears %d in the document\n", counter);
 		System.out.printf("Main: Total Time : %d ms\n", System.currentTimeMillis() - startTime);
+	}
+	
+	/**
+	 * http://ifeve.com/fork-join-4/
+	 * 
+	 * @see FolderProcessor
+	 */
+	public static void folderProcessorMain() {
+		ForkJoinPool pool = new ForkJoinPool();
+		FolderProcessor system = new FolderProcessor("C:\\Windows", "log");
+		FolderProcessor apps = new FolderProcessor("C:\\Program Files", "log");
+		FolderProcessor documents = new FolderProcessor("C:\\Documents And Settings", "log");
+		pool.execute(system);
+		pool.execute(apps);
+		pool.execute(documents);
+		do {
+			System.out.printf("******************************************\n");
+			System.out.printf("Main: Parallelism: %d\n", pool.getParallelism());
+			System.out.printf("Main: Active Threads: %d\n", pool.getActiveThreadCount());
+			System.out.printf("Main: Task Count: %d\n", pool.getQueuedTaskCount());
+			System.out.printf("Main: Steal Count: %d\n", pool.getStealCount());
+			System.out.printf("******************************************\n");
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} while ((!system.isDone()) || (!apps.isDone()) || (!documents.isDone()));
+		pool.shutdown();
+		List<String> results = system.join();
+		System.out.printf("System: %d files found.\n", results.size());
+		results = apps.join();
+		System.out.printf("Apps: %d files found.\n", results.size());
+		results = documents.join();
+		System.out.printf("Documents: %d files found.\n", results.size());
 	}
 }
