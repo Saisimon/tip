@@ -76,7 +76,8 @@ public class Main {
 //		productAndRecursiveActionTaskMain();
 //		documentAndLineTaskMain();
 //		folderProcessorMain();
-		arrayTaskMain();
+//		arrayTaskMain();
+		arrayGeneratorAndTaskManagerMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1144,5 +1145,30 @@ public class Main {
 			System.out.printf("Main: %s\n", task.getException());
 		}
 		System.out.printf("Main: Result: %d", task.join());
+	}
+	
+	/**
+	 * http://ifeve.com/fork-join-6/
+	 * 
+	 * @see ArrayGenerator
+	 * @see TaskManager
+	 * @see SearchNumberTask
+	 */
+	public static void arrayGeneratorAndTaskManagerMain() {
+		ArrayGenerator generator = new ArrayGenerator();
+		int[] array = generator.generateArray(1000);
+		TaskManager manager = new TaskManager();
+		int targerNumber = 5;
+		SearchNumberTask task = new SearchNumberTask(array, 0, array.length, manager, targerNumber);
+		manager.addTask(task);
+		ForkJoinPool pool = new ForkJoinPool();
+		pool.execute(task);
+		pool.shutdown();
+		try {
+			pool.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: The program has finished\n");
 	}
 }
