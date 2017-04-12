@@ -11,6 +11,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletionService;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Exchanger;
@@ -77,7 +78,8 @@ public class Main {
 //		documentAndLineTaskMain();
 //		folderProcessorMain();
 //		arrayTaskMain();
-		arrayGeneratorAndTaskManagerMain();
+//		arrayGeneratorAndTaskManagerMain();
+		addAndPollTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1170,5 +1172,37 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.printf("Main: The program has finished\n");
+	}
+	
+	public static void addAndPollTaskMain() {
+		// 非阻塞线程安全列表
+		ConcurrentLinkedDeque<String> list = new ConcurrentLinkedDeque<>();
+		Thread[] threads = new Thread[100];
+		for (int i = 0; i < threads.length; i++) {
+			threads[i] = new Thread(new AddTask(list));
+			threads[i].start();
+		}
+		System.out.printf("Main: %d AddTask threads have been launched\n", threads.length);
+		for (int i = 0; i < threads.length; i++) {
+			try {
+				threads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.printf("Main: Size of the List: %d\n", list.size());
+		for (int i = 0; i < threads.length; i++) {
+			threads[i] = new Thread(new PollTask(list));
+			threads[i].start();
+		}
+		System.out.printf("Main: %d PollTask threads have been launched\n", threads.length);
+		for (int i = 0; i < threads.length; i++) {
+			try {
+				threads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.printf("Main: Size of the List: %d\n", list.size());
 	}
 }
