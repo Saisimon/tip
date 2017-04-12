@@ -23,6 +23,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.Phaser;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -81,7 +82,8 @@ public class Main {
 //		arrayTaskMain();
 //		arrayGeneratorAndTaskManagerMain();
 //		addAndPollTaskMain();
-		clientMain();
+//		clientMain();
+		priorityEventAndTask();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1239,5 +1241,37 @@ public class Main {
 			}
 		}
 		System.out.printf("Main: End of the program.\n");
+	}
+	
+	/**
+	 * http://ifeve.com/concurrent-collections-4/
+	 * 
+	 * @see PriorityTask
+	 * @see PriorityEvent
+	 */
+	public static void priorityEventAndTask() {
+		// 带优先级的阻塞线程安全列表
+		PriorityBlockingQueue<PriorityEvent> queue = new PriorityBlockingQueue<>();
+		Thread[] threads = new Thread[5];
+		for (int i = 0; i < threads.length; i++) {
+			threads[i] = new Thread(new PriorityTask(i, queue));
+		}
+		for (int i = 0; i < threads.length; i++) {
+			threads[i].start();
+		}
+		for (int i = 0; i < threads.length; i++) {
+			try {
+				threads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.printf("Main: Queue Size: %d\n", queue.size());
+		for (int i = 0; i < threads.length * 1000; i++) {
+			PriorityEvent event = queue.poll();
+			System.out.printf("Thread %s: Priority %d\n", event.getThread(), event.getPriority());
+		}
+		System.out.printf("Main: Queue Size: %d\n", queue.size());
+		System.out.printf("Main: End of the program\n");
 	}
 }
