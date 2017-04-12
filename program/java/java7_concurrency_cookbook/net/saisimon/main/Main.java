@@ -14,6 +14,7 @@ import java.util.concurrent.CompletionService;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Exchanger;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -83,7 +84,8 @@ public class Main {
 //		arrayGeneratorAndTaskManagerMain();
 //		addAndPollTaskMain();
 //		clientMain();
-		priorityEventAndTask();
+//		priorityEventAndTask();
+		delayedEventAndTask();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1273,5 +1275,44 @@ public class Main {
 		}
 		System.out.printf("Main: Queue Size: %d\n", queue.size());
 		System.out.printf("Main: End of the program\n");
+	}
+	
+	/**
+	 * http://ifeve.com/concurrent-collections-5/
+	 * 
+	 * @see DelayedTask
+	 * @see DelayedEvent
+	 */
+	public static void delayedEventAndTask() {
+		// 带有延迟元素的线程安全列表
+		DelayQueue<DelayedEvent> queue = new DelayQueue<>();
+		Thread[] threads = new Thread[5];
+		for (int i = 0; i < threads.length; i++) {
+			threads[i] = new Thread(new DelayedTask(i, queue));
+		}
+		for (int i = 0; i < threads.length; i++) {
+			threads[i].start();
+		}
+		for (int i = 0; i < threads.length; i++) {
+			try {
+				threads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		do {
+			int counter = 0;
+			DelayedEvent event = null;
+			do {
+				event = queue.poll();
+				counter++;
+			} while (event != null);
+			System.out.printf("At %s you have read %d events\n", new Date(), counter);
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} while (queue.size() > 0);
 	}
 }
