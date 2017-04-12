@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -79,7 +80,8 @@ public class Main {
 //		folderProcessorMain();
 //		arrayTaskMain();
 //		arrayGeneratorAndTaskManagerMain();
-		addAndPollTaskMain();
+//		addAndPollTaskMain();
+		clientMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1174,6 +1176,12 @@ public class Main {
 		System.out.printf("Main: The program has finished\n");
 	}
 	
+	/**
+	 * http://ifeve.com/concurrent-collections-2/
+	 * 
+	 * @see AddTask
+	 * @see PollTask
+	 */
 	public static void addAndPollTaskMain() {
 		// 非阻塞线程安全列表
 		ConcurrentLinkedDeque<String> list = new ConcurrentLinkedDeque<>();
@@ -1204,5 +1212,32 @@ public class Main {
 			}
 		}
 		System.out.printf("Main: Size of the List: %d\n", list.size());
+	}
+	
+	/**
+	 * http://ifeve.com/concurrent-collections-3/
+	 * 
+	 * @see Client
+	 */
+	public static void clientMain() {
+		// 阻塞的线程安全列表
+		LinkedBlockingDeque<String> list = new LinkedBlockingDeque<>();
+		Client client = new Client(list);
+		Thread thread = new Thread(client);
+		thread.start();
+
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 3; j++) {
+				try {
+					// 从列表中获取字符串，如果列表为空，这个方法将阻塞线程的执行，直到列表中有元素
+					String request = list.take();
+					System.out.printf("Main: Request: %s at %s. Size:%d\n", request, new Date(), list.size());
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		System.out.printf("Main: End of the program.\n");
 	}
 }
