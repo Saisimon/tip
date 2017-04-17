@@ -90,7 +90,8 @@ public class Main {
 //		priorityEventAndTask();
 //		delayedEventAndTask();
 //		contactTaskMain();
-		taskLocalRandomMain();
+//		taskLocalRandomMain();
+		atomicAccountAndBankAndCompanyMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1378,5 +1379,33 @@ public class Main {
 			threads[i] = new Thread(task);
 			threads[i].start();
 		}
+	}
+	
+	/**
+	 * http://ifeve.com/concurrent-collections-8/
+	 * 
+	 * Compare And Swap(CAS) 比较并交换
+	 * 
+	 * @see AtomicAccount
+	 * @see AtomicBank
+	 * @see AtomicCompany
+	 */
+	public static void atomicAccountAndBankAndCompanyMain() {
+		AtomicAccount account = new AtomicAccount();
+		account.setBalance(1000);
+		AtomicCompany company = new AtomicCompany(account);
+		Thread companyThread = new Thread(company);
+		AtomicBank bank = new AtomicBank(account);
+		Thread bankThread = new Thread(bank);
+		System.out.printf("Account : Initial Balance: %d\n", account.getBalance());
+		companyThread.start();
+		bankThread.start();
+		try {
+			companyThread.join();
+			bankThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Account : Final Balance: %d\n", account.getBalance());
 	}
 }
