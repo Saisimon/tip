@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.DelayQueue;
@@ -85,7 +88,8 @@ public class Main {
 //		addAndPollTaskMain();
 //		clientMain();
 //		priorityEventAndTask();
-		delayedEventAndTask();
+//		delayedEventAndTask();
+		contactTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1314,5 +1318,50 @@ public class Main {
 				e.printStackTrace();
 			}
 		} while (queue.size() > 0);
+	}
+	
+	/**
+	 * http://ifeve.com/concurrent-collections-6/
+	 * 
+	 * @see Contact
+	 * @see ContactTask
+	 */
+	public static void contactTaskMain() {
+		ConcurrentSkipListMap<String, Contact> map = new ConcurrentSkipListMap<>();
+		Thread[] threads = new Thread[25];
+		int counter = 0;
+		for (char i = 'A'; i < 'Z'; i++) {
+			ContactTask task = new ContactTask(map, String.valueOf(i));
+			threads[counter] = new Thread(task);
+			threads[counter].start();
+			counter++;
+		}
+		for (int i = 0; i < threads.length; i++) {
+			try {
+				threads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.printf("Main: Size of the map: %d\n", map.size());
+		// 获取map的第一个实体
+		Map.Entry<String, Contact> entry = map.firstEntry();
+		Contact contact = entry.getValue();
+		System.out.printf("Main: First Entry: %s: %s\n", contact.getName(), contact.getPhone());
+		// 获取map的最后一个实体
+		entry = map.lastEntry();
+		contact = entry.getValue();
+		System.out.printf("Main: Last Entry: %s: %s\n", contact.getName(), contact.getPhone());
+		System.out.printf("Main: Submap from A1996 to B1002: \n");
+		// 获取map的子map [A1996, B1002)
+		ConcurrentNavigableMap<String, Contact> subMap = map.subMap("A1996", "B1002");
+		do {
+			// 返回并删除submap中的第一个Map.Entry对象
+			entry = subMap.pollFirstEntry();
+			if (entry != null) {
+				contact = entry.getValue();
+				System.out.printf("%s: %s\n", contact.getName(), contact.getPhone());
+			}
+		} while (entry != null);
 	}
 }
