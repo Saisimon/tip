@@ -89,7 +89,8 @@ public class Main {
 //		clientMain();
 //		priorityEventAndTask();
 //		delayedEventAndTask();
-		contactTaskMain();
+//		contactTaskMain();
+		taskLocalRandomMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1363,5 +1364,19 @@ public class Main {
 				System.out.printf("%s: %s\n", contact.getName(), contact.getPhone());
 			}
 		} while (entry != null);
+	}
+	
+	/**
+	 * http://ifeve.com/concurrent-collections-7/
+	 * 
+	 * @see TaskLocalRandom
+	 */
+	public static void taskLocalRandomMain() {
+		Thread[] threads = new Thread[3];
+		for (int i = 0; i < threads.length; i++) {
+			TaskLocalRandom task = new TaskLocalRandom();
+			threads[i] = new Thread(task);
+			threads[i].start();
+		}
 	}
 }
