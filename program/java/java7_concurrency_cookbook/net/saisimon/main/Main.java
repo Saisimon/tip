@@ -32,6 +32,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 
 import net.saisimon.main.concurrent.*;
 
@@ -91,7 +92,8 @@ public class Main {
 //		delayedEventAndTask();
 //		contactTaskMain();
 //		taskLocalRandomMain();
-		atomicAccountAndBankAndCompanyMain();
+//		atomicAccountAndBankAndCompanyMain();
+		incrementerAndDecrementMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1407,5 +1409,45 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.printf("Account : Final Balance: %d\n", account.getBalance());
+	}
+	
+	/**
+	 * http://ifeve.com/concurrent-collections-9/
+	 * 
+	 * @see Incrementer
+	 * @see Decrementer
+	 */
+	public static void incrementerAndDecrementMain() {
+		int threadSize = 100;
+		// 原子数组
+		AtomicIntegerArray vector = new AtomicIntegerArray(1000);
+		Incrementer incrementer = new Incrementer(vector);
+		Decrementer decrementer = new Decrementer(vector);
+		
+		Thread[] incrementerThreads = new Thread[threadSize];
+		Thread[] decrementerThreads = new Thread[threadSize];
+		
+		for (int i = 0; i < threadSize; i++) {
+			incrementerThreads[i] = new Thread(incrementer);
+			decrementerThreads[i] = new Thread(decrementer);
+			incrementerThreads[i].start();
+			decrementerThreads[i].start();
+		}
+		
+		for (int i = 0; i < threadSize; i++) {
+			try {
+				incrementerThreads[i].join();
+				decrementerThreads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		for (int i = 0; i < vector.length(); i++) {
+			if (vector.get(i) != 0) {
+				System.out.println("Vector[" + i + "] : " + vector.get(i));
+			}
+		}
+		System.out.println("Main: End of the example");
 	}
 }
