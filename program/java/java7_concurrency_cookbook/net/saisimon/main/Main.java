@@ -96,7 +96,8 @@ public class Main {
 //		incrementerAndDecrementMain();
 //		myExecutorAndSleepTwoSecondsTaskMain();
 //		myPriorityTaskMain();
-		myThreadAndThreadFactoryAndTaskMain();
+//		myThreadAndThreadFactoryAndTaskMain();
+		myThreadAndThreadFactoryAndTaskAndExecutorMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1544,5 +1545,26 @@ public class Main {
 		System.out.printf("Main: Thread information.\n");
 		System.out.printf("%s\n", thread);
 		System.out.printf("Main: End of the example.\n");
+	}
+	
+	/**
+	 * http://ifeve.com/customizing-concurrency-classes-5/
+	 * 
+	 * @see MyThreadThreadFactory\
+	 * @see MyThreadTask
+	 * @see MyThread
+	 */
+	public static void myThreadAndThreadFactoryAndTaskAndExecutorMain() {
+		MyThreadThreadFactory factory = new MyThreadThreadFactory("myThreadFactory");
+		ExecutorService executor = Executors.newCachedThreadPool(factory);
+		MyThreadTask task = new MyThreadTask();
+		executor.submit(task);
+		executor.shutdown();
+		try {
+			executor.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: End of the program.\n");
 	}
 }
