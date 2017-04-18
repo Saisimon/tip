@@ -94,7 +94,8 @@ public class Main {
 //		taskLocalRandomMain();
 //		atomicAccountAndBankAndCompanyMain();
 //		incrementerAndDecrementMain();
-		myExecutorAndSleepTwoSecondsTaskMain();
+//		myExecutorAndSleepTwoSecondsTaskMain();
+		myPriorityTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1483,6 +1484,37 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
+		try {
+			executor.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: End of the program.\n");
+	}
+	
+	/**
+	 * http://ifeve.com/customizing-concurrency-classes-3/
+	 * 
+	 * @see MyPriorityTask
+	 */
+	public static void myPriorityTaskMain() {
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 2, 1, TimeUnit.SECONDS,
+				// 基于优先级的队列
+				new PriorityBlockingQueue<Runnable>());
+		for (int i = 0; i < 4; i++) {
+			MyPriorityTask task = new MyPriorityTask(i, "Task" + i);
+			executor.execute(task);
+		}
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		for (int i = 4; i < 8; i++) {
+			MyPriorityTask task = new MyPriorityTask(i, "Task" + i);
+			executor.execute(task);
+		}
+		executor.shutdown();
 		try {
 			executor.awaitTermination(1, TimeUnit.DAYS);
 		} catch (InterruptedException e) {
