@@ -93,7 +93,8 @@ public class Main {
 //		contactTaskMain();
 //		taskLocalRandomMain();
 //		atomicAccountAndBankAndCompanyMain();
-		incrementerAndDecrementMain();
+//		incrementerAndDecrementMain();
+		myExecutorAndSleepTwoSecondsTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1449,5 +1450,44 @@ public class Main {
 			}
 		}
 		System.out.println("Main: End of the example");
+	}
+	
+	/**
+	 * http://ifeve.com/customizing-concurrency-classes-2/
+	 * 
+	 * @see MyExecutor
+	 * @see SleepTwoSecondsTask
+	 */
+	public static void myExecutorAndSleepTwoSecondsTaskMain() {
+		MyExecutor executor = new MyExecutor(2, 4, 1000, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>());
+		List<Future<String>> results = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			SleepTwoSecondsTask task = new SleepTwoSecondsTask();
+			Future<String> result = executor.submit(task);
+			results.add(result);
+		}
+		for (int i = 0; i < 5; i++) {
+			try {
+				String result = results.get(i).get();
+				System.out.printf("Main: Result for Task %d : %s\n", i, result);
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		executor.shutdown();
+		for (int i = 5; i < 10; i++) {
+			try {
+				String result = results.get(i).get();
+				System.out.printf("Main: Result for Task %d : %s\n", i, result);
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			executor.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: End of the program.\n");
 	}
 }
