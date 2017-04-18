@@ -95,7 +95,8 @@ public class Main {
 //		atomicAccountAndBankAndCompanyMain();
 //		incrementerAndDecrementMain();
 //		myExecutorAndSleepTwoSecondsTaskMain();
-		myPriorityTaskMain();
+//		myPriorityTaskMain();
+		myThreadAndThreadFactoryAndTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1521,5 +1522,27 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.printf("Main: End of the program.\n");
+	}
+	
+	/**
+	 * http://ifeve.com/customizing-concurrency-classes-4/
+	 * 
+	 * @see MyThreadThreadFactory\
+	 * @see MyThreadTask
+	 * @see MyThread
+	 */
+	public static void myThreadAndThreadFactoryAndTaskMain() {
+		MyThreadThreadFactory factory = new MyThreadThreadFactory("myThreadFactory");
+		MyThreadTask task = new MyThreadTask();
+		Thread thread = factory.newThread(task);
+		try {
+			thread.start();
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: Thread information.\n");
+		System.out.printf("%s\n", thread);
+		System.out.printf("Main: End of the example.\n");
 	}
 }
