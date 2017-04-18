@@ -97,7 +97,8 @@ public class Main {
 //		myExecutorAndSleepTwoSecondsTaskMain();
 //		myPriorityTaskMain();
 //		myThreadAndThreadFactoryAndTaskMain();
-		myThreadAndThreadFactoryAndTaskAndExecutorMain();
+//		myThreadAndThreadFactoryAndTaskAndExecutorMain();
+		myScheduledTaskAndThreadPoolExecutorMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1559,6 +1560,40 @@ public class Main {
 		ExecutorService executor = Executors.newCachedThreadPool(factory);
 		MyThreadTask task = new MyThreadTask();
 		executor.submit(task);
+		executor.shutdown();
+		try {
+			executor.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: End of the program.\n");
+	}
+	
+	/**
+	 * http://ifeve.com/customizing-concurrency-classes-7-2/
+	 * 
+	 * @see MyScheduledThreadPoolExecutor
+	 * @see MyTask
+	 * @see MyScheduledTask
+	 */
+	public static void myScheduledTaskAndThreadPoolExecutorMain() {
+		MyScheduledThreadPoolExecutor executor = new MyScheduledThreadPoolExecutor(2);
+		MyTask task = new MyTask();
+		System.out.printf("Main: %s\n", new Date());
+		executor.schedule(task, 1, TimeUnit.SECONDS);
+		try {
+			TimeUnit.SECONDS.sleep(3);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		task = new MyTask();
+		System.out.printf("Main: %s\n", new Date());
+		executor.scheduleAtFixedRate(task, 1, 3, TimeUnit.SECONDS);
+		try {
+			TimeUnit.SECONDS.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		executor.shutdown();
 		try {
 			executor.awaitTermination(1, TimeUnit.DAYS);
