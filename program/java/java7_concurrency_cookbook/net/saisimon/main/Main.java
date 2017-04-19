@@ -98,7 +98,8 @@ public class Main {
 //		myPriorityTaskMain();
 //		myThreadAndThreadFactoryAndTaskMain();
 //		myThreadAndThreadFactoryAndTaskAndExecutorMain();
-		myScheduledTaskAndThreadPoolExecutorMain();
+//		myScheduledTaskAndThreadPoolExecutorMain();
+		myWorkThreadAndFactoryAndRecursiveTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1601,5 +1602,35 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.printf("Main: End of the program.\n");
+	}
+	
+	/**
+	 * http://ifeve.com/customizing-concurrency-classes-7/
+	 * 
+	 * @see MyWorkThreadFactory
+	 * @see MyWorkThread
+	 * @see MyRecursiveTask
+	 */
+	public static void myWorkThreadAndFactoryAndRecursiveTaskMain() {
+		MyWorkThreadFactory factory = new MyWorkThreadFactory();
+		ForkJoinPool pool = new ForkJoinPool(4, factory, null, false);
+		int[] array = new int[100000];
+		for (int i = 0; i < array.length; i++) {
+			array[i] = i;
+		}
+		MyRecursiveTask task = new MyRecursiveTask(array, 0, array.length);
+		pool.execute(task);
+		pool.shutdown();
+		try {
+			pool.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		try {
+			System.out.printf("Main: Result: %d\n", task.get());
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: End of the program\n");
 	}
 }
