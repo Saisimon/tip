@@ -101,7 +101,8 @@ public class Main {
 //		myScheduledTaskAndThreadPoolExecutorMain();
 //		myWorkThreadAndFactoryAndRecursiveTaskMain();
 //		myWorkTaskMain();
-		myLockTaskAndAbstractQueuedSynchronizerMain();
+//		myLockTaskAndAbstractQueuedSynchronizerMain();
+		myPriorityTransferQueueAndEventAndProducerAndConsumerMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1683,6 +1684,60 @@ public class Main {
 		} while (!value);
 		System.out.printf("Main: Got the lock\n");
 		lock.unlock();
+		System.out.printf("Main: End of the program\n");
+	}
+	
+	/**
+	 * http://ifeve.com/customizing-concurrency-classes-11-2/
+	 * 
+	 * @see MyPriorityTransferQueue
+	 * @see MyProducer
+	 * @see MyConsumer
+	 * @see MyEvent
+	 */
+	public static void myPriorityTransferQueueAndEventAndProducerAndConsumerMain() {
+		MyPriorityTransferQueue<MyEvent> buffer = new MyPriorityTransferQueue<>();
+		MyProducer producer = new MyProducer(buffer);
+		Thread[] threads = new Thread[10];
+		for (int i = 0; i < threads.length; i++) {
+			threads[i] = new Thread(producer);
+			threads[i].start();
+		}
+		MyConsumer consumer = new MyConsumer(buffer);
+		Thread consumerThread = new Thread(consumer);
+		consumerThread.start();
+		System.out.printf("Main: Buffer: Consumer count: %d\n", buffer.getWaitingConsumerCount());
+		MyEvent myEvent = new MyEvent("Core Event", 0);
+		try {
+			buffer.transfer(myEvent);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: My Event has ben transfered.\n");
+		for (int i = 0; i < threads.length; i++) {
+			try {
+				threads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: Buffer: Consumer count: %d\n", buffer.getWaitingConsumerCount());
+		myEvent = new MyEvent("Core Event 2", 0);
+		try {
+			buffer.transfer(myEvent);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		try {
+			consumerThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		System.out.printf("Main: End of the program\n");
 	}
 }
