@@ -100,7 +100,8 @@ public class Main {
 //		myThreadAndThreadFactoryAndTaskAndExecutorMain();
 //		myScheduledTaskAndThreadPoolExecutorMain();
 //		myWorkThreadAndFactoryAndRecursiveTaskMain();
-		myWorkTaskMain();
+//		myWorkTaskMain();
+		myLockTaskAndAbstractQueuedSynchronizerMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1653,5 +1654,35 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.printf("Main: End of the program.\n");
+	}
+	
+	/**
+	 * http://ifeve.com/customizing-concurrency-classes-9/
+	 * 
+	 * @see MyLock
+	 * @see MyLockTask
+	 * @see MyAbstractQueuedSynchronizer
+	 */
+	public static void myLockTaskAndAbstractQueuedSynchronizerMain() {
+		MyLock lock = new MyLock();
+		for (int i = 0; i < 10; i++) {
+			MyLockTask task = new MyLockTask(lock, "Task" + i);
+			new Thread(task).start();
+		}
+		boolean value;
+		do {
+			try {
+				value = lock.tryLock(1, TimeUnit.SECONDS);
+				if (!value) {
+					System.out.printf("Main: Trying to get the Lock\n");
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				value = false;
+			}
+		} while (!value);
+		System.out.printf("Main: Got the lock\n");
+		lock.unlock();
+		System.out.printf("Main: End of the program\n");
 	}
 }
