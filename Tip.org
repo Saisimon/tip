@@ -445,6 +445,34 @@
          
      }
      #+END_SRC
+**** Java 8 接口中的默认方法的“劫持”问题
+     - IFoo 接口中有一默认方法 bar
+     #+BEGIN_SRC java
+     // Interface IFoo
+     public interface IFoo {
+            default void bar(int i) {
+                    System.out.println("IFoo.bar(int)");
+            }
+     }
+     #+END_SRC
+     - Foo 实现 IFoo 接口，并也有一个公共方法 bar
+     #+BEGIN_SRC java
+     // Class Foo
+     public class Foo implements IFoo {
+             public void bar(long l) {
+                     System.out.println("Foo.bar(long)");
+             }
+
+             public static void main(String[] args) {
+                     Foo foo = new Foo();
+                     foo.bar(42); // 1 IFoo.bar(int)
+                     IFoo ifoo = foo;
+                     ifoo.bar(42); // 2 IFoo.bar(int)
+             }
+     }
+     #+END_SRC
+     - main 方法中 1，2 位置调用的方法为都是接口中默认的方法,因为接口中的默认方法提供了更加准确的匹配
+     [[http://rednaxelafx.iteye.com/blog/2033089 ][来源]]
 *** Web
 **** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
