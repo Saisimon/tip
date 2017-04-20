@@ -105,7 +105,8 @@ public class Main {
 //		myLockTaskAndAbstractQueuedSynchronizerMain();
 //		myPriorityTransferQueueAndEventAndProducerAndConsumerMain();
 //		parkingCounterAndSensorMain();
-		myReentrantLockAndLockTaskMain();
+//		myReentrantLockAndLockTaskMain();
+		phaserTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1799,6 +1800,33 @@ public class Main {
 			System.out.printf("Lock: Fairness: %s\n", lock.isFair());
 			System.out.printf("Lock: Locked: %s\n", lock.isLocked());
 			System.out.printf("************************\n");
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * http://ifeve.com/testing-concurrent-applications-3/
+	 * 
+	 * @see PhaserTask
+	 */
+	public static void phaserTaskMain() {
+		Phaser phaser = new Phaser(3);
+		for (int i = 0; i < 3; i++) {
+			Thread thread = new Thread(new PhaserTask(i + 1, phaser));
+			thread.start();
+		}
+		for (int i = 0; i < 10; i++) {
+			System.out.printf("********************\n");
+			System.out.printf("Main: Phaser Log\n");
+			System.out.printf("Main: Phaser: Phase: %d\n", phaser.getPhase());
+			System.out.printf("Main: Phaser: Registered Parties:%d\n", phaser.getRegisteredParties());
+			System.out.printf("Main: Phaser: Arrived Parties:%d\n", phaser.getArrivedParties());
+			System.out.printf("Main: Phaser: Unarrived Parties:%d\n", phaser.getUnarrivedParties());
+			System.out.printf("********************\n");
 			try {
 				TimeUnit.SECONDS.sleep(1);
 			} catch (InterruptedException e) {
