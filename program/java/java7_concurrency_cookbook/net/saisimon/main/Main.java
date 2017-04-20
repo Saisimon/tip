@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.lang.Thread.State;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Deque;
 import java.util.List;
@@ -103,7 +104,8 @@ public class Main {
 //		myWorkTaskMain();
 //		myLockTaskAndAbstractQueuedSynchronizerMain();
 //		myPriorityTransferQueueAndEventAndProducerAndConsumerMain();
-		parkingCounterAndSensorMain();
+//		parkingCounterAndSensorMain();
+		myReentrantLockAndLockTaskMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1765,5 +1767,43 @@ public class Main {
 		}
 		System.out.printf("Main: Number of cars: %d\n", counter.get());
 		System.out.printf("Main: End of the program.\n");
+	}
+	
+	/**
+	 * http://ifeve.com/testing-concurrent-applications-2/
+	 * 
+	 * @see MyReentrantLock
+	 * @see LockTask
+	 */
+	public static void myReentrantLockAndLockTaskMain() {
+		MyReentrantLock lock = new MyReentrantLock();
+		Thread[] threads = new Thread[5];
+		for (int i = 0; i < threads.length; i++) {
+			threads[i] = new Thread(new LockTask(lock));
+			threads[i].start();
+		}
+		for (int i = 0; i < 15; i++) {
+			System.out.printf("Main: Logging the Lock\n");
+			System.out.printf("************************\n");
+			System.out.printf("Lock: Owner : %s\n", lock.getOwnerName());
+			System.out.printf("Lock: Queued Threads: %s\n", lock.hasQueuedThreads());
+			if (lock.hasQueuedThreads()) {
+				System.out.printf("Lock: Queue Length: %d\n", lock.getQueueLength());
+				System.out.printf("Lock: Queued Threads: ");
+				Collection<Thread> lockedThreads = lock.getThreads();
+				for (Thread lockedThread : lockedThreads) {
+					System.out.printf("%s ", lockedThread.getName());
+				}
+				System.out.printf("\n");
+			}
+			System.out.printf("Lock: Fairness: %s\n", lock.isFair());
+			System.out.printf("Lock: Locked: %s\n", lock.isLocked());
+			System.out.printf("************************\n");
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
