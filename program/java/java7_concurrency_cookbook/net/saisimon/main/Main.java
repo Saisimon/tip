@@ -102,7 +102,8 @@ public class Main {
 //		myWorkThreadAndFactoryAndRecursiveTaskMain();
 //		myWorkTaskMain();
 //		myLockTaskAndAbstractQueuedSynchronizerMain();
-		myPriorityTransferQueueAndEventAndProducerAndConsumerMain();
+//		myPriorityTransferQueueAndEventAndProducerAndConsumerMain();
+		parkingCounterAndSensorMain();
 	}
 	
 	private static final int THREAD_SIZE = 10;
@@ -1739,5 +1740,30 @@ public class Main {
 			e.printStackTrace();
 		}
 		System.out.printf("Main: End of the program\n");
+	}
+	
+	/**
+	 * http://ifeve.com/customizing-concurrency-classes-11/
+	 * 
+	 * @see ParkingCounter
+	 * @see SensorA
+	 * @see SensorB
+	 */
+	public static void parkingCounterAndSensorMain() {
+		ParkingCounter counter = new ParkingCounter(100);
+		SensorA sa = new SensorA(counter);
+		SensorB sb = new SensorB(counter);
+		Thread ta = new Thread(sa);
+		Thread tb = new Thread(sb);
+		ta.start();
+		tb.start();
+		try {
+			ta.join();
+			tb.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.printf("Main: Number of cars: %d\n", counter.get());
+		System.out.printf("Main: End of the program.\n");
 	}
 }
