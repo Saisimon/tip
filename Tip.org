@@ -209,6 +209,21 @@
     sudo adduser --home /home/username username # 创建名为 username 的新用户，并指定 home 目录位置
     sudo usermod -aG sudo username # 加入 sudo 组
     #+END_SRC
+*** Shell 脚本查询指定文件夹下的所有文件
+    #+BEGIN_SRC
+    #!/bin/bash
+    function searchFile() {
+        for file in `ls $1`
+        do
+            if [ -d $1"/"$file ];then
+               searchFile $1"/"$file
+            elif [ -f $1"/"$file ];then
+               echo $1"/"$file
+            fi
+        done
+    }
+    searchFile "/home"
+    #+END_SRC
 ** Database
 *** Mysql
 **** 查询 Mysql 数据库大小
