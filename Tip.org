@@ -224,6 +224,29 @@
     }
     searchFile "/home"
     #+END_SRC
+*** Linux SSH 证书登录
+    #+BEGIN_SRC 
+    # 客户端生成公钥与私钥
+    [client@localhost]$ ssh-keygen -t rsa 
+    # 设置生成的目录位置，设置私钥密码
+    # 默认在 ~/.ssh 目录下生成 id_rsa 和 id_rsa.pub
+
+    # 服务端配置 ssh 配置文件
+    [server@localhost]$ vim /etc/ssh/sshd_config
+    #使用成对的密钥系统进行登录
+    RSAAuthentication yes
+    PubkeyAuthentication yes
+    AuthorizedKeysFile %h/.ssh/authorized_keys
+    #禁用密码登录
+    PasswordAuthentication no
+    # 重新启动 ssh 服务
+    [server@localhost]$ service ssh restart
+
+    # 客户端将公钥上传至服务端
+    [client@localhost]$ scp ~/.ssh/id_rsa.pub <sever-user>@<server-ip>:~
+    # 服务端添加客户端的公钥到 authorized_keys 中
+    [server@localhost]$ cat id_rsa.pub >> ~/.ssh/authorized_keys
+    #+END_SRC
 ** Database
 *** Mysql
 **** 查询 Mysql 数据库大小
