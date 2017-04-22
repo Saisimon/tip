@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Tip</title>
-<!-- 2016-11-22 Tue 15:46 -->
+<!-- 2017-04-22 Sat 09:14 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon" />
@@ -191,16 +191,22 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-1-1">1.1.1. 右键添加命令提示符(CMD)</a></li>
 <li><a href="#sec-1-1-2">1.1.2. 修改 XShell Alt 键作为 Meta 键, Backspace 键作为删除键</a></li>
 <li><a href="#sec-1-1-3">1.1.3. 常见文件头特征（魔数）</a></li>
+<li><a href="#sec-1-1-4">1.1.4. 批处理脚本运行程序</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-2">1.2. Linux</a>
 <ul>
-<li><a href="#sec-1-2-1">1.2.1. 查看 linux 内存占用</a></li>
-<li><a href="#sec-1-2-2">1.2.2. linux 解压 (tar 命令、unzip 命令)</a></li>
-<li><a href="#sec-1-2-3">1.2.3. linux 下 nginx 安装、启动、重启、停止</a></li>
-<li><a href="#sec-1-2-4">1.2.4. nginx 反向代理配置</a></li>
-<li><a href="#sec-1-2-5">1.2.5. linux 下安装 cheat 命令</a></li>
-<li><a href="#sec-1-2-6">1.2.6. linux 设置命令别名</a></li>
+<li><a href="#sec-1-2-1">1.2.1. 查看 Linux 系统信息</a></li>
+<li><a href="#sec-1-2-2">1.2.2. Linux 解压 (tar 命令、unzip 命令)</a></li>
+<li><a href="#sec-1-2-3">1.2.3. Linux 下 nginx 安装、启动、重启、停止</a></li>
+<li><a href="#sec-1-2-4">1.2.4. Nginx 反向代理配置</a></li>
+<li><a href="#sec-1-2-5">1.2.5. Linux 下安装 cheat 命令</a></li>
+<li><a href="#sec-1-2-6">1.2.6. Linux 设置命令别名</a></li>
+<li><a href="#sec-1-2-7">1.2.7. Shell 脚本中运用 Linux 中设置的别名</a></li>
+<li><a href="#sec-1-2-8">1.2.8. 判断用户是否登录 Linux</a></li>
+<li><a href="#sec-1-2-9">1.2.9. Linux 创建新用户，并设置 sudo 权限</a></li>
+<li><a href="#sec-1-2-10">1.2.10. Shell 脚本查询指定文件夹下的所有文件</a></li>
+<li><a href="#sec-1-2-11">1.2.11. Linux SSH 证书登录</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-3">1.3. Database</a>
@@ -227,7 +233,8 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#sec-1-6">1.6. Python</a>
 <ul>
-<li><a href="#sec-1-6-1">1.6.1. SCons</a></li>
+<li><a href="#sec-1-6-1">1.6.1. Python</a></li>
+<li><a href="#sec-1-6-2">1.6.2. SCons</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-7">1.7. JavaScript</a>
@@ -371,23 +378,91 @@ for the JavaScript code in this tag.
 </p>
 </div>
 </div>
+<div id="outline-container-sec-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4"><span class="section-number-4">1.1.4</span> 批处理脚本运行程序</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<pre class="example">
+ECHO "Start QQ..."
+CALL ${qq path}
+ECHO "Start Chrome..."
+START ${chrome path} ${url path}
+ECHO "Start Xshell..."
+START ${xshell path} ${session path}
+ECHO "..."
+</pre>
+</div>
+</div>
 </div>
 <div id="outline-container-sec-1-2" class="outline-3">
 <h3 id="sec-1-2"><span class="section-number-3">1.2</span> Linux</h3>
 <div class="outline-text-3" id="text-1-2">
 </div><div id="outline-container-sec-1-2-1" class="outline-4">
-<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> 查看 linux 内存占用</h4>
+<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> 查看 Linux 系统信息</h4>
 <div class="outline-text-4" id="text-1-2-1">
-<ol class="org-ol">
+<ul class="org-ul">
 <li>使用 <a href="http://man.linuxde.net/top">top</a> 命令来查看各个进程的使用情况
 </li>
-<li>按 Shift + m ,即 M 按内存占用率排序
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">常用交互命令</th>
+<th scope="col" class="left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">q</td>
+<td class="left">退出程序</td>
+</tr>
+
+<tr>
+<td class="left">I</td>
+<td class="left">切换显示平均负载和启动时间的信息</td>
+</tr>
+
+<tr>
+<td class="left">P</td>
+<td class="left">根据CPU使用百分比大小进行排序</td>
+</tr>
+
+<tr>
+<td class="left">M</td>
+<td class="left">根据驻留内存大小进行排序</td>
+</tr>
+
+<tr>
+<td class="left">k</td>
+<td class="left">终止一个进程，系统提示输入 PID</td>
+</tr>
+
+<tr>
+<td class="left">i</td>
+<td class="left">忽略闲置和僵死的进程</td>
+</tr>
+</tbody>
+</table>
+<ul class="org-ul">
+<li>查看 CPU 的个数与核心数
 </li>
-</ol>
+</ul>
+<pre class="example">
+# 查看物理 CPU 的个数
+cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l
+# 查看每个 CPU 的核心数
+cat /proc/cpuinfo | grep "physical id" | grep "0" | wc -l
+</pre>
 </div>
 </div>
 <div id="outline-container-sec-1-2-2" class="outline-4">
-<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> linux 解压 (<a href="http://man.linuxde.net/tar">tar</a> 命令、<a href="http://man.linuxde.net/unzip">unzip</a> 命令)</h4>
+<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> Linux 解压 (<a href="http://man.linuxde.net/tar">tar</a> 命令、<a href="http://man.linuxde.net/unzip">unzip</a> 命令)</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <pre class="example">
 1. 解压 .tar 文件
@@ -419,7 +494,7 @@ $ unzip *.zip -d ~/dic/
 </div>
 </div>
 <div id="outline-container-sec-1-2-3" class="outline-4">
-<h4 id="sec-1-2-3"><span class="section-number-4">1.2.3</span> linux 下 nginx 安装、启动、重启、停止</h4>
+<h4 id="sec-1-2-3"><span class="section-number-4">1.2.3</span> Linux 下 nginx 安装、启动、重启、停止</h4>
 <div class="outline-text-4" id="text-1-2-3">
 <p>
 安装
@@ -465,7 +540,7 @@ ${nginx_path}/sbin/nginx -s stop
 </div>
 </div>
 <div id="outline-container-sec-1-2-4" class="outline-4">
-<h4 id="sec-1-2-4"><span class="section-number-4">1.2.4</span> nginx 反向代理配置</h4>
+<h4 id="sec-1-2-4"><span class="section-number-4">1.2.4</span> Nginx 反向代理配置</h4>
 <div class="outline-text-4" id="text-1-2-4">
 <p>
 在 http-server-location / 下填写反向代理配置
@@ -479,7 +554,7 @@ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 </div>
 </div>
 <div id="outline-container-sec-1-2-5" class="outline-4">
-<h4 id="sec-1-2-5"><span class="section-number-4">1.2.5</span> linux 下安装 cheat 命令</h4>
+<h4 id="sec-1-2-5"><span class="section-number-4">1.2.5</span> Linux 下安装 cheat 命令</h4>
 <div class="outline-text-4" id="text-1-2-5">
 <ul class="org-ul">
 <li>通过 pip 安装 cheat
@@ -514,7 +589,7 @@ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 </div>
 </div>
 <div id="outline-container-sec-1-2-6" class="outline-4">
-<h4 id="sec-1-2-6"><span class="section-number-4">1.2.6</span> linux 设置命令别名</h4>
+<h4 id="sec-1-2-6"><span class="section-number-4">1.2.6</span> Linux 设置命令别名</h4>
 <div class="outline-text-4" id="text-1-2-6">
 <ul class="org-ul">
 <li>列出目前所有的别名设置
@@ -555,8 +630,96 @@ $ source .bash_profile
 </ul>
 </div>
 </div>
-</div>
+<div id="outline-container-sec-1-2-7" class="outline-4">
+<h4 id="sec-1-2-7"><span class="section-number-4">1.2.7</span> Shell 脚本中运用 Linux 中设置的别名</h4>
+<div class="outline-text-4" id="text-1-2-7">
+<pre class="example">
+#!/bin/bash
 
+# 引入加载存有 alias 的 profile
+source ~/.bash_profile
+# 设置别名在 shell 脚本中可用
+shopt -s expand_aliases
+# 运用 alias
+...
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-2-8" class="outline-4">
+<h4 id="sec-1-2-8"><span class="section-number-4">1.2.8</span> 判断用户是否登录 Linux</h4>
+<div class="outline-text-4" id="text-1-2-8">
+<pre class="example">
+#!/bin/bash
+
+# x 表示 username 当前在线的个数
+x=$(who | grep -c $username)
+if [ $x -lt 1 ]
+then
+    echo "$username not login"
+else
+    echo "$username login"
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-2-9" class="outline-4">
+<h4 id="sec-1-2-9"><span class="section-number-4">1.2.9</span> Linux 创建新用户，并设置 sudo 权限</h4>
+<div class="outline-text-4" id="text-1-2-9">
+<pre class="example">
+# one
+sudo useradd -m -g sudo username # 创建名为 username 的新用户，创建默认 home 目录，指定用户组为 sudo
+# two
+sudo adduser --home /home/username username # 创建名为 username 的新用户，并指定 home 目录位置
+sudo usermod -aG sudo username # 加入 sudo 组
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-2-10" class="outline-4">
+<h4 id="sec-1-2-10"><span class="section-number-4">1.2.10</span> Shell 脚本查询指定文件夹下的所有文件</h4>
+<div class="outline-text-4" id="text-1-2-10">
+<pre class="example">
+#!/bin/bash
+function searchFile() {
+    for file in `ls $1`
+    do
+        if [ -d $1"/"$file ];then
+           searchFile $1"/"$file
+        elif [ -f $1"/"$file ];then
+           echo $1"/"$file
+        fi
+    done
+}
+searchFile "/home"
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-2-11" class="outline-4">
+<h4 id="sec-1-2-11"><span class="section-number-4">1.2.11</span> Linux SSH 证书登录</h4>
+<div class="outline-text-4" id="text-1-2-11">
+<pre class="example">
+# 客户端生成公钥与私钥
+[client@localhost]$ ssh-keygen -t rsa 
+# 设置生成的目录位置，设置私钥密码
+# 默认在 ~/.ssh 目录下生成 id_rsa 和 id_rsa.pub
+
+# 服务端配置 ssh 配置文件
+[server@localhost]$ vim /etc/ssh/sshd_config
+#使用成对的密钥系统进行登录
+RSAAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile %h/.ssh/authorized_keys
+#禁用密码登录
+PasswordAuthentication no
+# 重新启动 ssh 服务
+[server@localhost]$ service ssh restart
+
+# 客户端将公钥上传至服务端
+[client@localhost]$ scp ~/.ssh/id_rsa.pub &lt;sever-user&gt;@&lt;server-ip&gt;:~
+# 服务端添加客户端的公钥到 authorized_keys 中
+[server@localhost]$ cat id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</pre>
+</div>
+</div>
+</div>
 <div id="outline-container-sec-1-3" class="outline-3">
 <h3 id="sec-1-3"><span class="section-number-3">1.3</span> Database</h3>
 <div class="outline-text-3" id="text-1-3">
@@ -631,10 +794,55 @@ jdbc.url=jdbc:mysql://ip-address:port/your_database_name?useUnicode=true&amp;cha
 </li>
 </ul>
 </div>
+</li>
+<li><a id="sec-1-3-1-4" name="sec-1-3-1-4"></a>Mysql 导入本地指定文件数据<br  /><div class="outline-text-5" id="text-1-3-1-4">
+<div class="org-src-container">
+
+<pre class="src src-sql"><span style="color: #465457; font-style: italic;">-- &#30331;&#24405;&#26102;&#24320;&#21551;&#23548;&#20837;&#26412;&#22320;&#25991;&#20214;&#21151;&#33021;&#12290;&#19981;&#24320;&#21551;&#36825;&#20010;&#21151;&#33021;&#65292;&#23548;&#20837;&#25991;&#20214;&#26102;&#20250;&#25253;&#8220;&#24403;&#21069; mysql &#29256;&#26412;&#19981;&#25903;&#25345;&#23548;&#20837;&#25991;&#20214;&#21151;&#33021;&#8221;&#30340;&#38169;&#35823;</span>
+mysql -u ${username} <span style="color: #465457; font-style: italic;">--local-infile=1 -p</span>
+
+<span style="color: #465457; font-style: italic;">-- &#24314;&#34920;</span>
+<span style="color: #66D9EF;">create</span> <span style="color: #66D9EF;">table</span> ${tablename}(id <span style="color: #66D9EF;">int</span> auto_increment <span style="color: #66D9EF;">not</span> <span style="color: #66D9EF;">null</span>, username <span style="color: #66D9EF;">varchar</span>(20) <span style="color: #66D9EF;">not</span> <span style="color: #66D9EF;">null</span>, age <span style="color: #66D9EF;">int</span> <span style="color: #66D9EF;">not</span> <span style="color: #66D9EF;">null</span>, <span style="color: #66D9EF;">primary</span> <span style="color: #66D9EF;">key</span>(id));
+
+<span style="color: #465457; font-style: italic;">-- &#23548;&#20837; cvs &#25991;&#20214;&#25968;&#25454;&#12290;&#25351;&#23450;&#32534;&#30721;&#20026; utf-8 &#65292;&#25353;&#29031;','&#38548;&#24320;&#23383;&#27573;&#65292;'\n'&#25442;&#34892;&#31526;&#38548;&#24320;&#19968;&#34892;&#65292;&#25351;&#23450;&#23545;&#24212;&#23548;&#20837;&#30340;&#23383;&#27573;&#65292;id &#23383;&#27573;&#33258;&#22686;&#38271;</span>
+load <span style="color: #66D9EF;">data</span> <span style="color: #66D9EF;">local</span> infile <span style="color: #E6DB74;">'${filepath}'</span> <span style="color: #66D9EF;">into</span> <span style="color: #66D9EF;">table</span> ${tablename} <span style="color: #66D9EF;">character</span> <span style="color: #66D9EF;">set</span> utf8 fields terminated <span style="color: #66D9EF;">by</span> <span style="color: #E6DB74;">','</span> lines terminated <span style="color: #66D9EF;">by</span> <span style="color: #E6DB74;">'\n'</span> (username, age) <span style="color: #66D9EF;">set</span> id = <span style="color: #66D9EF;">NULL</span>;
+</pre>
+</div>
+<p>
+<a href="https://dev.mysql.com/doc/refman/5.7/en/load-data.html%20">LOAD DATA INFILE Syntax</a>
+</p>
+</div>
+</li>
+<li><a id="sec-1-3-1-5" name="sec-1-3-1-5"></a>Mysql 导出表数据到指定文件<br  /><div class="outline-text-5" id="text-1-3-1-5">
+<div class="org-src-container">
+
+<pre class="src src-sql"><span style="color: #465457; font-style: italic;">-- &#23548;&#20986;&#34920;&#25968;&#25454;&#21040;&#25351;&#23450;&#25991;&#20214;</span>
+<span style="color: #66D9EF;">select</span> * info outfile <span style="color: #E6DB74;">'${filepath}'</span> fields terminated <span style="color: #66D9EF;">by</span> <span style="color: #E6DB74;">','</span> optionally enclosed <span style="color: #66D9EF;">by</span> <span style="color: #E6DB74;">'"'</span> lines terminated <span style="color: #66D9EF;">by</span> <span style="color: #E6DB74;">'\n'</span> <span style="color: #66D9EF;">from</span> ${tablename};
+</pre>
+</div>
+<p>
+<a href="https://dev.mysql.com/doc/refman/5.7/en/select-into.html%20">SELECT &#x2026; INTO Syntax</a>
+</p>
+</div>
+</li>
+<li><a id="sec-1-3-1-6" name="sec-1-3-1-6"></a>重置 Mysql root 密码<br  /><div class="outline-text-5" id="text-1-3-1-6">
+<pre class="example">
+# 停止 Mysql 服务
+sudo service mysql stop
+# 以 mysql 的安全模式启动服务
+sudo mysqld_safe --skip-grant-tables&amp;
+# 直接登录 mysql 
+mysql -uroot mysql
+# 修改 root 密码
+mysql &gt; UPDATE user SET password=PASSWORD("password") WHERE user="root";
+mysql &gt; FLUSH PRIVILIGES;
+# 重启 mysql 服务
+sudo service mysql restart
+</pre>
+</div>
 </li></ol>
 </div>
 </div>
-
 <div id="outline-container-sec-1-4" class="outline-3">
 <h3 id="sec-1-4"><span class="section-number-3">1.4</span> C</h3>
 <div class="outline-text-3" id="text-1-4">
@@ -775,6 +983,124 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </pre>
 </div>
 </div>
+</li>
+<li><a id="sec-1-5-1-7" name="sec-1-5-1-7"></a>Java 获取系统的临时文件夹路径<br  /><div class="outline-text-5" id="text-1-5-1-7">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#33719;&#21462;&#31995;&#32479;&#30340;&#20020;&#26102;&#25991;&#20214;&#22841;&#36335;&#24452;</span>
+<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">tmp</span> = System.getProperty(<span style="color: #E6DB74;">"java.io.tmpdir"</span>);
+</pre>
+</div>
+</div>
+</li>
+<li><a id="sec-1-5-1-8" name="sec-1-5-1-8"></a>Java 通过反射获取泛型的类型<br  /><div class="outline-text-5" id="text-1-5-1-8">
+<ul class="org-ul">
+<li>由于 Java 的泛型在运行时会被擦除，不能够直接获取泛型的类型，但是其实在 class 字节码中还是保存着泛型的信息，可以通过特殊的方式获取到泛型的类型
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * &#23450;&#20041;&#19968;&#20010;&#25277;&#35937;&#30340;&#29238;&#31867;</span>
+<span style="color: #E6DB74; font-style: italic;"> * &#33719;&#21462;&#29238;&#31867;&#20013;&#30340;&#27867;&#22411;&#31867;&#22411; T</span>
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">abstract</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">SuperClass</span>&lt;<span style="color: #66D9EF;">T</span>&gt; {
+
+    <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#27867;&#22411;&#31867;&#22411;</span>
+    <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #F92672;">clazz</span>;
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">SuperClass</span>() {
+        <span style="color: #66D9EF;">super</span>();
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#26681;&#25454;&#23454;&#29616;&#31867;&#21453;&#23556;&#33719;&#21462;&#21253;&#21547;&#27867;&#22411;&#30340;&#29238;&#31867;&#65292;&#28982;&#21518;&#33719;&#21462;&#27867;&#22411;&#30340;&#31867;&#22411;</span>
+        <span style="color: #66D9EF;">this</span>.clazz = (<span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt;)((<span style="color: #66D9EF;">ParameterizedType</span>)getClass().getGenericSuperclass()).getActualTypeArguments()[<span style="color: #ffa07a;">0</span>];
+    }
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #F92672; font-style: italic;">getClazz</span>() {
+        <span style="color: #66D9EF;">return</span> <span style="color: #66D9EF;">this</span>.clazz;
+    }
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">main</span>(<span style="color: #66D9EF;">String</span>[] <span style="color: #F92672;">args</span>) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#26500;&#36896;&#21311;&#21517;&#23376;&#31867;</span>
+        <span style="color: #66D9EF;">SuperClass</span>&lt;<span style="color: #66D9EF;">String</span>&gt; <span style="color: #F92672;">superClassString</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">SuperClass</span>&lt;<span style="color: #66D9EF;">String</span>&gt;(){};
+        System.out.println(superClassString.getClazz()); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">class java.lang.String</span>
+
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#26500;&#36896;&#21311;&#21517;&#23376;&#31867;</span>
+        <span style="color: #66D9EF;">SuperClass</span>&lt;<span style="color: #66D9EF;">Entity</span>&gt; <span style="color: #F92672;">superClassEntity</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">SuperClass</span>&lt;<span style="color: #66D9EF;">Entity</span>&gt;(){};
+        System.out.println(superClassEntity.getClazz()); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">class Entity</span>
+    }
+
+}
+
+<span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * &#31616;&#21333; Java &#23545;&#35937; POJO</span>
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Entity</span> {
+
+    <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">id</span>;
+    <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">name</span>;
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">getId</span>() {
+        <span style="color: #66D9EF;">return</span> id;
+    }
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">setId</span>(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">id</span>) {
+        <span style="color: #66D9EF;">this</span>.id = id;
+    }
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">String</span> <span style="color: #F92672; font-style: italic;">getName</span>() {
+        <span style="color: #66D9EF;">return</span> name;
+    }
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">setName</span>(<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">name</span>) {
+        <span style="color: #66D9EF;">this</span>.name = name;
+    }
+
+}
+</pre>
+</div>
+</div>
+</li>
+<li><a id="sec-1-5-1-9" name="sec-1-5-1-9"></a>Java 8 接口中的默认方法的“劫持”问题<br  /><div class="outline-text-5" id="text-1-5-1-9">
+<ul class="org-ul">
+<li>IFoo 接口中有一默认方法 bar
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Interface IFoo</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">interface</span> <span style="color: #66D9EF;">IFoo</span> {
+       <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">void</span> bar(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span>) {
+               System.out.println(<span style="color: #E6DB74;">"IFoo.bar(int)"</span>);
+       }
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>Foo 实现 IFoo 接口，并也有一个公共方法 bar
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Class Foo</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Foo</span> <span style="color: #66D9EF;">implements</span> <span style="color: #66D9EF;">IFoo</span> {
+        <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">bar</span>(<span style="color: #66D9EF;">long</span> <span style="color: #F92672;">l</span>) {
+                System.out.println(<span style="color: #E6DB74;">"Foo.bar(long)"</span>);
+        }
+
+        <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">main</span>(<span style="color: #66D9EF;">String</span>[] <span style="color: #F92672;">args</span>) {
+                <span style="color: #66D9EF;">Foo</span> <span style="color: #F92672;">foo</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">Foo</span>();
+                foo.bar(<span style="color: #ffa07a;">42</span>); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">1 IFoo.bar(int)</span>
+                <span style="color: #66D9EF;">IFoo</span> <span style="color: #F92672;">ifoo</span> = foo;
+                ifoo.bar(<span style="color: #ffa07a;">42</span>); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">2 IFoo.bar(int)</span>
+        }
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>main 方法中 1，2 位置调用的方法为都是接口中默认的方法,因为接口中的默认方法提供了更加准确的匹配
+</li>
+</ul>
+<p>
+<a href="http://rednaxelafx.iteye.com/blog/2033089%20">来源</a>
+</p>
+</div>
 </li></ol>
 </div>
 <div id="outline-container-sec-1-5-2" class="outline-4">
@@ -889,6 +1215,34 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </table>
 <p>
 <a href="http://tool.oschina.net/commons">更多</a>
+</p>
+</div>
+</li>
+<li><a id="sec-1-5-2-3" name="sec-1-5-2-3"></a>xpath 基础<br  /><div class="outline-text-5" id="text-1-5-2-3">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #465457; font-style: italic;">/*</span>
+<span style="color: #465457; font-style: italic;">    &lt;body&gt;</span>
+<span style="color: #465457; font-style: italic;">      &lt;div&gt;</span>
+<span style="color: #465457; font-style: italic;">        &lt;ul id="meun"&gt;</span>
+<span style="color: #465457; font-style: italic;">          &lt;li class="sub_meun" name="food"&gt;&lt;/li&gt;</span>
+<span style="color: #465457; font-style: italic;">          &lt;li class="sub_meun" name="phone"&gt;</span>
+<span style="color: #465457; font-style: italic;">            &lt;p&gt;// Phone&lt;/p&gt;</span>
+<span style="color: #465457; font-style: italic;">             &lt;span&gt;</span>
+<span style="color: #465457; font-style: italic;">               &lt;a&gt;    go   &lt;/a&gt;</span>
+<span style="color: #465457; font-style: italic;">             &lt;span&gt;</span>
+<span style="color: #465457; font-style: italic;">           &lt;/li&gt;</span>
+<span style="color: #465457; font-style: italic;">           &lt;li class="sub_meun" name="ring"&gt;&lt;/li&gt;</span>
+<span style="color: #465457; font-style: italic;">         &lt;/ul&gt;</span>
+<span style="color: #465457; font-style: italic;">       &lt;/div&gt;</span>
+<span style="color: #465457; font-style: italic;">     &lt;/body&gt;</span>
+<span style="color: #465457; font-style: italic;">     &#36873;&#21462;&#20869;&#23481;&#20026; go &#30340; a &#26631;&#31614;</span>
+<span style="color: #465457; font-style: italic;"> */</span>
+<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">xpath</span> = <span style="color: #E6DB74;">"//ul[@id='meun']/li[@class='sub_meun' and @name='phone']/p/parent::li/span/a[normalize-space(text())='go']"</span>;
+</pre>
+</div>
+<p>
+<a href="http://www.zvon.org/xxl/XPathTutorial/General_chi/examples.html">XPath 教程</a>
 </p>
 </div>
 </li></ol>
@@ -1156,6 +1510,24 @@ log4j.appender.CONSOLE=com.colorlog.log4j.AnsiColorConsoleAppender
 # log4j.appender.CONSOLE.TraceColour={esc}[1;30m
 </pre>
 </div>
+</li>
+<li><a id="sec-1-5-8-4" name="sec-1-5-8-4"></a>Eclipse 导入项目未自动识别为 web 项目<br  /><div class="outline-text-5" id="text-1-5-8-4">
+<ul class="org-ul">
+<li>Project - Predicates - Project Facets - 选择 Java 和 Dynamic Web Module (选择对应版本)
+</li>
+<li>当选择了 Dynamic Web Module 后，下方选择 Further Configuration availabe (没有这个选项的话，删除项目中 eclipse 生成的 .settings 文件夹，在 eclipse 中 refresh 项目，然后重复上一步)
+</li>
+<li>设置 classes 路径 和 webroot 的路径 - 保存
+</li>
+</ul>
+</div>
+</li>
+<li><a id="sec-1-5-8-5" name="sec-1-5-8-5"></a>Eclipse 部署 web 项目时 lib 为空<br  /><div class="outline-text-5" id="text-1-5-8-5">
+<ul class="org-ul">
+<li>Project - Predicates - Deployment Assembly - Add 添加 Libraries
+</li>
+</ul>
+</div>
 </li></ol>
 </div>
 </div>
@@ -1163,9 +1535,57 @@ log4j.appender.CONSOLE=com.colorlog.log4j.AnsiColorConsoleAppender
 <h3 id="sec-1-6"><span class="section-number-3">1.6</span> Python</h3>
 <div class="outline-text-3" id="text-1-6">
 </div><div id="outline-container-sec-1-6-1" class="outline-4">
-<h4 id="sec-1-6-1"><span class="section-number-4">1.6.1</span> SCons</h4>
+<h4 id="sec-1-6-1"><span class="section-number-4">1.6.1</span> Python</h4>
 <div class="outline-text-4" id="text-1-6-1">
-</div><ol class="org-ol"><li><a id="sec-1-6-1-1" name="sec-1-6-1-1"></a>CentOS 下编译安装 SCons<br  /><div class="outline-text-5" id="text-1-6-1-1">
+</div><ol class="org-ol"><li><a id="sec-1-6-1-1" name="sec-1-6-1-1"></a>Windows 上 Python2 和 Python3 兼容<br  /><div class="outline-text-5" id="text-1-6-1-1">
+<ul class="org-ul">
+<li>使用 -2 和 -3 区分 Python 版本
+</li>
+</ul>
+<pre class="example">
+# python2 运行 main.py
+py -2 main.py
+# python3 运行 main.py
+py -3 main.py
+</pre>
+<ul class="org-ul">
+<li>代码中指明使用的 Python 解释器版本
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#25351;&#23450; Python2 &#35299;&#37322;&#22120; &#20889;&#22312;&#20195;&#30721;&#31532;&#19968;&#34892;</span>
+<span style="color: #465457; font-style: italic;">#</span><span style="color: #465457; font-style: italic;">! python2</span>
+
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#25351;&#23450; Python3 &#35299;&#37322;&#22120; &#20889;&#22312;&#20195;&#30721;&#31532;&#19968;&#34892;</span>
+<span style="color: #465457; font-style: italic;">#</span><span style="color: #465457; font-style: italic;">! python3</span>
+</pre>
+</div>
+</div>
+</li>
+<li><a id="sec-1-6-1-2" name="sec-1-6-1-2"></a>指定 Python 源码编码<br  /><div class="outline-text-5" id="text-1-6-1-2">
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">-*- coding:utf-8 -*-</span>
+</pre>
+</div>
+</div>
+</li>
+<li><a id="sec-1-6-1-3" name="sec-1-6-1-3"></a>Windows 平台读取和打开二进制文件模式选择<br  /><div class="outline-text-5" id="text-1-6-1-3">
+<div class="org-src-container">
+
+<pre class="src src-python"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">Python &#22312; Windows &#24179;&#21488;&#19978;&#21306;&#20998;&#25991;&#26412;&#25991;&#20214;&#21644;&#20108;&#36827;&#21046;&#25991;&#20214;&#65307;&#35835;&#21462;&#25110;&#20889;&#20837;&#25991;&#26412;&#25991;&#20214;&#20013;&#26102;&#65292; &#34892;&#23614;&#23383;&#31526;&#20250;&#34987;&#33258;&#21160;&#22320;&#31245;&#21152;&#25913;&#21464;&#12290;</span>
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#22312;&#35835;&#20889;&#20108;&#36827;&#21046;&#25991;&#20214;&#26102;&#65292;&#35201;&#36873;&#25321;&#20108;&#36827;&#21046;&#27169;&#24335;&#25171;&#24320;&#12290;</span>
+<span style="color: #A6E22E;">file</span> = <span style="color: #A6E22E;">open</span>(filename, <span style="color: #E6DB74;">'wb'</span>)
+</pre>
+</div>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-1-6-2" class="outline-4">
+<h4 id="sec-1-6-2"><span class="section-number-4">1.6.2</span> SCons</h4>
+<div class="outline-text-4" id="text-1-6-2">
+</div><ol class="org-ol"><li><a id="sec-1-6-2-1" name="sec-1-6-2-1"></a>CentOS 下编译安装 SCons<br  /><div class="outline-text-5" id="text-1-6-2-1">
 <pre class="example">
 - 确定系统中安装了 Python
   $ python -V
@@ -1236,6 +1656,40 @@ log4j.appender.CONSOLE=com.colorlog.log4j.AnsiColorConsoleAppender
         <span style="color: #66D9EF;">return</span> str[0].toUpperCase() + str.substring(1);
     }
 }
+</pre>
+</div>
+</div>
+</li>
+<li><a id="sec-1-7-1-3" name="sec-1-7-1-3"></a>JavaScript 日期格式化<br  /><div class="outline-text-5" id="text-1-7-1-3">
+<div class="org-src-container">
+
+<pre class="src src-javascript">Date.<span style="color: #AE81FF;">prototype</span>.format = <span style="color: #66D9EF;">function</span>(<span style="color: #F92672;">style</span>) {
+    <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">o</span> = {
+        <span style="color: #E6DB74;">"M+"</span> : <span style="color: #AE81FF;">this</span>.getMonth() + 1, <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">month</span>
+        <span style="color: #E6DB74;">"d+"</span> : <span style="color: #AE81FF;">this</span>.getDate(),      <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">day</span>
+        <span style="color: #E6DB74;">"h+"</span> : <span style="color: #AE81FF;">this</span>.getHours(),     <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">hour</span>
+        <span style="color: #E6DB74;">"m+"</span> : <span style="color: #AE81FF;">this</span>.getMinutes(),   <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">minute</span>
+        <span style="color: #E6DB74;">"s+"</span> : <span style="color: #AE81FF;">this</span>.getSeconds(),   <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">second</span>
+        <span style="color: #E6DB74;">"w+"</span> : <span style="color: #E6DB74;">"\u65e5\u4e00\u4e8c\u4e09\u56db\u4e94\u516d"</span>.charAt(<span style="color: #AE81FF;">this</span>.getDay()),   <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">week</span>
+        <span style="color: #E6DB74;">"q+"</span> : Math.floor((<span style="color: #AE81FF;">this</span>.getMonth() + 3) / 3),  <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">quarter</span>
+        <span style="color: #E6DB74;">"S"</span>  : <span style="color: #AE81FF;">this</span>.getMilliseconds() <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">millisecond</span>
+    }
+    <span style="color: #66D9EF;">if</span> (<span style="color: #E6DB74;">/(y+)/</span>.test(style)) {
+        style = style.replace(RegExp.$1, (<span style="color: #AE81FF;">this</span>.getFullYear() + <span style="color: #E6DB74;">""</span>).substr(4 - RegExp.$1.length));
+    }
+    <span style="color: #66D9EF;">for</span>(<span style="color: #66D9EF;">var</span> <span style="color: #F92672;">k</span> <span style="color: #66D9EF;">in</span> o){
+        <span style="color: #66D9EF;">if</span> (<span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">RegExp</span>(<span style="color: #E6DB74;">"("</span>+ k +<span style="color: #E6DB74;">")"</span>).test(style)){
+            style = style.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : (<span style="color: #E6DB74;">"00"</span> + o[k]).substr((<span style="color: #E6DB74;">""</span> + o[k]).length));
+        }
+    }
+    <span style="color: #66D9EF;">return</span> style;
+};
+
+<span style="color: #465457; font-style: italic;">/*</span>
+<span style="color: #465457; font-style: italic;"> * &#31034;&#20363;</span>
+<span style="color: #465457; font-style: italic;"> * 2016-12-01 19:12:28</span>
+<span style="color: #465457; font-style: italic;"> */</span>
+<span style="color: #66D9EF;">var</span> <span style="color: #F92672;">formatDate</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">Date</span>().format(<span style="color: #E6DB74;">"yyyy-MM-dd hh:mm:ss"</span>);
 </pre>
 </div>
 </div>
@@ -1320,6 +1774,59 @@ $(document).ready(<span style="color: #66D9EF;">function</span>() {
 });
 </pre>
 </div>
+</div>
+</li>
+
+<li><a id="sec-1-7-2-3" name="sec-1-7-2-3"></a>JQuery 重复绑定问题<br  /><div class="outline-text-5" id="text-1-7-2-3">
+<div class="org-src-container">
+
+<pre class="src src-javascript">$(<span style="color: #E6DB74;">"#id"</span>).die().live(<span style="color: #E6DB74;">"click"</span>, <span style="color: #66D9EF;">function</span>() {
+    <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">click event</span>
+    ...
+);
+
+$(<span style="color: #E6DB74;">"#id"</span>).unbind(<span style="color: #E6DB74;">"click"</span>).click(<span style="color: #66D9EF;">function</span>() {
+    <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">click event</span>
+    ...
+});
+</pre>
+</div>
+</div>
+</li>
+<li><a id="sec-1-7-2-4" name="sec-1-7-2-4"></a>JQuery 动态加载 JavaScript 文件<br  /><div class="outline-text-5" id="text-1-7-2-4">
+<ol class="org-ol">
+<li>加载单个 JavaScript 文件
+<div class="org-src-container">
+
+<pre class="src src-javascript">$.ajax({
+    url : <span style="color: #E6DB74;">"js file path"</span>,
+    dataType : <span style="color: #E6DB74;">"script"</span>,
+    cache : <span style="color: #AE81FF;">true</span>,
+    <span style="color: #F92672; font-style: italic;">success</span> : <span style="color: #66D9EF;">function</span> () {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#25104;&#21151;&#21152;&#36733; js &#25991;&#20214;&#21518;&#30340;&#22238;&#35843;&#20989;&#25968;</span>
+    }
+});
+
+$.getScript(<span style="color: #E6DB74;">"js file path"</span>, <span style="color: #66D9EF;">function</span>() {
+    <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#25104;&#21151;&#21152;&#36733; js &#25991;&#20214;&#21518;&#30340;&#22238;&#35843;&#20989;&#25968;</span>
+});
+</pre>
+</div>
+</li>
+<li>加载多个 Javascript 文件
+<div class="org-src-container">
+
+<pre class="src src-javascript">$.when(
+    $.getScript(<span style="color: #E6DB74;">"js file path 1"</span>),
+    $.getScript(<span style="color: #E6DB74;">"js file path 2"</span>),
+    $.getScript(<span style="color: #E6DB74;">"js file path 3"</span>)
+).done(<span style="color: #66D9EF;">function</span>() {
+    <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#20840;&#37096; js &#25991;&#20214;&#21152;&#36733;&#21518;&#30340;&#22238;&#35843;&#20989;&#25968;</span>
+});
+</pre>
+</div>
+</li>
+</ol>
 </div>
 </li></ol>
 </div>
@@ -1519,7 +2026,7 @@ $ git remote set-url origin &lt;ssh url&gt;
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2016-11-22 Tue 15:46</p>
+<p class="date">Created: 2017-04-22 Sat 09:14</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
