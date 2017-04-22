@@ -157,7 +157,7 @@ t[TODO] s[STARTED] d[DONE] w[WAITING] S[SOMEDAY] P[PROJECT] c[CANCELLED]
 C-c C-s 设置某条记录的开始时间 (org-schedule)
 C-c C-d 设置某条记录的结束时间 (org-deadline)
 
-C-c C-e 根据提示，到处指定的文件类型
+C-c C-e 根据提示，导出为指定的文件类型
 
 
 
