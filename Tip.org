@@ -870,6 +870,18 @@
       ,*/
      var formatDate = new Date().format("yyyy-MM-dd hh:mm:ss");
      #+END_SRC
+**** JavaScript 过滤数组中的假值
+     - 假值有 false, null, 0, "", undefined 和 NaN
+     #+BEGIN_SRC javascript
+     function filterFalse(arr) {
+         return arr.filter(function(value) {
+             return Boolean(value);
+         });
+     }
+
+     console.log(filterFalse([false, null, "aaa", 7, 0, "", NaN]));
+     // -> ["aaa", 7]
+     #+END_SRC
 *** JQuery
 **** JQuery 与 Prototype 中 $ 符号冲突解决方法
     - JQuery 在 prototype 之后引入，即：
