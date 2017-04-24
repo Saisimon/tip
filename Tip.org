@@ -997,6 +997,22 @@
     $ apt-get install libncurses-dev
     #+END_SRC
    
+** Vim
+*** Vim 查询时忽略大小写
+    - Vim 默认查询是区分大小写的，忽略大小写的配置
+    #+BEGIN_SRC 
+    // 忽略大小写查询
+    : set ignorecase
+    #+END_SRC
+    - 智能忽略大小写，输入为全小写时，忽略大小写进行查询，当输入中有至少一个大写时，则进行大小写敏感查询
+    #+BEGIN_SRC 
+    // 智能忽略大小写
+    // 模式        匹配
+    // vim        vim,Vim,vIm,viM,VIm,ViM,vIM,VIM
+    // Vim        Vim
+    // VIm        VIm
+    : set ignorecase smartcase
+    #+END_SRC
 ** Git
 *** Git 基本操作
     #+BEGIN_SRC 
