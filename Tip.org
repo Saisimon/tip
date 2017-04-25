@@ -806,7 +806,10 @@
        $ scons -v
      #+END_SRC
 
-** JavaScript
+** Web
+*** HTML
+**** HTML 转义字符
+     [[https://dev.w3.org/html5/html-author/charref ][HTML Entities]]
 *** JavaScript
 **** JavaScript 类型判断
     - 是否为数字
@@ -1013,6 +1016,7 @@
     // VIm        VIm
     : set ignorecase smartcase
     #+END_SRC
+
 ** Git
 *** Git 基本操作
     #+BEGIN_SRC 
