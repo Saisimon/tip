@@ -15,6 +15,7 @@ import java.util.List;
  *
  */
 public class LexicographicalNumbers {
+	
 	public List<Integer> lexicalOrder(int n) {
 		List<Integer> res = new LinkedList<Integer>();
 		int idx = 1;
@@ -31,12 +32,21 @@ public class LexicographicalNumbers {
         		while (tmp % 10 == 9) { // 当前数末尾为9的话，下个数为除 10 除到没有 9 为止加上 1
         			tmp /= 10;
         		}
+        		if (tmp == 0) {
+        			// 当进行到最后，tmp 回到 0 时，跳出循环
+        			break;
+        		}
         		tmp++;
         	} else { // 当前数超过 n
         		tmp /= 10;
         		tmp++;
+        		// 针对末尾为 0 的数
+        		while (tmp % 10 == 0) {
+        			tmp /= 10;
+        		}
         	}
         }
         return res;
     }
+	
 }
