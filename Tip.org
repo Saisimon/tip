@@ -810,6 +810,17 @@
 *** HTML
 **** HTML 转义字符
      [[https://dev.w3.org/html5/html-author/charref ][HTML Entities]]
+*** CSS
+**** CSS 文本两端对齐
+     #+BEGIN_SRC css
+     .justify {
+         text-align:justify;
+         text-justify:distribute-all-lines; /*ie6-8*/
+         text-align-last:justify; /* ie9*/
+         -moz-text-align-last:justify; /*ff*/
+         -webkit-text-align-last:justify; /*chrome 20+*/
+     }
+     #+END_SRC
 *** JavaScript
 **** JavaScript 类型判断
     - 是否为数字
