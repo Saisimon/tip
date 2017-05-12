@@ -1002,6 +1002,66 @@
      var text = $(id).options[idx].text.strip();
      #+END_SRC
 
+** Docker
+*** 进入 Docker 容器
+    - 运行下面的 .bashrc_docker 文件
+    #+BEGIN_SRC 
+    # .bashrc_docker
+    alias docker-pid="sudo docker inspect --format '{{.State.Pid}}'"
+    alias docker-ip="sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
+
+    # the implementation refs from https://github.com/jpetazzo/nsenter/blob/master/docker-enter
+    function docker-enter() {
+        #if [ -e $(dirname "$0")/nsenter ]; then
+        #Change for centos bash running
+        if [ -e $(dirname '$0')/nsenter ]; then
+            # with boot2docker, nsenter is not in the PATH but it is in the same folder
+            NSENTER=$(dirname "$0")/nsenter
+        else
+            # if nsenter has already been installed with path notified, here will be clarified
+            NSENTER=$(which nsenter)
+            #NSENTER=nsenter
+        fi
+        [ -z "$NSENTER" ] && echo "WARN Cannot find nsenter" && return
+
+        if [ -z "$1" ]; then
+            echo "Usage: `basename "$0"` CONTAINER [COMMAND [ARG]...]"
+            echo ""
+            echo "Enters the Docker CONTAINER and executes the specified COMMAND."
+            echo "If COMMAND is not specified, runs an interactive shell in CONTAINER."
+        else
+            PID=$(sudo docker inspect --format "{{.State.Pid}}" "$1")
+            if [ -z "$PID" ]; then
+                echo "WARN Cannot find the given container"
+                return
+            fi
+            shift
+
+            OPTS="--target $PID --mount --uts --ipc --net --pid"
+
+            if [ -z "$1" ]; then
+                # No command given.
+                # Use su to clear all host environment variables except for TERM,
+                # initialize the environment variables HOME, SHELL, USER, LOGNAME, PATH,
+                # and start a login shell.
+                #sudo $NSENTER "$OPTS" su - root
+                sudo $NSENTER --target $PID --mount --uts --ipc --net --pid su - root
+            else
+                # Use env to clear all host environment variables.
+                sudo $NSENTER --target $PID --mount --uts --ipc --net --pid env -i $@
+            fi
+        fi
+    }
+    #+END_SRC
+    [[https://github.com/yeasy/docker_practice/blob/master/_local/.bashrc_docker ][文件来源]]
+    - 进入指定 Docker 容器
+    #+BEGIN_SRC 
+    $ docker ps # 查看容器的名称或者 ID
+    $ docker-pid <containerId> # 查看容器的 PID
+    $ docker-enter <containerId> # 进入指定容器
+    #+END_SRC
+    
+
 ** Emacs
 *** 安装 Emacs 时，error: The required function `tputs' was not found in any library
     - 缺少 libncurses-dev 包
