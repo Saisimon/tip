@@ -1061,7 +1061,6 @@
     $ docker-enter <containerId> # 进入指定容器
     #+END_SRC
     
-
 ** Emacs
 *** 安装 Emacs 时，error: The required function `tputs' was not found in any library
     - 缺少 libncurses-dev 包
