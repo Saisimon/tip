@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Tip</title>
-<!-- 2017-04-22 Sat 09:14 -->
+<!-- 2017-05-17 Wed 11:42 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon" />
@@ -237,29 +237,41 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-6-2">1.6.2. SCons</a></li>
 </ul>
 </li>
-<li><a href="#sec-1-7">1.7. JavaScript</a>
+<li><a href="#sec-1-7">1.7. Web</a>
 <ul>
-<li><a href="#sec-1-7-1">1.7.1. JavaScript</a></li>
-<li><a href="#sec-1-7-2">1.7.2. JQuery</a></li>
-<li><a href="#sec-1-7-3">1.7.3. Prototype</a></li>
+<li><a href="#sec-1-7-1">1.7.1. HTML</a></li>
+<li><a href="#sec-1-7-2">1.7.2. CSS</a></li>
+<li><a href="#sec-1-7-3">1.7.3. JavaScript</a></li>
+<li><a href="#sec-1-7-4">1.7.4. JQuery</a></li>
+<li><a href="#sec-1-7-5">1.7.5. Prototype</a></li>
 </ul>
 </li>
-<li><a href="#sec-1-8">1.8. Emacs</a>
+<li><a href="#sec-1-8">1.8. Docker</a>
 <ul>
-<li><a href="#sec-1-8-1">1.8.1. 安装 Emacs 时，error: The required function `tputs' was not found in any library</a></li>
+<li><a href="#sec-1-8-1">1.8.1. 进入 Docker 容器</a></li>
 </ul>
 </li>
-<li><a href="#sec-1-9">1.9. Git</a>
+<li><a href="#sec-1-9">1.9. Emacs</a>
 <ul>
-<li><a href="#sec-1-9-1">1.9.1. Git 基本操作</a></li>
-<li><a href="#sec-1-9-2">1.9.2. 更新 .gitignore 后，清理 Git 仓库</a></li>
-<li><a href="#sec-1-9-3">1.9.3. Git 在 push 之前撤回最近一次 commit 命令</a></li>
-<li><a href="#sec-1-9-4">1.9.4. 修改 Git 别名</a></li>
-<li><a href="#sec-1-9-5">1.9.5. Git 推送代码</a></li>
-<li><a href="#sec-1-9-6">1.9.6. Git 拉取代码</a></li>
-<li><a href="#sec-1-9-7">1.9.7. 添加新 ssh<sub>key</sub> 至 Github</a></li>
-<li><a href="#sec-1-9-8">1.9.8. Git status 输出中文为 UNICODE 解决方法</a></li>
-<li><a href="#sec-1-9-9">1.9.9. Git push 时，fatal: Authentication failed</a></li>
+<li><a href="#sec-1-9-1">1.9.1. 安装 Emacs 时，error: The required function `tputs' was not found in any library</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-10">1.10. Vim</a>
+<ul>
+<li><a href="#sec-1-10-1">1.10.1. Vim 查询时忽略大小写</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-11">1.11. Git</a>
+<ul>
+<li><a href="#sec-1-11-1">1.11.1. Git 基本操作</a></li>
+<li><a href="#sec-1-11-2">1.11.2. 更新 .gitignore 后，清理 Git 仓库</a></li>
+<li><a href="#sec-1-11-3">1.11.3. Git 在 push 之前撤回最近一次 commit 命令</a></li>
+<li><a href="#sec-1-11-4">1.11.4. 修改 Git 别名</a></li>
+<li><a href="#sec-1-11-5">1.11.5. Git 推送代码</a></li>
+<li><a href="#sec-1-11-6">1.11.6. Git 拉取代码</a></li>
+<li><a href="#sec-1-11-7">1.11.7. 添加新 ssh<sub>key</sub> 至 Github</a></li>
+<li><a href="#sec-1-11-8">1.11.8. Git status 输出中文为 UNICODE 解决方法</a></li>
+<li><a href="#sec-1-11-9">1.11.9. Git push 时，fatal: Authentication failed</a></li>
 </ul>
 </li>
 </ul>
@@ -1606,12 +1618,40 @@ py -3 main.py
 </div>
 
 <div id="outline-container-sec-1-7" class="outline-3">
-<h3 id="sec-1-7"><span class="section-number-3">1.7</span> JavaScript</h3>
+<h3 id="sec-1-7"><span class="section-number-3">1.7</span> Web</h3>
 <div class="outline-text-3" id="text-1-7">
 </div><div id="outline-container-sec-1-7-1" class="outline-4">
-<h4 id="sec-1-7-1"><span class="section-number-4">1.7.1</span> JavaScript</h4>
+<h4 id="sec-1-7-1"><span class="section-number-4">1.7.1</span> HTML</h4>
 <div class="outline-text-4" id="text-1-7-1">
-</div><ol class="org-ol"><li><a id="sec-1-7-1-1" name="sec-1-7-1-1"></a>JavaScript 类型判断<br  /><div class="outline-text-5" id="text-1-7-1-1">
+</div><ol class="org-ol"><li><a id="sec-1-7-1-1" name="sec-1-7-1-1"></a>HTML 转义字符<br  /><div class="outline-text-5" id="text-1-7-1-1">
+<p>
+<a href="https://dev.w3.org/html5/html-author/charref%20">HTML Entities</a>
+</p>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-1-7-2" class="outline-4">
+<h4 id="sec-1-7-2"><span class="section-number-4">1.7.2</span> CSS</h4>
+<div class="outline-text-4" id="text-1-7-2">
+</div><ol class="org-ol"><li><a id="sec-1-7-2-1" name="sec-1-7-2-1"></a>CSS 文本两端对齐<br  /><div class="outline-text-5" id="text-1-7-2-1">
+<div class="org-src-container">
+
+<pre class="src src-css"><span style="color: #F92672;">.justify </span>{
+    <span style="color: #66D9EF;">text-align</span>:justify;
+    <span style="color: #66D9EF;">text-justify</span>:distribute-all-lines; <span style="color: #465457; font-style: italic;">/*</span><span style="color: #465457; font-style: italic;">ie6-8</span><span style="color: #465457; font-style: italic;">*/</span>
+    <span style="color: #66D9EF;">text-align-last</span>:justify; <span style="color: #465457; font-style: italic;">/* </span><span style="color: #465457; font-style: italic;">ie9</span><span style="color: #465457; font-style: italic;">*/</span>
+    <span style="color: #66D9EF; font-style: italic;">-moz-text-align-last</span>:justify; <span style="color: #465457; font-style: italic;">/*</span><span style="color: #465457; font-style: italic;">ff</span><span style="color: #465457; font-style: italic;">*/</span>
+    <span style="color: #66D9EF; font-style: italic;">-webkit-text-align-last</span>:justify; <span style="color: #465457; font-style: italic;">/*</span><span style="color: #465457; font-style: italic;">chrome 20+</span><span style="color: #465457; font-style: italic;">*/</span>
+}
+</pre>
+</div>
+</div>
+</li></ol>
+</div>
+<div id="outline-container-sec-1-7-3" class="outline-4">
+<h4 id="sec-1-7-3"><span class="section-number-4">1.7.3</span> JavaScript</h4>
+<div class="outline-text-4" id="text-1-7-3">
+</div><ol class="org-ol"><li><a id="sec-1-7-3-1" name="sec-1-7-3-1"></a>JavaScript 类型判断<br  /><div class="outline-text-5" id="text-1-7-3-1">
 <ul class="org-ul">
 <li>是否为数字
 <div class="org-src-container">
@@ -1643,7 +1683,7 @@ py -3 main.py
 </ul>
 </div>
 </li>
-<li><a id="sec-1-7-1-2" name="sec-1-7-1-2"></a>JavaScript 首字母大写<br  /><div class="outline-text-5" id="text-1-7-1-2">
+<li><a id="sec-1-7-3-2" name="sec-1-7-3-2"></a>JavaScript 首字母大写<br  /><div class="outline-text-5" id="text-1-7-3-2">
 <div class="org-src-container">
 
 <pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">toCapitalizeCase</span>(<span style="color: #F92672;">str</span>) {
@@ -1660,7 +1700,7 @@ py -3 main.py
 </div>
 </div>
 </li>
-<li><a id="sec-1-7-1-3" name="sec-1-7-1-3"></a>JavaScript 日期格式化<br  /><div class="outline-text-5" id="text-1-7-1-3">
+<li><a id="sec-1-7-3-3" name="sec-1-7-3-3"></a>JavaScript 日期格式化<br  /><div class="outline-text-5" id="text-1-7-3-3">
 <div class="org-src-container">
 
 <pre class="src src-javascript">Date.<span style="color: #AE81FF;">prototype</span>.format = <span style="color: #66D9EF;">function</span>(<span style="color: #F92672;">style</span>) {
@@ -1693,12 +1733,109 @@ py -3 main.py
 </pre>
 </div>
 </div>
+</li>
+<li><a id="sec-1-7-3-4" name="sec-1-7-3-4"></a>JavaScript 过滤数组中的假值<br  /><div class="outline-text-5" id="text-1-7-3-4">
+<ul class="org-ul">
+<li>假值有 false, null, 0, "", undefined 和 NaN
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">filterFalse</span>(<span style="color: #F92672;">arr</span>) {
+    <span style="color: #66D9EF;">return</span> arr.filter(<span style="color: #66D9EF;">function</span>(<span style="color: #F92672;">value</span>) {
+        <span style="color: #66D9EF;">return</span> Boolean(value);
+    });
+}
+
+console.log(filterFalse([<span style="color: #AE81FF;">false</span>, <span style="color: #AE81FF;">null</span>, <span style="color: #E6DB74;">"aaa"</span>, 7, 0, <span style="color: #E6DB74;">""</span>, <span style="color: #AE81FF;">NaN</span>]));
+<span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">-&gt; ["aaa", 7]</span>
+</pre>
+</div>
+</div>
+</li>
+<li><a id="sec-1-7-3-5" name="sec-1-7-3-5"></a>HTML5 LocalStorage 本地存储<br  /><div class="outline-text-5" id="text-1-7-3-5">
+<ul class="org-ul">
+<li>各浏览器的对 LocalStorage 的支持情况
+</li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+</colgroup>
+<tbody>
+<tr>
+<td class="right">IE</td>
+<td class="right">Firefox</td>
+<td class="right">Chrome</td>
+<td class="right">Opera</td>
+<td class="right">Safari</td>
+<td class="right">IOS</td>
+<td class="right">Android</td>
+</tr>
+
+<tr>
+<td class="right">8.0+</td>
+<td class="right">3.5+</td>
+<td class="right">4.0+</td>
+<td class="right">11.5+</td>
+<td class="right">4.0+</td>
+<td class="right">3.2+</td>
+<td class="right">2.1+</td>
+</tr>
+</tbody>
+</table>
+<p>
+<a href="http://caniuse.com/#search=localStorage%20">数据来源</a>
+</p>
+
+<ul class="org-ul">
+<li>LocalStorage 的使用
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#21028;&#26029;&#27983;&#35272;&#22120;&#26159;&#21542;&#25903;&#25345; LocalStorage</span>
+<span style="color: #66D9EF;">if</span>(window.localStorage){
+    localStorage.username = <span style="color: #E6DB74;">"Saisimon"</span>; <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35774;&#32622; username &#20026;"Saisimon"</span>
+    localStorage[<span style="color: #E6DB74;">"username"</span>] = <span style="color: #E6DB74;">"Simon"</span>; <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35774;&#32622; username &#20026; "Simon",&#20250;&#35206;&#30422;&#19978;&#38754;&#30340;&#35774;&#32622;</span>
+    localStorage.setItem(<span style="color: #E6DB74;">"username"</span>, <span style="color: #E6DB74;">"Saisimon"</span>); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#21516;&#19978;</span>
+    <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">username</span> = localStorage[<span style="color: #E6DB74;">"username"</span>]; <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#33719;&#21462; username &#30340;&#20540;</span>
+    username = localStorage.username; <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#21516;&#19978;</span>
+    username = localStorage.getItem(<span style="color: #E6DB74;">"username"</span>); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#21516;&#19978;</span>
+    localStorage.removeItem(<span style="color: #E6DB74;">"username"</span>); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#28165;&#38500; username &#30340;&#20540;</span>
+    localStorage.clear(); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#28165;&#38500; LocalStorage &#20013;&#30340;&#25152;&#26377;&#20540;</span>
+
+    <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#25171;&#21360;&#20986; LocalStorage &#20013;&#30340;&#25152;&#26377;&#20540;</span>
+    <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">storage</span> = window.localStorage;
+    <span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">var</span> <span style="color: #F92672;">i</span> = 0; i &lt; storage.length; i++) {
+        console.log(storage.key(i) + <span style="color: #E6DB74;">" : "</span> + storage.getItem(storage.key(i));
+    }
+} <span style="color: #66D9EF;">else</span> {
+    alert(<span style="color: #E6DB74;">'Your browser does not support LocalStorage.'</span>);
+}
+</pre>
+</div>
+</div>
 </li></ol>
 </div>
-<div id="outline-container-sec-1-7-2" class="outline-4">
-<h4 id="sec-1-7-2"><span class="section-number-4">1.7.2</span> JQuery</h4>
-<div class="outline-text-4" id="text-1-7-2">
-</div><ol class="org-ol"><li><a id="sec-1-7-2-1" name="sec-1-7-2-1"></a>JQuery 与 Prototype 中 $ 符号冲突解决方法<br  /><div class="outline-text-5" id="text-1-7-2-1">
+<div id="outline-container-sec-1-7-4" class="outline-4">
+<h4 id="sec-1-7-4"><span class="section-number-4">1.7.4</span> JQuery</h4>
+<div class="outline-text-4" id="text-1-7-4">
+</div><ol class="org-ol"><li><a id="sec-1-7-4-1" name="sec-1-7-4-1"></a>JQuery 与 Prototype 中 $ 符号冲突解决方法<br  /><div class="outline-text-5" id="text-1-7-4-1">
 <ul class="org-ul">
 <li>JQuery 在 prototype 之后引入，即：
 <div class="org-src-container">
@@ -1747,7 +1884,7 @@ JQuery.noConflict();
 </div>
 </li>
 
-<li><a id="sec-1-7-2-2" name="sec-1-7-2-2"></a>JQuery 获取 url 参数<br  /><div class="outline-text-5" id="text-1-7-2-2">
+<li><a id="sec-1-7-4-2" name="sec-1-7-4-2"></a>JQuery 获取 url 参数<br  /><div class="outline-text-5" id="text-1-7-4-2">
 <div class="org-src-container">
 
 <pre class="src src-javascript">$.extend({
@@ -1777,7 +1914,7 @@ $(document).ready(<span style="color: #66D9EF;">function</span>() {
 </div>
 </li>
 
-<li><a id="sec-1-7-2-3" name="sec-1-7-2-3"></a>JQuery 重复绑定问题<br  /><div class="outline-text-5" id="text-1-7-2-3">
+<li><a id="sec-1-7-4-3" name="sec-1-7-4-3"></a>JQuery 重复绑定问题<br  /><div class="outline-text-5" id="text-1-7-4-3">
 <div class="org-src-container">
 
 <pre class="src src-javascript">$(<span style="color: #E6DB74;">"#id"</span>).die().live(<span style="color: #E6DB74;">"click"</span>, <span style="color: #66D9EF;">function</span>() {
@@ -1793,7 +1930,7 @@ $(<span style="color: #E6DB74;">"#id"</span>).unbind(<span style="color: #E6DB74
 </div>
 </div>
 </li>
-<li><a id="sec-1-7-2-4" name="sec-1-7-2-4"></a>JQuery 动态加载 JavaScript 文件<br  /><div class="outline-text-5" id="text-1-7-2-4">
+<li><a id="sec-1-7-4-4" name="sec-1-7-4-4"></a>JQuery 动态加载 JavaScript 文件<br  /><div class="outline-text-5" id="text-1-7-4-4">
 <ol class="org-ol">
 <li>加载单个 JavaScript 文件
 <div class="org-src-container">
@@ -1830,10 +1967,10 @@ $.getScript(<span style="color: #E6DB74;">"js file path"</span>, <span style="co
 </div>
 </li></ol>
 </div>
-<div id="outline-container-sec-1-7-3" class="outline-4">
-<h4 id="sec-1-7-3"><span class="section-number-4">1.7.3</span> Prototype</h4>
-<div class="outline-text-4" id="text-1-7-3">
-</div><ol class="org-ol"><li><a id="sec-1-7-3-1" name="sec-1-7-3-1"></a>Prototype 获取 select 选择框中选中文本<br  /><div class="outline-text-5" id="text-1-7-3-1">
+<div id="outline-container-sec-1-7-5" class="outline-4">
+<h4 id="sec-1-7-5"><span class="section-number-4">1.7.5</span> Prototype</h4>
+<div class="outline-text-4" id="text-1-7-5">
+</div><ol class="org-ol"><li><a id="sec-1-7-5-1" name="sec-1-7-5-1"></a>Prototype 获取 select 选择框中选中文本<br  /><div class="outline-text-5" id="text-1-7-5-1">
 <div class="org-src-container">
 
 <pre class="src src-javascript"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#36873;&#25321;&#26694;&#20013;&#36873;&#20013;&#25991;&#26412;&#30340;&#19979;&#26631;</span>
@@ -1848,11 +1985,85 @@ $.getScript(<span style="color: #E6DB74;">"js file path"</span>, <span style="co
 </div>
 
 <div id="outline-container-sec-1-8" class="outline-3">
-<h3 id="sec-1-8"><span class="section-number-3">1.8</span> Emacs</h3>
+<h3 id="sec-1-8"><span class="section-number-3">1.8</span> Docker</h3>
 <div class="outline-text-3" id="text-1-8">
 </div><div id="outline-container-sec-1-8-1" class="outline-4">
-<h4 id="sec-1-8-1"><span class="section-number-4">1.8.1</span> 安装 Emacs 时，error: The required function `tputs' was not found in any library</h4>
+<h4 id="sec-1-8-1"><span class="section-number-4">1.8.1</span> 进入 Docker 容器</h4>
 <div class="outline-text-4" id="text-1-8-1">
+<ul class="org-ul">
+<li>运行下面的 .bashrc<sub>docker</sub> 文件
+</li>
+</ul>
+<pre class="example">
+# .bashrc_docker
+alias docker-pid="sudo docker inspect --format '{{.State.Pid}}'"
+alias docker-ip="sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
+
+# the implementation refs from https://github.com/jpetazzo/nsenter/blob/master/docker-enter
+function docker-enter() {
+    #if [ -e $(dirname "$0")/nsenter ]; then
+    #Change for centos bash running
+    if [ -e $(dirname '$0')/nsenter ]; then
+        # with boot2docker, nsenter is not in the PATH but it is in the same folder
+        NSENTER=$(dirname "$0")/nsenter
+    else
+        # if nsenter has already been installed with path notified, here will be clarified
+        NSENTER=$(which nsenter)
+        #NSENTER=nsenter
+    fi
+    [ -z "$NSENTER" ] &amp;&amp; echo "WARN Cannot find nsenter" &amp;&amp; return
+
+    if [ -z "$1" ]; then
+        echo "Usage: `basename "$0"` CONTAINER [COMMAND [ARG]...]"
+        echo ""
+        echo "Enters the Docker CONTAINER and executes the specified COMMAND."
+        echo "If COMMAND is not specified, runs an interactive shell in CONTAINER."
+    else
+        PID=$(sudo docker inspect --format "{{.State.Pid}}" "$1")
+        if [ -z "$PID" ]; then
+            echo "WARN Cannot find the given container"
+            return
+        fi
+        shift
+
+        OPTS="--target $PID --mount --uts --ipc --net --pid"
+
+        if [ -z "$1" ]; then
+            # No command given.
+            # Use su to clear all host environment variables except for TERM,
+            # initialize the environment variables HOME, SHELL, USER, LOGNAME, PATH,
+            # and start a login shell.
+            #sudo $NSENTER "$OPTS" su - root
+            sudo $NSENTER --target $PID --mount --uts --ipc --net --pid su - root
+        else
+            # Use env to clear all host environment variables.
+            sudo $NSENTER --target $PID --mount --uts --ipc --net --pid env -i $@
+        fi
+    fi
+}
+</pre>
+<p>
+<a href="https://github.com/yeasy/docker_practice/blob/master/_local/.bashrc_docker%20">文件来源</a>
+</p>
+<ul class="org-ul">
+<li>进入指定 Docker 容器
+</li>
+</ul>
+<pre class="example">
+$ docker ps # 查看容器的名称或者 ID
+$ docker-pid &lt;containerId&gt; # 查看容器的 PID
+$ docker-enter &lt;containerId&gt; # 进入指定容器
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-9" class="outline-3">
+<h3 id="sec-1-9"><span class="section-number-3">1.9</span> Emacs</h3>
+<div class="outline-text-3" id="text-1-9">
+</div><div id="outline-container-sec-1-9-1" class="outline-4">
+<h4 id="sec-1-9-1"><span class="section-number-4">1.9.1</span> 安装 Emacs 时，error: The required function `tputs' was not found in any library</h4>
+<div class="outline-text-4" id="text-1-9-1">
 <ul class="org-ul">
 <li>缺少 libncurses-dev 包
 </li>
@@ -1866,12 +2077,42 @@ $ apt-get install libncurses-dev
 </div>
 </div>
 
-<div id="outline-container-sec-1-9" class="outline-3">
-<h3 id="sec-1-9"><span class="section-number-3">1.9</span> Git</h3>
-<div class="outline-text-3" id="text-1-9">
-</div><div id="outline-container-sec-1-9-1" class="outline-4">
-<h4 id="sec-1-9-1"><span class="section-number-4">1.9.1</span> Git 基本操作</h4>
-<div class="outline-text-4" id="text-1-9-1">
+<div id="outline-container-sec-1-10" class="outline-3">
+<h3 id="sec-1-10"><span class="section-number-3">1.10</span> Vim</h3>
+<div class="outline-text-3" id="text-1-10">
+</div><div id="outline-container-sec-1-10-1" class="outline-4">
+<h4 id="sec-1-10-1"><span class="section-number-4">1.10.1</span> Vim 查询时忽略大小写</h4>
+<div class="outline-text-4" id="text-1-10-1">
+<ul class="org-ul">
+<li>Vim 默认查询是区分大小写的，忽略大小写的配置
+</li>
+</ul>
+<pre class="example">
+// 忽略大小写查询
+: set ignorecase
+</pre>
+<ul class="org-ul">
+<li>智能忽略大小写，输入为全小写时，忽略大小写进行查询，当输入中有至少一个大写时，则进行大小写敏感查询
+</li>
+</ul>
+<pre class="example">
+// 智能忽略大小写
+// 模式        匹配
+// vim        vim,Vim,vIm,viM,VIm,ViM,vIM,VIM
+// Vim        Vim
+// VIm        VIm
+: set ignorecase smartcase
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-11" class="outline-3">
+<h3 id="sec-1-11"><span class="section-number-3">1.11</span> Git</h3>
+<div class="outline-text-3" id="text-1-11">
+</div><div id="outline-container-sec-1-11-1" class="outline-4">
+<h4 id="sec-1-11-1"><span class="section-number-4">1.11.1</span> Git 基本操作</h4>
+<div class="outline-text-4" id="text-1-11-1">
 <pre class="example">
 - 初始化
   $ git init
@@ -1898,9 +2139,9 @@ $ apt-get install libncurses-dev
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-9-2" class="outline-4">
-<h4 id="sec-1-9-2"><span class="section-number-4">1.9.2</span> 更新 .gitignore 后，清理 Git 仓库</h4>
-<div class="outline-text-4" id="text-1-9-2">
+<div id="outline-container-sec-1-11-2" class="outline-4">
+<h4 id="sec-1-11-2"><span class="section-number-4">1.11.2</span> 更新 .gitignore 后，清理 Git 仓库</h4>
+<div class="outline-text-4" id="text-1-11-2">
 <pre class="example">
 - 清理暂存区的文件
   $ git rm -r --cached .
@@ -1911,17 +2152,17 @@ $ apt-get install libncurses-dev
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-9-3" class="outline-4">
-<h4 id="sec-1-9-3"><span class="section-number-4">1.9.3</span> Git 在 push 之前撤回最近一次 commit 命令</h4>
-<div class="outline-text-4" id="text-1-9-3">
+<div id="outline-container-sec-1-11-3" class="outline-4">
+<h4 id="sec-1-11-3"><span class="section-number-4">1.11.3</span> Git 在 push 之前撤回最近一次 commit 命令</h4>
+<div class="outline-text-4" id="text-1-11-3">
 <pre class="example">
 $ git reset --soft HEAD^
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-9-4" class="outline-4">
-<h4 id="sec-1-9-4"><span class="section-number-4">1.9.4</span> 修改 Git 别名</h4>
-<div class="outline-text-4" id="text-1-9-4">
+<div id="outline-container-sec-1-11-4" class="outline-4">
+<h4 id="sec-1-11-4"><span class="section-number-4">1.11.4</span> 修改 Git 别名</h4>
+<div class="outline-text-4" id="text-1-11-4">
 <ul class="org-ul">
 <li>修改 .gitconfig 文件中[alias]属性
 <pre class="example">
@@ -1942,9 +2183,9 @@ $ git config --global alias.st status
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-1-9-5" class="outline-4">
-<h4 id="sec-1-9-5"><span class="section-number-4">1.9.5</span> Git 推送代码</h4>
-<div class="outline-text-4" id="text-1-9-5">
+<div id="outline-container-sec-1-11-5" class="outline-4">
+<h4 id="sec-1-11-5"><span class="section-number-4">1.11.5</span> Git 推送代码</h4>
+<div class="outline-text-4" id="text-1-11-5">
 <pre class="example">
 - 首次推送，添加远程代码库至配置
   $ git remote add tip https://github.com/Saisimon/tip.git
@@ -1954,9 +2195,9 @@ $ git config --global alias.st status
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-9-6" class="outline-4">
-<h4 id="sec-1-9-6"><span class="section-number-4">1.9.6</span> Git 拉取代码</h4>
-<div class="outline-text-4" id="text-1-9-6">
+<div id="outline-container-sec-1-11-6" class="outline-4">
+<h4 id="sec-1-11-6"><span class="section-number-4">1.11.6</span> Git 拉取代码</h4>
+<div class="outline-text-4" id="text-1-11-6">
 <pre class="example">
 - 暂存工作区
  $ git stash
@@ -1968,9 +2209,9 @@ $ git config --global alias.st status
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-9-7" class="outline-4">
-<h4 id="sec-1-9-7"><span class="section-number-4">1.9.7</span> 添加新 ssh<sub>key</sub> 至 Github</h4>
-<div class="outline-text-4" id="text-1-9-7">
+<div id="outline-container-sec-1-11-7" class="outline-4">
+<h4 id="sec-1-11-7"><span class="section-number-4">1.11.7</span> 添加新 ssh<sub>key</sub> 至 Github</h4>
+<div class="outline-text-4" id="text-1-11-7">
 <pre class="example">
 - 检查是否存在 .ssh 文件夹
   $ cd ~/.ssh
@@ -1990,9 +2231,9 @@ $ git config --global alias.st status
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-9-8" class="outline-4">
-<h4 id="sec-1-9-8"><span class="section-number-4">1.9.8</span> Git status 输出中文为 UNICODE 解决方法</h4>
-<div class="outline-text-4" id="text-1-9-8">
+<div id="outline-container-sec-1-11-8" class="outline-4">
+<h4 id="sec-1-11-8"><span class="section-number-4">1.11.8</span> Git status 输出中文为 UNICODE 解决方法</h4>
+<div class="outline-text-4" id="text-1-11-8">
 <ul class="org-ul">
 <li>修改 git config 属性
 <pre class="example">
@@ -2009,13 +2250,18 @@ $ vi ~/.gitconfig
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-1-9-9" class="outline-4">
-<h4 id="sec-1-9-9"><span class="section-number-4">1.9.9</span> Git push 时，fatal: Authentication failed</h4>
-<div class="outline-text-4" id="text-1-9-9">
+<div id="outline-container-sec-1-11-9" class="outline-4">
+<h4 id="sec-1-11-9"><span class="section-number-4">1.11.9</span> Git push 时，fatal: Authentication failed</h4>
+<div class="outline-text-4" id="text-1-11-9">
 <ul class="org-ul">
 <li>修改 remote 地址
 <pre class="example">
 $ git remote set-url origin &lt;ssh url&gt;
+</pre>
+</li>
+<li>查看 remote 地址
+<pre class="example">
+$ git remote -v
 </pre>
 </li>
 </ul>
@@ -2026,7 +2272,7 @@ $ git remote set-url origin &lt;ssh url&gt;
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2017-04-22 Sat 09:14</p>
+<p class="date">Created: 2017-05-17 Wed 11:42</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
