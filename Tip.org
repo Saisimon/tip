@@ -896,6 +896,34 @@
      console.log(filterFalse([false, null, "aaa", 7, 0, "", NaN]));
      // -> ["aaa", 7]
      #+END_SRC
+**** HTML5 LocalStorage 本地存储
+     - 各浏览器的对 LocalStorage 的支持情况
+     |   IE | Firefox | Chrome | Opera | Safari |  IOS | Android |
+     | 8.0+ |    3.5+ |   4.0+ | 11.5+ |   4.0+ | 3.2+ |    2.1+ |
+     [[http://caniuse.com/#search=localStorage ][数据来源]]
+
+     - LocalStorage 的使用
+     #+BEGIN_SRC javascript
+     // 判断浏览器是否支持 LocalStorage
+     if(window.localStorage){
+         localStorage.username = "Saisimon"; // 设置 username 为"Saisimon"
+         localStorage["username"] = "Simon"; // 设置 username 为 "Simon",会覆盖上面的设置
+         localStorage.setItem("username", "Saisimon"); // 同上
+         var username = localStorage["username"]; // 获取 username 的值
+         username = localStorage.username; // 同上
+         username = localStorage.getItem("username"); // 同上
+         localStorage.removeItem("username"); // 清除 username 的值
+         localStorage.clear(); // 清除 LocalStorage 中的所有值
+
+         // 打印出 LocalStorage 中的所有值
+         var storage = window.localStorage;
+         for (var i = 0; i < storage.length; i++) {
+             console.log(storage.key(i) + " : " + storage.getItem(storage.key(i));
+         }
+     } else {
+         alert('Your browser does not support LocalStorage.');
+     }
+     #+END_SRC
 *** JQuery
 **** JQuery 与 Prototype 中 $ 符号冲突解决方法
     - JQuery 在 prototype 之后引入，即：
