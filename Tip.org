@@ -945,7 +945,7 @@
       #+END_SRC
       #+BEGIN_SRC javascript
       // 改变 JQuery 的选择标识符，将 $ 的控制权交还给 Prototype 。
-      var jq = JQuery.noConflict();
+      var jq = jQuery.noConflict();
       // 使用 JQuery 选择器的方式改为如下：
       jq("#id").text();
       #+END_SRC
@@ -956,17 +956,17 @@
       #+END_SRC
       #+BEGIN_SRC javascript
       // 这种情况 $ 为 Prototype 中定义的标识符，要想使用 JQuery 的选择器，需用如下形式：
-      JQuery("#id").text();
+      jQuery("#id").text();
       #+END_SRC
     - 通用解决方案，不管引入的先后顺序：
       #+BEGIN_SRC javascript
       // JQuery 放弃 $ 所有权
-      JQuery.noConflict();
+      jQuery.noConflict();
       (function($){ 
               .....
               //此时在这个语句块中使用的都是 JQuery 中定义的 $
               $('#id').text(); 
-      })(JQuery)
+      })(jQuery)
       #+END_SRC
 
 **** JQuery 获取 url 参数
