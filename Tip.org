@@ -821,6 +821,18 @@
          -webkit-text-align-last:justify; /*chrome 20+*/
      }
      #+END_SRC
+**** CSS 文本溢出省略
+     #+BEGIN_SRC html
+     <div class="text">This is some long text that will not fit in the box</div>
+     <style>
+       .text {
+         width: 100px;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+       }
+     </style>
+     #+END_SRC
 *** JavaScript
 **** JavaScript 类型判断
     - 是否为数字
