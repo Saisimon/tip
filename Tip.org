@@ -1033,6 +1033,54 @@
             // 全部 js 文件加载后的回调函数
         });
         #+END_SRC
+**** 使用 jQuery Form Plugin 进行异步表单提交
+     #+BEGIN_SRC html
+     <form id="test" method="post" action="/form/submit" >
+       <input type="text" name="username" id="username" />
+       <input type="password" name="password" id="password" />
+       <div id="btn">Sumbit</div>
+     </form>
+
+     <script type="text/javascript" src="jquery.min.js" ></script>
+     <script type="text/javascript" src="jquery.form.min.js" ></script>
+     <script>
+     $(function() {
+         $("#btn").click(function() {
+             $("#test").ajaxSubmit({
+                 beforeSubmit: function(arr, $form, options) { // 提交表单前的回调函数
+                     // arr: 表单数据
+                     // $form: 表单对象
+                     // options: 表单提交的可选对象
+                     // 回调函数返回 false 表单将不会提交
+                     console.log(arr);
+                 },
+                 url: '/form/sumbit', // 表单提交的链接
+                 dataType: 'json', // 预期响应的数据类型
+                 data: { // 和表单一起提交的额外数据对象
+                     sumbitType: 'save',
+                     otherDate: 'otherDate'
+                 },
+                 type: 'post', // 提交表单的类型(GET, POST, PUT)
+                 clearForm: true, // 提交表单成功后是否清除表单中的数据
+                 uploadProgress: function(event, position, total, percentComplete) {
+                     // event: 事件对象
+                     // position: 上传的位置
+                     // total: 上传的总量
+                     // percentComplete: 完成的百分数
+                     console.log(position, total, percentComplete + "%");
+                 },
+                 success: function(responseText) { // 提交成功后的回调函数
+                     alert(responseText);
+                 },
+                 error: function () { //提交错误后的回调函数
+                     alert("error");
+                 }
+             });
+         });
+     });
+     </script>
+     #+END_SRC
+     [[https://jquery-form.github.io/form/ ][jQuery Form Plugin]]
 *** Prototype
 **** Prototype 获取 select 选择框中选中文本
      #+BEGIN_SRC javascript
