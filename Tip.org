@@ -247,6 +247,24 @@
     # 服务端添加客户端的公钥到 authorized_keys 中
     [server@localhost]$ cat id_rsa.pub >> ~/.ssh/authorized_keys
     #+END_SRC
+*** Linux 让进程在后台运行的方法
+    #+BEGIN_SRC 
+    # 1. Ctrl + z, bg
+    [root@localhost]$ mvn -Djetty.port=8888 jetty:run > jetty.log 2>&1
+    # 按下 Ctrl + z 挂起到后台暂停运行
+    ^Z
+    [1]+  Stopped  mvn -Djetty.port=8888 jetty:run > jetty.log 2>&1
+    # bg 命令将挂起的进程放在后台
+    [root@localhost]$ bg
+    [1]+  mvn -Djetty.port=8888 jetty:run > jetty.log 2>&1
+
+    # 2. setsid 命令使执行进程不属于接受 HUP 信号的终端的子进程
+    [root@localhost]$ setsid mvn -Djetty.port=8888 jetty:run > jetty.log 2>&1
+
+    # 3. & 将命令放入后台运行
+    [root@localhost]$ (mvn -Djetty.port=8888 jetty:run > jetty.log 2>&1 &)
+    #+END_SRC
+    [[https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html ][参考]]
 ** Database
 *** Mysql
 **** 查询 Mysql 数据库大小
