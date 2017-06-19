@@ -774,6 +774,11 @@
      #+BEGIN_SRC 
        http://localhost:8983/solr/item/update?commit=true&stream.file=d:/tmp/solr_data.csv&stream.contentType=application/csv
      #+END_SRC
+*** Dubbo
+**** Fail to decode request due to: RpcInvocation 问题
+     1. 参数中有没有序列化的对象。所有参数必须继承 Serializable 接口实现序列化
+     2. 参数对象中有不能序列化的属性。改变属性，使所有属性可以序列化
+     3. 服务提供者与服务消费者依赖版本不一致，导致序列化异常。保证提供者和消费者依赖版本一致
 *** Eclipse
 **** 显示 Eclipse 内存堆占用条，手动 GC
      - 修改配置文件 {workspaceHome}/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs 
