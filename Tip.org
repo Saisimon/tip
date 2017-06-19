@@ -36,6 +36,7 @@
     START ${xshell path} ${session path}
     ECHO "..."
     #+END_SRC
+
 ** Linux
 *** 查看 Linux 系统信息
     - 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
@@ -265,6 +266,7 @@
     [root@localhost]$ (mvn -Djetty.port=8888 jetty:run > jetty.log 2>&1 &)
     #+END_SRC
     [[https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html ][参考]]
+
 ** Database
 *** Mysql
 **** 查询 Mysql 数据库大小
@@ -334,6 +336,7 @@
     # 重启 mysql 服务
     sudo service mysql restart
     #+END_SRC
+
 ** C
 *** C
 **** 位操作
@@ -351,6 +354,7 @@
              printf("第%d位值为0", bit_number);
      }
      #+END_SRC
+
 ** Java
 *** Java
 **** 操作 jar 包
@@ -529,6 +533,26 @@
      #+END_SRC
      - main 方法中 1，2 位置调用的方法为都是接口中默认的方法,因为接口中的默认方法提供了更加准确的匹配
      [[http://rednaxelafx.iteye.com/blog/2033089 ][来源]]
+**** 使用 commons-beanutils 复制属性，当对象中的数值类型属性为 null 时复制成 0 的问题
+     #+BEGIN_SRC java
+     // 当对象的属性对象为 null 时，复制对象中的数值类型属性被初始化为 0
+     BeanUtils.copyProperties(entity, copyEntity);
+
+     /* 方式1 */
+     // 设置所有类型的默认值为 null
+     BeanUtilsBean.getInstance().getConvertUtils().register(false, true, 0);
+
+     /* 方式2 */
+     // 根据需要，注册对应的 Converter 对象, 并设置对应的默认值
+     ConvertUtils.register(new LongConverter(null), Long.class); // Long
+     ConvertUtils.register(new DoubleConverter(null), Double.class); // Double
+     ConvertUtils.register(new IntegerConverter(null), Integer.class); // Integer
+     ConvertUtils.register(new FloatConverter(null), Float.class); // Float
+     ...
+
+     // 再复制属性
+     BeanUtils.copyProperties(entity, copyEntity);
+     #+END_SRC
 *** Web
 **** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
@@ -779,6 +803,7 @@
      - 设置 classes 路径 和 webroot 的路径 - 保存
 **** Eclipse 部署 web 项目时 lib 为空
      - Project - Predicates - Deployment Assembly - Add 添加 Libraries
+
 ** Python
 *** Python
 **** Windows 上 Python2 和 Python3 兼容
