@@ -779,6 +779,43 @@
      1. 参数中有没有序列化的对象。所有参数必须继承 Serializable 接口实现序列化
      2. 参数对象中有不能序列化的属性。改变属性，使所有属性可以序列化
      3. 服务提供者与服务消费者依赖版本不一致，导致序列化异常。保证提供者和消费者依赖版本一致
+*** Hadoop
+**** Hadoop 版本依赖关系
+     #+BEGIN_SRC xml
+     <!-- Java 要求 -->
+     <!-- Hadoop 2.7 以及之后的版本需要 JDK 7 -->
+     <!-- Hadoop 2.6 以及之前的版本支持 JDK 6 -->
+
+     <!-- Hadoop 1.x.y 依赖 hadoop-core 包 -->
+     <dependency>
+         <groupId>org.apache.hadoop</groupId>
+         <artifactId>hadoop-core</artifactId>
+         <version>1.x.y</version>
+     </dependency>
+
+     <!-- Hadoop 2.x.y 依赖 hadoop-common、hadoop-hdfs、hadoop-mapreduce-client-core、hadoop-client -->
+     <dependency>
+         <groupId>org.apache.hadoop</groupId>
+         <artifactId>hadoop-common</artifactId>
+         <version>2.x.y</version>
+     </dependency>
+     <dependency>
+         <groupId>org.apache.hadoop</groupId>
+         <artifactId>hadoop-hdfs</artifactId>
+         <version>2.x.y</version>
+     </dependency>
+     <dependency>
+         <groupId>org.apache.hadoop</groupId>
+         <artifactId>hadoop-mapreduce-client-core</artifactId>
+         <version>2.x.y</version>
+     </dependency>
+     <dependency>
+         <groupId>org.apache.hadoop</groupId>
+         <artifactId>hadoop-client</artifactId>
+         <version>2.x.y</version>
+     </dependency>
+
+     #+END_SRC
 *** Eclipse
 **** 显示 Eclipse 内存堆占用条，手动 GC
      - 修改配置文件 {workspaceHome}/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs 
