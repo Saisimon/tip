@@ -336,6 +336,15 @@
     # 重启 mysql 服务
     sudo service mysql restart
     #+END_SRC
+**** Mysql 对于 zero date time 的处理
+    Java 连接 Mysql 数据库，字段日期为 0 时，会抛出异常 java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column n to TIMESTAMP
+    #+BEGIN_SRC 
+    # 解决方法为在配置 JDBC 链接时，添加 zeroDateTimeBehavior 属性来处理
+    # 1.zeroDateTimeBehavior=exception 默认值，抛出异常
+    # 2.zeroDateTimeBehavior=convertToNull 将值转为 NULL
+    # 3.zeroDateTimeBehavior=round 将值转为最近的正确值，即'0001-01-01'
+    jdbc:mysql://${mysql.serverUrl}?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull
+    #+END_SRC
 
 ** C
 *** C
