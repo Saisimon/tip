@@ -1,4 +1,5 @@
 #+AUTHOR: [[http://blog.saisimon.net][Saisimon]]
+#+OPTIONS: ^:nil
 
 #+BEGIN_HTML
 <link rel="stylesheet" href="css/main.css" >
