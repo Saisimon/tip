@@ -1390,7 +1390,13 @@
     或
     $ apt-get install libncurses-dev
     #+END_SRC
-    
+*** 轻量级标记语言对比
+    #+BEGIN_QUOTE
+    轻量级标记语言是一种 *语法简单* 的标记语言。它使用易于理解的格式标记，没有古怪的<标签>。
+    md为Markdown，gfm是GitHub风格的Markdown，rst为reStructedText，ttl为Textile，asc为AsciiDoc，org为Org-mode
+    #+END_QUOTE
+    [[http://www.worldhello.net/gotgithub/appendix/markups.html#tbl-markups ][常用轻量级标记语言对比]]
+
 ** Vim
 *** Vim 查询时忽略大小写
     - Vim 默认查询是区分大小写的，忽略大小写的配置
