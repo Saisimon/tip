@@ -854,7 +854,144 @@
      - 设置 classes 路径 和 webroot 的路径 - 保存
 **** Eclipse 部署 web 项目时 lib 为空
      - Project - Predicates - Deployment Assembly - Add 添加 Libraries
+*** 设计模式
+**** 观察者模式
+     *Observer 模式--多个对象 Subject 和 Observer ，当一方的状态发生改变的时候，另一方能够得到通知。*
+    #+BEGIN_QUOTE
+    在JDK中有一个对 Observer 模式的简单的实现：就是类 java.util.Observerable 和接口 java.util.Observer 。
+    java.util.Observerable 类对应于 Subject ，而 java.util.Observer 就是观察者。
+    #+END_QUOTE
+     
+     - DataSubject.java 被观察对象
+    #+BEGIN_SRC java
+    package net.saisimon.design.observer;
 
+    import java.util.Observable;
+
+    // 继承 Observable 类来实现观察者模式
+    public class DataSubject extends Observable {
+        
+        private int width;
+        private int height;
+        
+        public int getWidth() {
+            return width;
+        }
+        public void setWidth(int width) {
+            this.width = width;
+            // 设置 changed 的值，说明被观察者已经改变
+            this.setChanged();
+        }
+        public int getHeight() {
+            return height;
+        }
+        public void setHeight(int height) {
+            this.height = height;
+            // 设置 changed 的值，说明被观察者已经改变
+            this.setChanged();
+        }
+        
+    }
+    #+END_SRC
+
+     - FrameSubject.java 组合被观察对象
+    #+BEGIN_SRC java
+    package net.saisimon.design.observer;
+
+    import java.awt.HeadlessException;
+    import java.awt.event.ComponentAdapter;
+    import java.awt.event.ComponentEvent;
+    import java.util.Observer;
+
+    import javax.swing.JFrame;
+
+    public class FrameSubject extends JFrame {
+
+        // 被观察对象
+        private DataSubject subject = new DataSubject();
+        
+        public FrameSubject(String title) throws HeadlessException {
+            super(title);
+        }
+
+        public void registerObserver(Observer observer) {
+            // 注册观察者
+            subject.addObserver(observer);
+        }
+        
+        public void listener() {
+            // 添加窗口大小变化的事件
+            addComponentListener(new ComponentAdapter() {
+
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    // 改变被观察者的属性
+                    subject.setWidth(e.getComponent().getWidth());
+                    subject.setHeight(e.getComponent().getHeight());
+                    // 通知所有注册的观察者
+                    subject.notifyObservers();
+                }
+                
+            });
+        }
+        
+    }
+    #+END_SRC
+
+     - FrameObserver.java 观察者对象
+    #+BEGIN_SRC java
+    package net.saisimon.design.observer;
+
+    import java.awt.HeadlessException;
+    import java.util.Observable;
+    import java.util.Observer;
+
+    import javax.swing.JFrame;
+
+    // 实现 Observer 接口，来实现观察者模式
+    public class FrameObserver extends JFrame implements Observer {
+
+        public FrameObserver(String title) throws HeadlessException {
+            super(title);
+        }
+
+        // 实现 update 方法，被观察者状态改变时所做的操作
+        public void update(Observable o, Object arg) {
+            DataSubject subject = (DataSubject) o;
+            this.setSize(subject.getWidth(), subject.getHeight());
+        }
+
+    }
+    #+END_SRC
+
+     - Design.java 主类
+    #+BEGIN_SRC java
+    package net.saisimon.design.observer;
+
+    import javax.swing.JFrame;
+
+    public class Design {
+        
+        public static void main(String[] args) {
+            FrameSubject fs = new FrameSubject("FrameSubject");
+            FrameObserver fo = new FrameObserver("FrameObserver");
+            
+            fs.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            // 注册观察者
+            fs.registerObserver(fo);
+            fs.listener();
+            fs.setSize(200, 200);
+            fs.setLocation(250, 0);
+            fs.setVisible(true);
+            
+            fo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            fo.setSize(200, 200);
+            fo.setVisible(true);
+        }
+        
+    }
+    #+END_SRC
+     [[https://www.ibm.com/developerworks/cn/java/l-jdkdp/part1/ ][参考来源]]
 ** Python
 *** Python
 **** Windows 上 Python2 和 Python3 兼容
@@ -1251,7 +1388,7 @@
     或
     $ apt-get install libncurses-dev
     #+END_SRC
-   
+    
 ** Vim
 *** Vim 查询时忽略大小写
     - Vim 默认查询是区分大小写的，忽略大小写的配置
