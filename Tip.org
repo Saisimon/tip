@@ -564,6 +564,72 @@
      // 再复制属性
      BeanUtils.copyProperties(entity, copyEntity);
      #+END_SRC
+**** Java AES 加密解密
+     - 加密
+     #+BEGIN_SRC java
+     /**
+      ,* @param content 待加密内容
+      ,* @param password 密钥
+      ,* @return 密文，加密异常时返回 null 
+      ,*/
+     public static byte[] encrypt(String content, String password) {
+         try {
+             KeyGenerator kgen = KeyGenerator.getInstance("AES");
+             SecureRandom random=SecureRandom.getInstance("SHA1PRNG");
+             random.setSeed(password.getBytes());
+             kgen.init(128, random);
+             SecretKey secretKey = kgen.generateKey();
+             byte[] enCodeFormat = secretKey.getEncoded();
+             SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");
+             Cipher cipher = Cipher.getInstance("AES");
+             byte[] byteContent = content.getBytes("utf-8");
+             cipher.init(Cipher.ENCRYPT_MODE, key);
+             return cipher.doFinal(byteContent);
+         } catch (NoSuchAlgorithmException | NoSuchPaddingException | 
+                 InvalidKeyException | UnsupportedEncodingException |
+                 IllegalBlockSizeException | BadPaddingException e) {
+             e.printStackTrace();
+         }
+         return null;
+     }
+     #+END_SRC
+     - 解密
+     #+BEGIN_SRC java
+     /**
+      ,* @param content 待解密内容
+      ,* @param password 密钥
+      ,* @return 原内容，解密异常时返回 null
+      ,*/
+     public static byte[] decrypt(byte[] content, String password) {
+         try {
+             KeyGenerator kgen = KeyGenerator.getInstance("AES");
+             SecureRandom random=SecureRandom.getInstance("SHA1PRNG");
+             random.setSeed(password.getBytes());
+             kgen.init(128, random);
+             SecretKey secretKey = kgen.generateKey();
+             byte[] enCodeFormat = secretKey.getEncoded();
+             SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");
+             Cipher cipher = Cipher.getInstance("AES");
+             cipher.init(Cipher.DECRYPT_MODE, key);
+             return cipher.doFinal(content);
+         } catch (NoSuchAlgorithmException | NoSuchPaddingException | 
+                 InvalidKeyException | IllegalBlockSizeException | 
+                 BadPaddingException e) {
+             e.printStackTrace();
+         }
+         return null;
+     }
+     #+END_SRC
+     - 使用
+     #+BEGIN_SRC java
+     public static void main(String[] args) {
+         String content = "test"; // 待加密内容
+         String pwd = "AES"; // 密钥
+         String encryptContent = Base64.getEncoder().encodeToString(encrypt(content, pwd)); // 密文
+         String decryptContent = new String(decrypt(Base64.getDecoder().decode(encryptContent), pwd)); // 解密密文
+         System.out.println(content.equals(decryptContent));
+     }
+     #+END_SRC
 *** JUnit
 **** JUnit 4 中实现测试用例按指定顺序执行
     #+BEGIN_QUOTE
