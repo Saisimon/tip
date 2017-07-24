@@ -1417,6 +1417,14 @@
     $ docker-pid <containerId> # 查看容器的 PID
     $ docker-enter <containerId> # 进入指定容器
     #+END_SRC
+*** 批量删除 <none> 镜像
+    #+BEGIN_SRC
+    # 删除所有停止的容器，防止删除镜像时应有依赖的容器存在，而导致删除失败
+    $ docker rm $(docker ps -a | grep "Exited" | awk '{print $1}')
+
+    # 删除所有 <none> 镜像
+    $ docker rmi $(docker images | grep "<none>" | awk '{print $3}')
+    #+END_SRC
     
 ** Emacs
 *** 安装 Emacs 时，error: The required function `tputs' was not found in any library
