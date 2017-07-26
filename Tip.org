@@ -1029,6 +1029,8 @@
      - 设置 classes 路径 和 webroot 的路径 - 保存
 **** Eclipse 部署 web 项目时 lib 为空
      - Project - Predicates - Deployment Assembly - Add 添加 Libraries
+**** Eclipse 隐藏/显示已关闭项目
+     Project Explorer 标签栏 -> v(View Menu) -> Customize View... -> Filters -> 勾选/取消勾选 Closed projects
 
 ** Python
 *** Python
