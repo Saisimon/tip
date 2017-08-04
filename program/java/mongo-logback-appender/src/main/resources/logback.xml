@@ -1,0 +1,22 @@
+<configuration>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<property resource="application.properties" /> <!-- 读取 application.properties 文件中键值对 -->
+	<appender name="MONGO" class="net.saisimon.logging.MongoAppender">
+		<!-- Mongo 连接配置 -->
+		<Database>${mongo.db}</Database>
+		<Username>${mongo.username}</Username>
+		<Password>${mongo.password}</Password>
+		<Host>${mongo.host}</Host>
+		<Port>${mongo.port}</Port>
+	</appender>
+	<logger name="net.saisimon" level="INFO" > <!-- 配置只在 net.saisimon 包中并且 level 大于等于 INFO 的情况下生效 -->
+		<appender-ref ref="MONGO" />
+	</logger>
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
