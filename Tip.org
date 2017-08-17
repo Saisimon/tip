@@ -630,6 +630,28 @@
          System.out.println(content.equals(decryptContent));
      }
      #+END_SRC
+**** Java 常用正则表达式
+     #+BEGIN_SRC java
+     /**
+      ,* 匹配国际电话号码
+      ,* 13987654321
+      ,* +8613987654321
+      ,* +86139-876-54321
+      ,*/
+     public static final Pattern PHONE_PATTERN = Pattern.compile("([+]?\\d{1,2}[.\\-\\s]?)?(\\d{3}[.-]?){2}\\d{2,5}");
+
+     /**
+      ,* 匹配电子邮箱
+      ,* saisimon@gmail.com
+      ,*/
+     public static final Pattern EMAIL_PATTERN = Pattern.compile("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?");
+
+     /**
+      ,* 匹配 18 位身份证号
+      ,* 43011319990216213X
+      ,*/
+     public static final Pattern ID_CARD_PATTERN = Pattern.compile("^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$");
+     #+END_SRC
 *** JUnit
 **** JUnit 4 中实现测试用例按指定顺序执行
     #+BEGIN_QUOTE
