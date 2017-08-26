@@ -1,4 +1,4 @@
-#+AUTHOR: [[http://blog.saisimon.net][Saisimon]]
+#+AUTHOR: [[http://blog.saisimon.net ][Saisimon]]
 
 #+BEGIN_HTML
 <link rel="stylesheet" href="css/main.css" >
@@ -7,17 +7,21 @@
 * TIP
   This project collect some tips.
 
-[[https://github.com/Saisimon/tip/blob/master/Tip.org][Tips]]
-1. CheatSheet ([[https://github.com/torvalds/linux][Linux]], [[https://git-scm.com/][Git]]) [[https://github.com/Saisimon/tip/tree/master/cheatsheet][>>]]
-2. [[http://www.eclipse.org/][Eclipse]] Configuration [[https://github.com/Saisimon/tip/tree/master/eclipse][>>]]
-3. [[https://www.gnu.org/software/emacs/][Emacs]] Basic [[https://github.com/Saisimon/tip/tree/master/emacs][>>]]
-4. [[https://github.com/racaljk/hosts][Hosts]] Configuration [[https://github.com/Saisimon/tip/tree/master/hosts][>>]]
-5. [[http://www.vim.org/][Vim]] Configuration [[https://github.com/Saisimon/tip/tree/master/vim][>>]]
-6. Yum Configuration [[https://github.com/Saisimon/tip/tree/master/yum][>>]]
-7. C / C++ Tips [[https://github.com/Saisimon/tip/blob/master/Tip.org#c][>>]]
-8. Java Tips [[https://github.com/Saisimon/tip/blob/master/Tip.org#java][>>]]
-9. [[https://leetcode.com/][leetcode]] Java Solutions [[https://github.com/Saisimon/tip/tree/master/program/java/leetcode][>>]]
-10. [[http://www.qlcoder.com/home][qlcoder]] Java Solutions [[https://github.com/Saisimon/tip/tree/master/program/java/qlcoder][>>]]
+[[https://github.com/Saisimon/tip/blob/master/Tip.org ][Tips]]
+1. CheatSheet ([[https://github.com/torvalds/linux ][Linux]], [[https://git-scm.com/ ][Git]]) [[https://github.com/Saisimon/tip/tree/master/cheatsheet ][>>]]
+2. [[http://www.eclipse.org/ ][Eclipse]] Configuration [[https://github.com/Saisimon/tip/tree/master/eclipse ][>>]]
+3. [[https://www.gnu.org/software/emacs/ ][Emacs]] Basic [[https://github.com/Saisimon/tip/tree/master/emacs ][>>]]
+4. [[https://github.com/racaljk/hosts ][Hosts]] Configuration [[https://github.com/Saisimon/tip/tree/master/hosts ][>>]]
+5. [[http://www.vim.org/ ][Vim]] Configuration [[https://github.com/Saisimon/tip/tree/master/vim ][>>]]
+6. Yum Configuration [[https://github.com/Saisimon/tip/tree/master/yum ][>>]]
+7. C / C++ Tips [[https://github.com/Saisimon/tip/blob/master/Tip.org#c ][>>]]
+8. Java Tips [[https://github.com/Saisimon/tip/blob/master/Tip.org#java ][>>]]
+9. [[https://leetcode.com/ ][leetcode]] Java Solutions [[https://github.com/Saisimon/tip/tree/master/program/java/leetcode ][>>]]
+10. [[http://www.qlcoder.com/home ][qlcoder]] Java Solutions [[https://github.com/Saisimon/tip/tree/master/program/java/qlcoder ][>>]]
+
+* Small Project
+1. [[https://github.com/Saisimon/tip/tree/master/program/java/mongo-logback-appender ][Mongo Logback Appdener]]
+2. [[https://github.com/Saisimon/tip/tree/master/program/java/icloud-api ][ICloud API]]
 
 * LICENSE
-  [[http://creativecommons.org/licenses/by-sa/4.0/][file:css/CC-BY-SA-4.0.png]]
+  [[http://creativecommons.org/licenses/by-sa/4.0/][file:css/CC-BY-SA-4.0.png ]]
