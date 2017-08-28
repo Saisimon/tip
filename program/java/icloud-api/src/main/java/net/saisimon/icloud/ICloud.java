@@ -102,7 +102,11 @@ public class ICloud implements Closeable {
 		if (null != respMap && !respMap.containsKey("error")) {
 			return (List<Map<String, Object>>) respMap.get("devices");
 		} else {
-			LOG.error("Get Device List Fail, Reason: " + respMap == null ? "UNKNOWN" : respMap.get("error").toString());
+			String reason = "UNKNOWN";
+			if (respMap != null && respMap.containsKey("reason")) {
+				reason = respMap.get("reason").toString();
+			}
+			LOG.error("Get Device List Fail, Reason: " + reason);
 			return null;
 		}
 	}
@@ -173,14 +177,14 @@ public class ICloud implements Closeable {
 				LOG.info("Get Contacts Successfully");
 				return (List<Map<String, Object>>) respMap.get("contacts");
 			} else {
-				if (respMap == null || respMap.containsKey("reason")) {
+				if (respMap != null && respMap.containsKey("reason")) {
 					reason = respMap.get("reason").toString();
 				}
 				LOG.error("Get Contacts Fail, Reason: " + reason);
 				return null;
 			}
 		} else {
-			if (respMap == null || respMap.containsKey("reason")) {
+			if (respMap != null && respMap.containsKey("reason")) {
 				reason = respMap.get("reason").toString();
 			}
 			LOG.error("Get Contacts Fail, Reason: " + reason);

@@ -58,19 +58,6 @@ public class HttpsClient implements Closeable {
 		context.setCookieStore(loadCookie(path, md5));
 	}
 	
-	public void setContext(CookieStore cookieStore) {
-		context = HttpClientContext.create();
-		Registry<CookieSpecProvider> registry = RegistryBuilder  
-                .<CookieSpecProvider> create()  
-                .register(CookieSpecs.DEFAULT, new DefaultCookieSpecProvider()).build();
-		context.setCookieSpecRegistry(registry);
-		context.setCookieStore(cookieStore);
-	}
-	
-	public HttpClientContext getContext() {
-		return context;
-	}
-	
 	public CookieStore getCookieStore() {
 		CookieStore cookieStore = null;
 		if (context != null) {
