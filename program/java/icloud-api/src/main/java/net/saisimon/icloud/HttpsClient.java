@@ -2,11 +2,17 @@ package net.saisimon.icloud;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import javax.net.ssl.SSLContext;
 
@@ -21,7 +27,9 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.cookie.CookieSpecProvider;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.cookie.DefaultCookieSpecProvider;
@@ -40,6 +48,16 @@ public class HttpsClient implements Closeable {
 		httpClient = createHttpsClient();
 	}
 	
+	public void setCookieStore(String path, String md5) throws ClassNotFoundException, IOException {
+		context = HttpClientContext.create();
+		Registry<CookieSpecProvider> registry = RegistryBuilder  
+                .<CookieSpecProvider> create()  
+                .register(CookieSpecs.DEFAULT, new DefaultCookieSpecProvider()).build();
+		context.setCookieSpecRegistry(registry);
+		
+		context.setCookieStore(loadCookie(path, md5));
+	}
+	
 	public void setContext(CookieStore cookieStore) {
 		context = HttpClientContext.create();
 		Registry<CookieSpecProvider> registry = RegistryBuilder  
@@ -51,6 +69,16 @@ public class HttpsClient implements Closeable {
 	
 	public HttpClientContext getContext() {
 		return context;
+	}
+	
+	public CookieStore getCookieStore() {
+		CookieStore cookieStore = null;
+		if (context != null) {
+			cookieStore = context.getCookieStore();
+		} else {
+			cookieStore = new BasicCookieStore();
+		}
+		return cookieStore;
 	}
 	
 	public String get(String url) throws IOException {
@@ -88,20 +116,81 @@ public class HttpsClient implements Closeable {
 		HttpResponse httpResponse = httpClient.execute(httpPost, context);
 		String result = getBody(httpResponse.getEntity());
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("Post: " + url + ", Result: " + result);
+			LOG.debug("Post: " + url + ", Body: " + getBody(entity) + ", Result: " + result);
 		}
 		httpPost.releaseConnection();
 		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public CookieStore loadCookie(String path, String md5) {
+		File file = new File(path + File.separatorChar + md5.charAt(0) + File.separatorChar + md5.substring(1));
+		CookieStore cs = new BasicCookieStore();
+		if (file.exists()) {
+			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+				Object obj = in.readObject();
+				if (obj instanceof List && null != obj) {
+					for (Cookie cookie : (List<Cookie>) obj) {
+						cs.addCookie(cookie);
+						if (LOG.isDebugEnabled()) {
+							LOG.debug(cookie.toString());
+						}
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Load Cookie Fail, Reason: " + e.getMessage(), e);
+				return cs;
+			}
+		} else {
+			file.getParentFile().mkdirs();
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				LOG.error("Create Cookie File Fail, Reason: " + e.getMessage(), e);
+				return cs;
+			}
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Load Cookie in " + file.getAbsolutePath());
+		}
+		return cs;
+	}
+	
+	public void saveCookie(String path, String md5, CookieStore cookieStore) {
+		File file = new File(path + File.separatorChar + md5.charAt(0) + File.separatorChar + md5.substring(1));
+		if (!file.exists()) {
+			file.getParentFile().mkdirs();
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				LOG.error("Create Cookie File Fail, Reason: " + e.getMessage(), e);
+				return;
+			}
+		}
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
+			List<Cookie> cookies = cookieStore.getCookies();
+			out.writeObject(cookies);
+		} catch (IOException e) {
+			LOG.error("Save Cookie Fail, Reason: " + e.getMessage(), e);
+			return;
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Save Cookie in " + file.getAbsolutePath());
+		}
 	}
 	
 	@Override
 	public void close() throws IOException {
 		if (null != httpClient) {
 			httpClient.close();
+			httpClient = null;
 		}
 	}
 
 	public static String getBody(HttpEntity entity) throws UnsupportedOperationException, IOException {
+		if (null == entity) {
+			return "";
+		}
 		StringBuilder body = new StringBuilder();
 		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent()))) {
 			String line;

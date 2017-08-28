@@ -2,14 +2,7 @@ package net.saisimon.icloud;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -21,10 +14,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.CookieStore;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.message.BasicHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +30,6 @@ public class ICloud implements Closeable {
 	
 	private String clientId;
 	private String clientBuildNumber = "17EHotfix1";
-	private String login;
 	private Map<String, Object> user = new LinkedHashMap<>();
 	private Map<String, String> params = new LinkedHashMap<>();
 	private Map<String, Object> data = new HashMap<>();
@@ -49,10 +39,11 @@ public class ICloud implements Closeable {
 	
 	private HttpsClient httpsClient;
 	private boolean authenticate;
+	private String md5;
 	
 	public ICloud(String login, char[] password) throws Exception {
 		this.clientId = UUID.randomUUID().toString().toUpperCase();
-		this.login = login;
+		md5 = DigestUtils.md5Hex(login);
 		
 		user.put("apple_id", login);
 		user.put("password", password);
@@ -64,22 +55,21 @@ public class ICloud implements Closeable {
 		headerList.add(new BasicHeader("Referer", HOME_URL));
 		headerList.add(new BasicHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"));
 		
+		httpsClient = new HttpsClient();
+		httpsClient.setCookieStore(COOKIE_DIR, md5);
+		
 		authenticate = authenticate();
 	}
 	
 	@SuppressWarnings("unchecked")
-	private boolean authenticate() throws KeyManagementException, KeyStoreException, NoSuchAlgorithmException, IOException, ClassNotFoundException {
-		httpsClient = new HttpsClient();
+	private boolean authenticate() throws IOException {
 		Map<String, Object> body = new LinkedHashMap<>();
 		body.putAll(user);
 		body.put("extended_login", false);
 		HttpEntity entity = new StringEntity(JsonUtils.toJson(body), ContentType.APPLICATION_JSON);
-		String md5 = DigestUtils.md5Hex(login);
-		CookieStore cookieStore = loadCookie(COOKIE_DIR, md5);
-		httpsClient.setContext(cookieStore);
 		String resp = httpsClient.post(fillUrl(BASE_LOGIN_URL, params), headerList.toArray(new Header[]{}), entity);
-		cookieStore = httpsClient.getContext().getCookieStore();
-		saveCookie(COOKIE_DIR, md5, cookieStore);
+		CookieStore cookieStore = httpsClient.getCookieStore();
+		httpsClient.saveCookie(COOKIE_DIR, md5, cookieStore);
 		Map<String, Object> respMap = (Map<String, Object>) JsonUtils.fromJson(resp, Map.class);
 		if (null != respMap && !respMap.containsKey("error")) {
 			data.putAll(respMap);
@@ -112,7 +102,7 @@ public class ICloud implements Closeable {
 		if (null != respMap && !respMap.containsKey("error")) {
 			return (List<Map<String, Object>>) respMap.get("devices");
 		} else {
-			LOG.error("Get Device List Fail, Reason: " + respMap == null ? "UNKNOWN" : (String) respMap.get("error"));
+			LOG.error("Get Device List Fail, Reason: " + respMap == null ? "UNKNOWN" : respMap.get("error").toString());
 			return null;
 		}
 	}
@@ -133,7 +123,8 @@ public class ICloud implements Closeable {
 		return false;
 	}
 	
-	public boolean validateVerificationCode(Map<String, Object> device, String code) throws IOException, KeyManagementException, KeyStoreException, NoSuchAlgorithmException, ClassNotFoundException {
+	@SuppressWarnings("unchecked")
+	public boolean validateVerificationCode(Map<String, Object> device, String code) throws IOException {
 		Map<String, Object> dataParam = new HashMap<>();
 		dataParam.putAll(device);
 		dataParam.put("verificationCode", code);
@@ -141,9 +132,14 @@ public class ICloud implements Closeable {
 		String validate_code_url = SETUP_URL + "/validateVerificationCode";
 		HttpEntity entity = new StringEntity(JsonUtils.toJson(dataParam), ContentType.APPLICATION_JSON);
 		String resp = httpsClient.post(fillUrl(validate_code_url, params), headerList.toArray(new Header[]{}), entity);
-		// TODO validate code
-		System.out.println(resp);
-		authenticate = authenticate();
+		Map<String, Object> respMap = (Map<String, Object>) JsonUtils.fromJson(resp, Map.class);
+		if (null != respMap) {
+			Object success = respMap.get("success");
+			if (null != success && Boolean.parseBoolean(success.toString())) {
+				authenticate = authenticate();
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -164,6 +160,7 @@ public class ICloud implements Closeable {
 		contactParam.put("order", "last,first");
 		String resp = httpsClient.get(fillUrl(contact_refresh_url, contactParam), headerList.toArray(new Header[]{}));
 		Map<String, Object> respMap = (Map<String, Object>) JsonUtils.fromJson(resp, Map.class);
+		String reason = "UNKNOWN";
 		if (null != respMap && !respMap.containsKey("error")) {
 			Map<String, String> contactRefreshParam = new LinkedHashMap<>();
 			contactRefreshParam.putAll(contactParam);
@@ -176,11 +173,17 @@ public class ICloud implements Closeable {
 				LOG.info("Get Contacts Successfully");
 				return (List<Map<String, Object>>) respMap.get("contacts");
 			} else {
-				LOG.error("Get Contacts Fail, Reason: " + respMap == null ? "UNKNOWN" : (String) respMap.get("error"));
+				if (respMap == null || respMap.containsKey("reason")) {
+					reason = respMap.get("reason").toString();
+				}
+				LOG.error("Get Contacts Fail, Reason: " + reason);
 				return null;
 			}
 		} else {
-			LOG.error("Refresh Contacts Fail, Reason: " + respMap == null ? "UNKNOWN" : (String) respMap.get("error"));
+			if (respMap == null || respMap.containsKey("reason")) {
+				reason = respMap.get("reason").toString();
+			}
+			LOG.error("Get Contacts Fail, Reason: " + reason);
 			return null;
 		}
 	}
@@ -189,44 +192,6 @@ public class ICloud implements Closeable {
 	public void close() throws IOException {
 		if (null != httpsClient) {
 			httpsClient.close();
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private CookieStore loadCookie(String path, String md5) throws IOException, ClassNotFoundException {
-		File file = new File(path + File.separatorChar + md5.charAt(0) + File.separatorChar + md5.substring(1));
-		CookieStore cs = new BasicCookieStore();
-		if (file.exists()) {
-			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
-				Object obj = in.readObject();
-				if (obj instanceof List && null != obj) {
-					for (Cookie cookie : (List<Cookie>) obj) {
-						cs.addCookie(cookie);
-					}
-				}
-			}
-		} else {
-			file.getParentFile().mkdirs();
-			file.createNewFile();
-		}
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Load Cookie in " + file.getAbsolutePath());
-		}
-		return cs;
-	}
-	
-	private void saveCookie(String path, String md5, CookieStore cookieStore) throws IOException {
-		File file = new File(path + File.separatorChar + md5.charAt(0) + File.separatorChar + md5.substring(1));
-		if (!file.exists()) {
-			file.getParentFile().mkdirs();
-			file.createNewFile();
-		}
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
-			List<Cookie> cookies = cookieStore.getCookies();
-			out.writeObject(cookies);
-		}
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Save Cookie in " + file.getAbsolutePath());
 		}
 	}
 	
