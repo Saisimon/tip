@@ -1,4 +1,4 @@
-package net.saisimon.icloud;
+package net.saisimon.icloud.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

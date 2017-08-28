@@ -1,4 +1,4 @@
-package net.saisimon.icloud;
+package net.saisimon.icloud.http;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
