@@ -68,7 +68,42 @@ public class ICloud implements Closeable {
 		httpsClient = new HttpsClient();
 		httpsClient.setCookieStore(COOKIE_DIR, md5);
 		
-		authenticate = authenticate();
+		authenticate();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean authenticate() throws IOException {
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.putAll(user);
+		body.put("extended_login", false);
+		HttpEntity entity = new StringEntity(JsonUtils.toJson(body), ContentType.APPLICATION_JSON);
+		String resp = httpsClient.post(StringUtils.fillUrl(BASE_LOGIN_URL, params), headerList.toArray(new Header[]{}), entity);
+		CookieStore cookieStore = httpsClient.getCookieStore();
+		httpsClient.saveCookies(COOKIE_DIR, md5, cookieStore);
+		Map<String, Object> respMap = (Map<String, Object>) JsonUtils.fromJson(resp, Map.class);
+		if (null != respMap && !respMap.containsKey("error")) {
+			data.putAll(respMap);
+			webservices = (Map<String, Object>) data.get("webservices");
+			Map<String, Object> dsInfo = (Map<String, Object>) data.get("dsInfo");
+			params.put("dsid", dsInfo.get("dsid").toString());
+			LOG.info("Authentication Completed Successfully");
+			authenticate = true;
+			return true;
+		} else {
+			LOG.error("Authentication Fail");
+			authenticate = false;
+			return false;
+		}
+	}
+	
+	public boolean logout() throws IOException {
+		if (httpsClient.removeCookies(COOKIE_DIR, md5)) {
+			authenticate = false;
+			data.clear();
+			webservices.clear();
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean requiresTFA() {
@@ -87,12 +122,12 @@ public class ICloud implements Closeable {
 		String resp = httpsClient.get(StringUtils.fillUrl(device_url, deviceParam), headerList.toArray(new Header[]{}));
 		Map<String, Object> respMap = (Map<String, Object>) JsonUtils.fromJson(resp, Map.class);
 		if (null != respMap && !respMap.containsKey("error")) {
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Get Device List Success");
+			}
 			return (List<Map<String, Object>>) respMap.get("devices");
 		} else {
-			String reason = "UNKNOWN";
-			if (respMap != null && respMap.containsKey("reason")) {
-				reason = respMap.get("reason").toString();
-			}
+			String reason = (String) respMap.getOrDefault("reason", "UNKNOWN");
 			LOG.error("Get Device List Fail, Reason: " + reason);
 			return null;
 		}
@@ -105,11 +140,14 @@ public class ICloud implements Closeable {
 		String resp = httpsClient.post(StringUtils.fillUrl(send_code_url, params), headerList.toArray(new Header[]{}), entity);
 		Map<String, Object> respMap = (Map<String, Object>) JsonUtils.fromJson(resp, Map.class);
 		if (null != respMap) {
-			Object success = respMap.get("success");
-			if (null != success) {
-				return Boolean.parseBoolean(success.toString());
+			if ((boolean) respMap.getOrDefault("success", false)) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Send Verification Code Success");
+				}
+				return true;
+			} else {
+				LOG.error("Send Verification Code Fail");
 			}
-			return false;
 		}
 		return false;
 	}
@@ -125,10 +163,13 @@ public class ICloud implements Closeable {
 		String resp = httpsClient.post(StringUtils.fillUrl(validate_code_url, params), headerList.toArray(new Header[]{}), entity);
 		Map<String, Object> respMap = (Map<String, Object>) JsonUtils.fromJson(resp, Map.class);
 		if (null != respMap) {
-			Object success = respMap.get("success");
-			if (null != success && Boolean.parseBoolean(success.toString())) {
-				authenticate = authenticate();
-				return true;
+			if ((boolean) respMap.getOrDefault("success", false)) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Validate Verification Code Success");
+				}
+				return authenticate();
+			} else {
+				LOG.error("Validate Verification Code Fail");
 			}
 		}
 		return false;
@@ -139,9 +180,9 @@ public class ICloud implements Closeable {
 			LOG.error("No Authenticate");
 			return null;
 		}
-		if (webservices.containsKey("contacts")) {
-			@SuppressWarnings("unchecked")
-			Map<String, Object> contacts = (Map<String, Object>) webservices.get("contacts");
+		@SuppressWarnings("unchecked")
+		Map<String, Object> contacts = (Map<String, Object>) webservices.getOrDefault("contacts", null);
+		if (null != contacts) {
 			String contact_base_url = (String) contacts.get("url");
 			ContactService contactService = new ContactService(getHttpsClient(), contact_base_url, getParams());
 			return contactService.getAllContacts();
@@ -167,29 +208,6 @@ public class ICloud implements Closeable {
 	
 	public Map<String, String> getParams() {
 		return params;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private boolean authenticate() throws IOException {
-		Map<String, Object> body = new LinkedHashMap<>();
-		body.putAll(user);
-		body.put("extended_login", false);
-		HttpEntity entity = new StringEntity(JsonUtils.toJson(body), ContentType.APPLICATION_JSON);
-		String resp = httpsClient.post(StringUtils.fillUrl(BASE_LOGIN_URL, params), headerList.toArray(new Header[]{}), entity);
-		CookieStore cookieStore = httpsClient.getCookieStore();
-		httpsClient.saveCookie(COOKIE_DIR, md5, cookieStore);
-		Map<String, Object> respMap = (Map<String, Object>) JsonUtils.fromJson(resp, Map.class);
-		if (null != respMap && !respMap.containsKey("error")) {
-			data.putAll(respMap);
-			webservices = (Map<String, Object>) data.get("webservices");
-			Map<String, Object> dsInfo = (Map<String, Object>) data.get("dsInfo");
-			params.put("dsid", dsInfo.get("dsid").toString());
-			LOG.info("Authentication Completed Successfully");
-			return true;
-		} else {
-			LOG.error("Authentication Fail");
-			return false;
-		}
 	}
 	
 }

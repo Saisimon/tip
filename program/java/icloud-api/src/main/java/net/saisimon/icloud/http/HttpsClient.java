@@ -13,6 +13,7 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 
@@ -37,6 +38,9 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.saisimon.icloud.util.JsonUtils;
+import net.saisimon.icloud.util.StringUtils;
+
 public class HttpsClient implements Closeable {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(HttpsClient.class);
@@ -55,7 +59,7 @@ public class HttpsClient implements Closeable {
                 .register(CookieSpecs.DEFAULT, new DefaultCookieSpecProvider()).build();
 		context.setCookieSpecRegistry(registry);
 		
-		context.setCookieStore(loadCookie(path, md5));
+		context.setCookieStore(loadCookies(path, md5));
 	}
 	
 	public CookieStore getCookieStore() {
@@ -103,14 +107,19 @@ public class HttpsClient implements Closeable {
 		HttpResponse httpResponse = httpClient.execute(httpPost, context);
 		String result = getBody(httpResponse.getEntity());
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("Post: " + url + ", Body: " + getBody(entity) + ", Result: " + result);
+			@SuppressWarnings("unchecked")
+			Map<String, Object> bodyMap = (Map<String, Object>) JsonUtils.fromJson(getBody(entity), Map.class);
+			if (null != bodyMap && bodyMap.containsKey("password")) {
+				bodyMap.put("password", "********");
+			}
+			LOG.debug("Post: " + url + ", Body: " + JsonUtils.toJson(bodyMap) + ", Result: " + result);
 		}
 		httpPost.releaseConnection();
 		return result;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public CookieStore loadCookie(String path, String md5) {
+	public CookieStore loadCookies(String path, String md5) {
 		File file = new File(path + File.separatorChar + md5.charAt(0) + File.separatorChar + md5.substring(1));
 		CookieStore cs = new BasicCookieStore();
 		if (file.exists()) {
@@ -143,7 +152,7 @@ public class HttpsClient implements Closeable {
 		return cs;
 	}
 	
-	public void saveCookie(String path, String md5, CookieStore cookieStore) {
+	public boolean saveCookies(String path, String md5, CookieStore cookieStore) {
 		File file = new File(path + File.separatorChar + md5.charAt(0) + File.separatorChar + md5.substring(1));
 		if (!file.exists()) {
 			file.getParentFile().mkdirs();
@@ -151,7 +160,7 @@ public class HttpsClient implements Closeable {
 				file.createNewFile();
 			} catch (IOException e) {
 				LOG.error("Create Cookie File Fail, Reason: " + e.getMessage(), e);
-				return;
+				return false;
 			}
 		}
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
@@ -159,11 +168,24 @@ public class HttpsClient implements Closeable {
 			out.writeObject(cookies);
 		} catch (IOException e) {
 			LOG.error("Save Cookie Fail, Reason: " + e.getMessage(), e);
-			return;
+			return false;
 		}
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Save Cookie in " + file.getAbsolutePath());
 		}
+		return true;
+	}
+	
+	public boolean removeCookies(String path, String md5) {
+		if (StringUtils.isBlank(md5) || md5.trim().length() < 2) {
+			LOG.error("File Name Error");
+			return false;
+		}
+		File file = new File(path + File.separatorChar + md5.charAt(0) + File.separatorChar + md5.substring(1));
+		if (file.exists()) {
+			return file.delete();
+		}
+		return true;
 	}
 	
 	@Override
