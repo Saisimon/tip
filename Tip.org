@@ -1089,6 +1089,59 @@
      - Project - Predicates - Deployment Assembly - Add 添加 Libraries
 **** Eclipse 隐藏/显示已关闭项目
      Project Explorer 标签栏 -> v(View Menu) -> Customize View... -> Filters -> 勾选/取消勾选 Closed projects
+*** Spring
+**** Spring Boot 中添加自定义的监听器，拦截器，过滤器
+     #+BEGIN_SRC java
+     /**
+      ,* 添加自定义的监听器，拦截器，过滤器
+      ,*/
+     @Configuration
+     public class WebConfig extends WebMvcConfigurerAdapter {
+         
+         private static final Logger LOG = LoggerFactory.getLogger(WebConfig.class);
+
+         /**
+          ,* 添加监听器
+          ,*/
+         @Bean
+         public ServletListenerRegistrationBean<EventListener> doMyListener() {
+             if (LOG.isDebugEnabled()) {
+                 LOG.debug("Do My Listener");
+             }
+             ServletListenerRegistrationBean<EventListener> registrationBean = new ServletListenerRegistrationBean<>();
+             registrationBean.setListener(new MyListener());
+             return registrationBean;
+         }
+
+         /**
+          ,* 添加过滤器
+          ,*/
+         @Bean
+         public FilterRegistrationBean doMyFilter() {
+             if (LOG.isDebugEnabled()) {
+                 LOG.debug("Do My Filter");
+             }
+             FilterRegistrationBean registration = new FilterRegistrationBean();
+             registration.setFilter(new MyFilter());
+             registration.addUrlPatterns("/*"); //拦截路径，可以添加多个
+             registration.setName("myFilter");
+             registration.setOrder(1);
+             return registration;
+         }
+
+         /**
+          ,* 添加拦截器
+          ,*/
+         @Override
+         public void addInterceptors(InterceptorRegistry registry) {
+             if (LOG.isDebugEnabled()) {
+                 LOG.debug("Do My Interceptors");
+             }
+             registry.addInterceptor(new MyInterceptor());
+             super.addInterceptors(registry);
+         }
+     }
+     #+END_SRC
 
 ** Python
 *** Python
