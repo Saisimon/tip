@@ -1228,6 +1228,20 @@
              
      }
      #+END_SRC
+**** Spring Boot 配置首页跳转
+     #+BEGIN_SRC java
+     @EnableWebMvc
+     @Configuration
+     public class WebConfig extends WebMvcConfigurerAdapter {
+
+         @Override
+         public void addViewControllers(ViewControllerRegistry registry) {
+             // 设置默认首页跳转至 /login
+             registry.addViewController("/").setViewName("redirect:/login");
+         }
+             
+     }
+     #+END_SRC
 
 ** Python
 *** Python
