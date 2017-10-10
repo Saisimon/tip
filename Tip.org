@@ -1172,6 +1172,62 @@
          return cl;
      }
      #+END_SRC
+**** Spring Boot 国际化配置
+     - 简单在 application.properties 中配置国际化信息
+     #+BEGIN_SRC
+     # INTERNATIONALIZATION (MessageSourceAutoConfiguration)
+     spring.messages.always-use-message-format=false # Set whether to always apply the MessageFormat rules, parsing even messages without arguments.
+     spring.messages.basename=package # 默认为 messages 
+     spring.messages.cache-seconds=60 # 默认为 -1
+     spring.messages.encoding=UTF-8
+     spring.messages.fallback-to-system-locale=true # Set whether to fall back to the system Locale if no files for a specific Locale have been found.
+     #+END_SRC
+     - 自定义配置国际化信息
+     #+BEGIN_SRC java
+     @EnableWebMvc
+     @Configuration
+     public class I18NConfig extends WebMvcConfigurerAdapter {
+
+         @Bean
+         public ReloadableResourceBundleMessageSource messageSource() {
+             ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+             // 设置 Spring 读取语言包的位置 src/main/resources/package_*.properties 文件
+             messageSource.setBasename("classpath:package");
+             // 设置默认编码为 UTF-8
+             messageSource.setDefaultEncoding("UTF-8");
+             // 设置当 code 没找到对应的文本时默认使用 code 作为其文本
+             messageSource.setUseCodeAsDefaultMessage(true);
+             // 设置缓存时长
+             messageSource.setCacheSeconds(60);
+             return messageSource;
+         }
+
+         @Bean
+         public CookieLocaleResolver localeResolver() {
+             CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+             // 设置默认地区，对应文件名为 package_cn.properties
+             localeResolver.setDefaultLocale(new Locale("cn"));
+             return localeResolver;
+         }
+         
+         @Bean
+         public LocaleChangeInterceptor localeChangeInterceptor() {
+             LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+             // 设置改变地区的参数名
+             // http://www.xxx.com/index?language=cn 语言为中文
+             // http://www.xxx.com/index?language=en 语言为English
+             lci.setParamName("language");
+             return lci;
+         }
+
+         @Override
+         public void addInterceptors(InterceptorRegistry registry) {
+             // 添加拦截器
+             registry.addInterceptor(localeChangeInterceptor());
+         }
+             
+     }
+     #+END_SRC
 
 ** Python
 *** Python
