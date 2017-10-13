@@ -895,8 +895,7 @@
 {  
     @import url(/worg/style/zenburn-emacs.css);  
     body {  
-        color: #dcdccc;  
-        background-color: white;  
+        color: #dcdccc;   
         font:0.9em serif;  
         max-width: 95%;  
         margin: auto;  
@@ -908,10 +907,10 @@
     body pre {  
         margin: 1em;
         box-shadow: 3px 3px 3px #ccc;
-    } 
-    body pre span {
-          background-color: #efefef!important;
     }
+	pre.src {
+		overflow: auto !important;
+	}
     body a {  
         color: #8066dd; }  
     body #content {  
@@ -976,13 +975,12 @@
         font-family: "Microsoft YaHei","Helvetica Neue", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;  
         font-size: 14px;  
         line-height: 21px;  
-        color: #333;  
-        
+        color: #333;
         max-width: 95%;  
         margin: auto;  
         background-position: 25px 5px;  
         background-repeat: no-repeat;  
-        background-color: #fafafa;
+        background-color: #eee;
     }  
     body #content {  
         padding-top: 40px;  
@@ -1212,8 +1210,8 @@
     
     pre {  
         font-family: Microsoft YaHei,Monaco, Consolas, "Lucida Console", monospace;  
-        color: black;  
-        background-color: #efefef;  
+        color: #dddddd;  
+        background-color: #333;  
         padding: 1.2em;  
         border: 1px solid #dddddd;  
         overflow: auto;  
@@ -1955,8 +1953,7 @@ div#postamble {
     margin: 50px 0px 20px 0px;  
     font-style: italic;  
     font-size: 14px;  
-    font-family:"Courier New", Courier, monospace;  
-    background: white;  
+    font-family:"Courier New", Courier, monospace; 
 } 
 
 .org-ul {
