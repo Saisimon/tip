@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Tip</title>
-<!-- 2017-07-12 Wed 17:31 -->
+<!-- 2017-10-13 Fri 11:08 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon" />
@@ -240,14 +240,17 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#sec-1-5-1-1">1.5.1.1. 操作 jar 包</a></li>
 <li><a href="#sec-1-5-1-2">1.5.1.2. byte 数组与 int 互转</a></li>
-<li><a href="#sec-1-5-1-3">1.5.1.3. 倒序遍历 LinkedHashMap 集合</a></li>
-<li><a href="#sec-1-5-1-4">1.5.1.4. 使用异或操作交换两个数字</a></li>
-<li><a href="#sec-1-5-1-5">1.5.1.5. 分页计算页数</a></li>
-<li><a href="#sec-1-5-1-6">1.5.1.6. 分割 Map</a></li>
-<li><a href="#sec-1-5-1-7">1.5.1.7. Java 获取系统的临时文件夹路径</a></li>
-<li><a href="#sec-1-5-1-8">1.5.1.8. Java 通过反射获取泛型的类型</a></li>
-<li><a href="#sec-1-5-1-9">1.5.1.9. Java 8 接口中的默认方法的“劫持”问题</a></li>
-<li><a href="#sec-1-5-1-10">1.5.1.10. 使用 commons-beanutils 复制属性，当对象中的数值类型属性为 null 时复制成 0 的问题</a></li>
+<li><a href="#sec-1-5-1-3">1.5.1.3. byte 数组与 char 数组互转</a></li>
+<li><a href="#sec-1-5-1-4">1.5.1.4. 倒序遍历 LinkedHashMap 集合</a></li>
+<li><a href="#sec-1-5-1-5">1.5.1.5. 使用异或操作交换两个数字</a></li>
+<li><a href="#sec-1-5-1-6">1.5.1.6. 分页计算页数</a></li>
+<li><a href="#sec-1-5-1-7">1.5.1.7. 分割 Map</a></li>
+<li><a href="#sec-1-5-1-8">1.5.1.8. Java 获取系统的临时文件夹路径</a></li>
+<li><a href="#sec-1-5-1-9">1.5.1.9. Java 通过反射获取泛型的类型</a></li>
+<li><a href="#sec-1-5-1-10">1.5.1.10. Java 8 接口中的默认方法的“劫持”问题</a></li>
+<li><a href="#sec-1-5-1-11">1.5.1.11. 使用 commons-beanutils 复制属性，当对象中的数值类型属性为 null 时复制成 0 的问题</a></li>
+<li><a href="#sec-1-5-1-12">1.5.1.12. Java AES 加密解密</a></li>
+<li><a href="#sec-1-5-1-13">1.5.1.13. Java 常用正则表达式</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-5-2">1.5.2. JUnit</a>
@@ -309,6 +312,16 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-5-11-3">1.5.11.3. Eclipse console 控制台 log4j 日志支持多种颜色</a></li>
 <li><a href="#sec-1-5-11-4">1.5.11.4. Eclipse 导入项目未自动识别为 web 项目</a></li>
 <li><a href="#sec-1-5-11-5">1.5.11.5. Eclipse 部署 web 项目时 lib 为空</a></li>
+<li><a href="#sec-1-5-11-6">1.5.11.6. Eclipse 隐藏/显示已关闭项目</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-5-12">1.5.12. Spring</a>
+<ul>
+<li><a href="#sec-1-5-12-1">1.5.12.1. Spring Boot 中添加自定义的监听器，拦截器，过滤器</a></li>
+<li><a href="#sec-1-5-12-2">1.5.12.2. Spring 获取项目 classpath 路径</a></li>
+<li><a href="#sec-1-5-12-3">1.5.12.3. Spring Boot 国际化配置</a></li>
+<li><a href="#sec-1-5-12-4">1.5.12.4. Spring Boot 配置首页跳转</a></li>
+<li><a href="#sec-1-5-12-5">1.5.12.5. Spring Boot 获取 ApplicationContext</a></li>
 </ul>
 </li>
 </ul>
@@ -370,6 +383,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-8">1.8. Docker</a>
 <ul>
 <li><a href="#sec-1-8-1">1.8.1. 进入 Docker 容器</a></li>
+<li><a href="#sec-1-8-2">1.8.2. 批量删除 &lt;none&gt; 镜像</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-9">1.9. Emacs</a>
@@ -1083,16 +1097,24 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 <div class="outline-text-5" id="text-1-5-1-2">
 <div class="org-src-container">
 
-<pre class="src src-java"><span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">byteArrayToInt</span>(<span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672;">bytes</span>) {
+<pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">byte &#25968;&#32452;&#36716; int</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">bytes2Int</span>(<span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672;">bytes</span>) {
+    <span style="color: #66D9EF;">if</span> (<span style="color: #7fffd4;">null</span> == bytes) {
+        <span style="color: #66D9EF;">return</span> <span style="color: #ffa07a;">0</span>;
+    }
+    <span style="color: #66D9EF;">if</span> (bytes.length &gt; <span style="color: #ffa07a;">4</span>) {
+        <span style="color: #66D9EF;">throw</span> <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">IllegalArgumentException</span>(<span style="color: #E6DB74;">"byte array length must be less than 4"</span>);
+    }
     <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">value</span> = <span style="color: #ffa07a;">0</span>;
-    <span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span> = <span style="color: #ffa07a;">0</span>; i &lt; <span style="color: #ffa07a;">4</span>; i++) {
-        <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">shift</span> = (<span style="color: #ffa07a;">4</span> - <span style="color: #ffa07a;">1</span> - i) * <span style="color: #ffa07a;">8</span>;
-        value += (bytes[i] &amp; <span style="color: #ffa07a;">0x000000FF</span>) &lt;&lt; shift;
+    <span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span> = <span style="color: #ffa07a;">0</span>; i &lt; bytes.<span style="color: #66D9EF;">length</span>; i++) {
+        <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">shift</span> = (bytes.length - <span style="color: #ffa07a;">1</span> - i) * <span style="color: #ffa07a;">8</span>;
+        value += (bytes[i] &amp; <span style="color: #ffa07a;">0xFF</span>) &lt;&lt; shift;
     }
     <span style="color: #66D9EF;">return</span> value;
 }
 
-<span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672; font-style: italic;">intToByteArray</span>(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span>) {
+<span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">int &#36716; byte &#25968;&#32452;</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672; font-style: italic;">int2Bytes</span>(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span>) {
     <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672;">result</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">byte</span>[<span style="color: #ffa07a;">4</span>];
     result[<span style="color: #ffa07a;">0</span>] = (<span style="color: #66D9EF;">byte</span>) ((i &gt;&gt; <span style="color: #ffa07a;">24</span>) &amp; <span style="color: #ffa07a;">0xFF</span>);
     result[<span style="color: #ffa07a;">1</span>] = (<span style="color: #66D9EF;">byte</span>) ((i &gt;&gt; <span style="color: #ffa07a;">16</span>) &amp; <span style="color: #ffa07a;">0xFF</span>);
@@ -1105,8 +1127,42 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </div>
 </div>
 <div id="outline-container-sec-1-5-1-3" class="outline-5">
-<h5 id="sec-1-5-1-3"><span class="section-number-5">1.5.1.3</span> 倒序遍历 LinkedHashMap 集合</h5>
+<h5 id="sec-1-5-1-3"><span class="section-number-5">1.5.1.3</span> byte 数组与 char 数组互转</h5>
 <div class="outline-text-5" id="text-1-5-1-3">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">byte &#25968;&#32452;&#36716; char &#25968;&#32452;</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">char</span>[] <span style="color: #F92672; font-style: italic;">bytes2Chars</span>(<span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672;">bytes</span>) {
+    <span style="color: #66D9EF;">if</span> (<span style="color: #7fffd4;">null</span> == bytes) {
+        <span style="color: #66D9EF;">return</span> <span style="color: #7fffd4;">null</span>;
+    }
+    <span style="color: #66D9EF;">Charset</span> <span style="color: #F92672;">cs</span> = Charset.forName(<span style="color: #E6DB74;">"UTF-8"</span>);
+    <span style="color: #66D9EF;">ByteBuffer</span> <span style="color: #F92672;">bb</span> = ByteBuffer.allocate(bytes.length);
+    bb.put(bytes);
+    bb.flip();
+    <span style="color: #66D9EF;">CharBuffer</span> <span style="color: #F92672;">cb</span> = cs.decode(bb);
+    <span style="color: #66D9EF;">return</span> cb.array();
+}
+
+<span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">char &#25968;&#32452;&#36716; byte &#25968;&#32452;</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672; font-style: italic;">chars2Bytes</span>(<span style="color: #66D9EF;">char</span>[] <span style="color: #F92672;">chars</span>) {
+    <span style="color: #66D9EF;">if</span> (<span style="color: #7fffd4;">null</span> == chars) {
+        <span style="color: #66D9EF;">return</span> <span style="color: #7fffd4;">null</span>;
+    }
+    <span style="color: #66D9EF;">Charset</span> <span style="color: #F92672;">cs</span> = Charset.forName(<span style="color: #E6DB74;">"UTF-8"</span>);
+    <span style="color: #66D9EF;">CharBuffer</span> <span style="color: #F92672;">cb</span> = CharBuffer.allocate(chars.length);
+    cb.put(chars);
+    cb.flip();
+    <span style="color: #66D9EF;">ByteBuffer</span> <span style="color: #F92672;">bb</span> = cs.encode(cb);
+    <span style="color: #66D9EF;">return</span> bb.array();
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5-1-4" class="outline-5">
+<h5 id="sec-1-5-1-4"><span class="section-number-5">1.5.1.4</span> 倒序遍历 LinkedHashMap 集合</h5>
+<div class="outline-text-5" id="text-1-5-1-4">
 <div class="org-src-container">
 
 <pre class="src src-java"><span style="color: #66D9EF;">Map</span>&lt;<span style="color: #66D9EF;">Integer</span>, <span style="color: #66D9EF;">String</span>&gt; <span style="color: #F92672;">data</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">LinkedHashMap</span>&lt;&gt;();
@@ -1122,9 +1178,9 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-5-1-4" class="outline-5">
-<h5 id="sec-1-5-1-4"><span class="section-number-5">1.5.1.4</span> 使用异或操作交换两个数字</h5>
-<div class="outline-text-5" id="text-1-5-1-4">
+<div id="outline-container-sec-1-5-1-5" class="outline-5">
+<h5 id="sec-1-5-1-5"><span class="section-number-5">1.5.1.5</span> 使用异或操作交换两个数字</h5>
+<div class="outline-text-5" id="text-1-5-1-5">
 <div class="org-src-container">
 
 <pre class="src src-java"><span style="color: #E6DB74; font-style: italic;">/**</span>
@@ -1141,9 +1197,9 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-5-1-5" class="outline-5">
-<h5 id="sec-1-5-1-5"><span class="section-number-5">1.5.1.5</span> 分页计算页数</h5>
-<div class="outline-text-5" id="text-1-5-1-5">
+<div id="outline-container-sec-1-5-1-6" class="outline-5">
+<h5 id="sec-1-5-1-6"><span class="section-number-5">1.5.1.6</span> 分页计算页数</h5>
+<div class="outline-text-5" id="text-1-5-1-6">
 <div class="org-src-container">
 
 <pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#27599;&#39029;&#35760;&#24405;&#25968;</span>
@@ -1156,9 +1212,9 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-5-1-6" class="outline-5">
-<h5 id="sec-1-5-1-6"><span class="section-number-5">1.5.1.6</span> 分割 Map</h5>
-<div class="outline-text-5" id="text-1-5-1-6">
+<div id="outline-container-sec-1-5-1-7" class="outline-5">
+<h5 id="sec-1-5-1-7"><span class="section-number-5">1.5.1.7</span> 分割 Map</h5>
+<div class="outline-text-5" id="text-1-5-1-7">
 <div class="org-src-container">
 
 <pre class="src src-java"><span style="color: #E6DB74; font-style: italic;">/**</span>
@@ -1187,9 +1243,9 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-5-1-7" class="outline-5">
-<h5 id="sec-1-5-1-7"><span class="section-number-5">1.5.1.7</span> Java 获取系统的临时文件夹路径</h5>
-<div class="outline-text-5" id="text-1-5-1-7">
+<div id="outline-container-sec-1-5-1-8" class="outline-5">
+<h5 id="sec-1-5-1-8"><span class="section-number-5">1.5.1.8</span> Java 获取系统的临时文件夹路径</h5>
+<div class="outline-text-5" id="text-1-5-1-8">
 <div class="org-src-container">
 
 <pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#33719;&#21462;&#31995;&#32479;&#30340;&#20020;&#26102;&#25991;&#20214;&#22841;&#36335;&#24452;</span>
@@ -1198,9 +1254,9 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-5-1-8" class="outline-5">
-<h5 id="sec-1-5-1-8"><span class="section-number-5">1.5.1.8</span> Java 通过反射获取泛型的类型</h5>
-<div class="outline-text-5" id="text-1-5-1-8">
+<div id="outline-container-sec-1-5-1-9" class="outline-5">
+<h5 id="sec-1-5-1-9"><span class="section-number-5">1.5.1.9</span> Java 通过反射获取泛型的类型</h5>
+<div class="outline-text-5" id="text-1-5-1-9">
 <ul class="org-ul">
 <li>由于 Java 的泛型在运行时会被擦除，不能够直接获取泛型的类型，但是其实在 class 字节码中还是保存着泛型的信息，可以通过特殊的方式获取到泛型的类型
 </li>
@@ -1264,9 +1320,9 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-5-1-9" class="outline-5">
-<h5 id="sec-1-5-1-9"><span class="section-number-5">1.5.1.9</span> Java 8 接口中的默认方法的“劫持”问题</h5>
-<div class="outline-text-5" id="text-1-5-1-9">
+<div id="outline-container-sec-1-5-1-10" class="outline-5">
+<h5 id="sec-1-5-1-10"><span class="section-number-5">1.5.1.10</span> Java 8 接口中的默认方法的“劫持”问题</h5>
+<div class="outline-text-5" id="text-1-5-1-10">
 <ul class="org-ul">
 <li>IFoo 接口中有一默认方法 bar
 </li>
@@ -1311,9 +1367,9 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-5-1-10" class="outline-5">
-<h5 id="sec-1-5-1-10"><span class="section-number-5">1.5.1.10</span> 使用 commons-beanutils 复制属性，当对象中的数值类型属性为 null 时复制成 0 的问题</h5>
-<div class="outline-text-5" id="text-1-5-1-10">
+<div id="outline-container-sec-1-5-1-11" class="outline-5">
+<h5 id="sec-1-5-1-11"><span class="section-number-5">1.5.1.11</span> 使用 commons-beanutils 复制属性，当对象中的数值类型属性为 null 时复制成 0 的问题</h5>
+<div class="outline-text-5" id="text-1-5-1-11">
 <div class="org-src-container">
 
 <pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#24403;&#23545;&#35937;&#30340;&#23646;&#24615;&#23545;&#35937;&#20026; null &#26102;&#65292;&#22797;&#21046;&#23545;&#35937;&#20013;&#30340;&#25968;&#20540;&#31867;&#22411;&#23646;&#24615;&#34987;&#21021;&#22987;&#21270;&#20026; 0</span>
@@ -1333,6 +1389,119 @@ ConvertUtils.register(<span style="color: #66D9EF;">new</span> <span style="colo
 
 <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#20877;&#22797;&#21046;&#23646;&#24615;</span>
 BeanUtils.copyProperties(entity, copyEntity);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5-1-12" class="outline-5">
+<h5 id="sec-1-5-1-12"><span class="section-number-5">1.5.1.12</span> Java AES 加密解密</h5>
+<div class="outline-text-5" id="text-1-5-1-12">
+<ul class="org-ul">
+<li>加密
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">content</span><span style="color: #E6DB74; font-style: italic;"> &#24453;&#21152;&#23494;&#20869;&#23481;</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">password</span><span style="color: #E6DB74; font-style: italic;"> &#23494;&#38053;</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@return</span><span style="color: #E6DB74; font-style: italic;"> &#23494;&#25991;&#65292;&#21152;&#23494;&#24322;&#24120;&#26102;&#36820;&#22238; null </span>
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672; font-style: italic;">encrypt</span>(<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">content</span>, <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">password</span>) {
+    <span style="color: #66D9EF;">try</span> {
+        <span style="color: #66D9EF;">KeyGenerator</span> <span style="color: #F92672;">kgen</span> = KeyGenerator.getInstance(<span style="color: #E6DB74;">"AES"</span>);
+        <span style="color: #66D9EF;">SecureRandom</span> <span style="color: #F92672;">random</span>=SecureRandom.getInstance(<span style="color: #E6DB74;">"SHA1PRNG"</span>);
+        random.setSeed(password.getBytes());
+        kgen.init(<span style="color: #ffa07a;">128</span>, random);
+        <span style="color: #66D9EF;">SecretKey</span> <span style="color: #F92672;">secretKey</span> = kgen.generateKey();
+        <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672;">enCodeFormat</span> = secretKey.getEncoded();
+        <span style="color: #66D9EF;">SecretKeySpec</span> <span style="color: #F92672;">key</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">SecretKeySpec</span>(enCodeFormat, <span style="color: #E6DB74;">"AES"</span>);
+        <span style="color: #66D9EF;">Cipher</span> <span style="color: #F92672;">cipher</span> = Cipher.getInstance(<span style="color: #E6DB74;">"AES"</span>);
+        <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672;">byteContent</span> = content.getBytes(<span style="color: #E6DB74;">"utf-8"</span>);
+        cipher.init(<span style="color: #AE81FF;">Cipher</span>.<span style="color: #7fffd4;">ENCRYPT_MODE</span>, key);
+        <span style="color: #66D9EF;">return</span> cipher.doFinal(byteContent);
+    } <span style="color: #66D9EF;">catch</span> (NoSuchAlgorithmException | NoSuchPaddingException | 
+            InvalidKeyException | UnsupportedEncodingException |
+            IllegalBlockSizeException | BadPaddingException e) {
+        e.printStackTrace();
+    }
+    <span style="color: #66D9EF;">return</span> <span style="color: #7fffd4;">null</span>;
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>解密
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">content</span><span style="color: #E6DB74; font-style: italic;"> &#24453;&#35299;&#23494;&#20869;&#23481;</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">password</span><span style="color: #E6DB74; font-style: italic;"> &#23494;&#38053;</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@return</span><span style="color: #E6DB74; font-style: italic;"> &#21407;&#20869;&#23481;&#65292;&#35299;&#23494;&#24322;&#24120;&#26102;&#36820;&#22238; null</span>
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672; font-style: italic;">decrypt</span>(<span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672;">content</span>, <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">password</span>) {
+    <span style="color: #66D9EF;">try</span> {
+        <span style="color: #66D9EF;">KeyGenerator</span> <span style="color: #F92672;">kgen</span> = KeyGenerator.getInstance(<span style="color: #E6DB74;">"AES"</span>);
+        <span style="color: #66D9EF;">SecureRandom</span> <span style="color: #F92672;">random</span>=SecureRandom.getInstance(<span style="color: #E6DB74;">"SHA1PRNG"</span>);
+        random.setSeed(password.getBytes());
+        kgen.init(<span style="color: #ffa07a;">128</span>, random);
+        <span style="color: #66D9EF;">SecretKey</span> <span style="color: #F92672;">secretKey</span> = kgen.generateKey();
+        <span style="color: #66D9EF;">byte</span>[] <span style="color: #F92672;">enCodeFormat</span> = secretKey.getEncoded();
+        <span style="color: #66D9EF;">SecretKeySpec</span> <span style="color: #F92672;">key</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">SecretKeySpec</span>(enCodeFormat, <span style="color: #E6DB74;">"AES"</span>);
+        <span style="color: #66D9EF;">Cipher</span> <span style="color: #F92672;">cipher</span> = Cipher.getInstance(<span style="color: #E6DB74;">"AES"</span>);
+        cipher.init(<span style="color: #AE81FF;">Cipher</span>.<span style="color: #7fffd4;">DECRYPT_MODE</span>, key);
+        <span style="color: #66D9EF;">return</span> cipher.doFinal(content);
+    } <span style="color: #66D9EF;">catch</span> (NoSuchAlgorithmException | NoSuchPaddingException | 
+            InvalidKeyException | IllegalBlockSizeException | 
+            BadPaddingException e) {
+        e.printStackTrace();
+    }
+    <span style="color: #66D9EF;">return</span> <span style="color: #7fffd4;">null</span>;
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>使用
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">main</span>(<span style="color: #66D9EF;">String</span>[] <span style="color: #F92672;">args</span>) {
+    <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">content</span> = <span style="color: #E6DB74;">"test"</span>; <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#24453;&#21152;&#23494;&#20869;&#23481;</span>
+    <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">pwd</span> = <span style="color: #E6DB74;">"AES"</span>; <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#23494;&#38053;</span>
+    <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">encryptContent</span> = Base64.getEncoder().encodeToString(encrypt(content, pwd)); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#23494;&#25991;</span>
+    <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">decryptContent</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">String</span>(decrypt(Base64.getDecoder().decode(encryptContent), pwd)); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35299;&#23494;&#23494;&#25991;</span>
+    System.out.println(content.equals(decryptContent));
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5-1-13" class="outline-5">
+<h5 id="sec-1-5-1-13"><span class="section-number-5">1.5.1.13</span> Java 常用正则表达式</h5>
+<div class="outline-text-5" id="text-1-5-1-13">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * &#21305;&#37197;&#22269;&#38469;&#30005;&#35805;&#21495;&#30721;</span>
+<span style="color: #E6DB74; font-style: italic;"> * 13987654321</span>
+<span style="color: #E6DB74; font-style: italic;"> * +8613987654321</span>
+<span style="color: #E6DB74; font-style: italic;"> * +86139-876-54321</span>
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #b0c4de;">final</span> <span style="color: #66D9EF;">Pattern</span> <span style="color: #F92672;">PHONE_PATTERN</span> = Pattern.compile(<span style="color: #E6DB74;">"([+]?\\d{1,2}[.\\-\\s]?)?(\\d{3}[.-]?){2}\\d{2,5}"</span>);
+
+<span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * &#21305;&#37197;&#30005;&#23376;&#37038;&#31665;</span>
+<span style="color: #E6DB74; font-style: italic;"> * saisimon@gmail.com</span>
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #b0c4de;">final</span> <span style="color: #66D9EF;">Pattern</span> <span style="color: #F92672;">EMAIL_PATTERN</span> = Pattern.compile(<span style="color: #E6DB74;">"[\\w!#$%&amp;'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?"</span>);
+
+<span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * &#21305;&#37197; 18 &#20301;&#36523;&#20221;&#35777;&#21495;</span>
+<span style="color: #E6DB74; font-style: italic;"> * 43011319990216213X</span>
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #b0c4de;">final</span> <span style="color: #66D9EF;">Pattern</span> <span style="color: #F92672;">ID_CARD_PATTERN</span> = Pattern.compile(<span style="color: #E6DB74;">"^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$"</span>);
 </pre>
 </div>
 </div>
@@ -2000,6 +2169,274 @@ log4j.appender.CONSOLE=com.colorlog.log4j.AnsiColorConsoleAppender
 </ul>
 </div>
 </div>
+<div id="outline-container-sec-1-5-11-6" class="outline-5">
+<h5 id="sec-1-5-11-6"><span class="section-number-5">1.5.11.6</span> Eclipse 隐藏/显示已关闭项目</h5>
+<div class="outline-text-5" id="text-1-5-11-6">
+<p>
+Project Explorer 标签栏 -&gt; v(View Menu) -&gt; Customize View&#x2026; -&gt; Filters -&gt; 勾选/取消勾选 Closed projects
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5-12" class="outline-4">
+<h4 id="sec-1-5-12"><span class="section-number-4">1.5.12</span> Spring</h4>
+<div class="outline-text-4" id="text-1-5-12">
+</div><div id="outline-container-sec-1-5-12-1" class="outline-5">
+<h5 id="sec-1-5-12-1"><span class="section-number-5">1.5.12.1</span> Spring Boot 中添加自定义的监听器，拦截器，过滤器</h5>
+<div class="outline-text-5" id="text-1-5-12-1">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * &#28155;&#21152;&#33258;&#23450;&#20041;&#30340;&#30417;&#21548;&#22120;&#65292;&#25318;&#25130;&#22120;&#65292;&#36807;&#28388;&#22120;</span>
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #AE81FF;">@Configuration</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">WebConfig</span> <span style="color: #66D9EF;">extends</span> <span style="color: #66D9EF;">WebMvcConfigurerAdapter</span> {
+
+    <span style="color: #b0c4de;">private</span> <span style="color: #b0c4de;">static</span> <span style="color: #b0c4de;">final</span> <span style="color: #66D9EF;">Logger</span> <span style="color: #F92672;">LOG</span> = LoggerFactory.getLogger(WebConfig.<span style="color: #66D9EF;">class</span>);
+
+    <span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;">     * &#28155;&#21152;&#30417;&#21548;&#22120;</span>
+<span style="color: #E6DB74; font-style: italic;">     */</span>
+    <span style="color: #AE81FF;">@Bean</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">ServletListenerRegistrationBean</span>&lt;<span style="color: #66D9EF;">EventListener</span>&gt; <span style="color: #F92672; font-style: italic;">doMyListener</span>() {
+        <span style="color: #66D9EF;">if</span> (<span style="color: #7fffd4;">LOG</span>.isDebugEnabled()) {
+            <span style="color: #7fffd4;">LOG</span>.debug(<span style="color: #E6DB74;">"Do My Listener"</span>);
+        }
+        <span style="color: #66D9EF;">ServletListenerRegistrationBean</span>&lt;<span style="color: #66D9EF;">EventListener</span>&gt; <span style="color: #F92672;">registrationBean</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">ServletListenerRegistrationBean</span>&lt;&gt;();
+        registrationBean.setListener(<span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">MyListener</span>());
+        <span style="color: #66D9EF;">return</span> registrationBean;
+    }
+
+    <span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;">     * &#28155;&#21152;&#36807;&#28388;&#22120;</span>
+<span style="color: #E6DB74; font-style: italic;">     */</span>
+    <span style="color: #AE81FF;">@Bean</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">FilterRegistrationBean</span> <span style="color: #F92672; font-style: italic;">doMyFilter</span>() {
+        <span style="color: #66D9EF;">if</span> (<span style="color: #7fffd4;">LOG</span>.isDebugEnabled()) {
+            <span style="color: #7fffd4;">LOG</span>.debug(<span style="color: #E6DB74;">"Do My Filter"</span>);
+        }
+        <span style="color: #66D9EF;">FilterRegistrationBean</span> <span style="color: #F92672;">registration</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">FilterRegistrationBean</span>();
+        registration.setFilter(<span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">MyFilter</span>());
+        registration.addUrlPatterns(<span style="color: #E6DB74;">"/*"</span>); <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">&#25318;&#25130;&#36335;&#24452;&#65292;&#21487;&#20197;&#28155;&#21152;&#22810;&#20010;</span>
+        registration.setName(<span style="color: #E6DB74;">"myFilter"</span>);
+        registration.setOrder(<span style="color: #ffa07a;">1</span>);
+        <span style="color: #66D9EF;">return</span> registration;
+    }
+
+    <span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;">     * &#28155;&#21152;&#25318;&#25130;&#22120;</span>
+<span style="color: #E6DB74; font-style: italic;">     */</span>
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">addInterceptors</span>(<span style="color: #66D9EF;">InterceptorRegistry</span> <span style="color: #F92672;">registry</span>) {
+        <span style="color: #66D9EF;">if</span> (<span style="color: #7fffd4;">LOG</span>.isDebugEnabled()) {
+            <span style="color: #7fffd4;">LOG</span>.debug(<span style="color: #E6DB74;">"Do My Interceptors"</span>);
+        }
+        registry.addInterceptor(<span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">MyInterceptor</span>());
+        <span style="color: #66D9EF;">super</span>.addInterceptors(registry);
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5-12-2" class="outline-5">
+<h5 id="sec-1-5-12-2"><span class="section-number-5">1.5.12.2</span> Spring 获取项目 classpath 路径</h5>
+<div class="outline-text-5" id="text-1-5-12-2">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.util.</span><span style="color: #66D9EF;">ClassUtils</span>;
+
+<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">classpath</span> = ClassUtils.getDefaultClassLoader().getResource(<span style="color: #E6DB74;">""</span>).getPath();
+</pre>
+</div>
+<ul class="org-ul">
+<li>ClassUtils#getDefaultClassLoader()
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">ClassLoader</span> <span style="color: #F92672; font-style: italic;">getDefaultClassLoader</span>() {
+    <span style="color: #66D9EF;">ClassLoader</span> <span style="color: #F92672;">cl</span> = <span style="color: #7fffd4;">null</span>;
+    <span style="color: #66D9EF;">try</span> {
+        cl = Thread.currentThread().getContextClassLoader();
+    } <span style="color: #66D9EF;">catch</span> (<span style="color: #66D9EF;">Throwable</span> <span style="color: #F92672;">ex</span>) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Cannot access thread context ClassLoader - falling back...</span>
+    }
+    <span style="color: #66D9EF;">if</span> (cl == <span style="color: #7fffd4;">null</span>) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">No thread context class loader -&gt; use class loader of this class.</span>
+        cl = ClassUtils.<span style="color: #66D9EF;">class</span>.getClassLoader();
+        <span style="color: #66D9EF;">if</span> (cl == <span style="color: #7fffd4;">null</span>) {
+            <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">getClassLoader() returning null indicates the bootstrap ClassLoade</span>
+            <span style="color: #66D9EF;">try</span> {
+                cl = ClassLoader.getSystemClassLoader();
+            } <span style="color: #66D9EF;">catch</span> (<span style="color: #66D9EF;">Throwable</span> <span style="color: #F92672;">ex</span>) {
+                <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Cannot access system ClassLoader - oh well, maybe the caller can live with null...</span>
+            }
+        }
+    }
+    <span style="color: #66D9EF;">return</span> cl;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5-12-3" class="outline-5">
+<h5 id="sec-1-5-12-3"><span class="section-number-5">1.5.12.3</span> Spring Boot 国际化配置</h5>
+<div class="outline-text-5" id="text-1-5-12-3">
+<ul class="org-ul">
+<li>简单在 application.properties 中配置国际化信息
+</li>
+</ul>
+<pre class="example">
+# INTERNATIONALIZATION (MessageSourceAutoConfiguration)
+spring.messages.always-use-message-format=false # Set whether to always apply the MessageFormat rules, parsing even messages without arguments.
+spring.messages.basename=package # 默认为 messages 
+spring.messages.cache-seconds=60 # 默认为 -1
+spring.messages.encoding=UTF-8
+spring.messages.fallback-to-system-locale=true # Set whether to fall back to the system Locale if no files for a specific Locale have been found.
+</pre>
+<ul class="org-ul">
+<li>自定义配置国际化信息
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #AE81FF;">@EnableWebMvc</span>
+<span style="color: #AE81FF;">@Configuration</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">I18NConfig</span> <span style="color: #66D9EF;">extends</span> <span style="color: #66D9EF;">WebMvcConfigurerAdapter</span> {
+
+    <span style="color: #AE81FF;">@Bean</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">ReloadableResourceBundleMessageSource</span> <span style="color: #F92672; font-style: italic;">messageSource</span>() {
+        <span style="color: #66D9EF;">ReloadableResourceBundleMessageSource</span> <span style="color: #F92672;">messageSource</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">ReloadableResourceBundleMessageSource</span>();
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35774;&#32622; Spring &#35835;&#21462;&#35821;&#35328;&#21253;&#30340;&#20301;&#32622; src/main/resources/package_*.properties &#25991;&#20214;</span>
+        messageSource.setBasename(<span style="color: #E6DB74;">"classpath:package"</span>);
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35774;&#32622;&#40664;&#35748;&#32534;&#30721;&#20026; UTF-8</span>
+        messageSource.setDefaultEncoding(<span style="color: #E6DB74;">"UTF-8"</span>);
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35774;&#32622;&#24403; code &#27809;&#25214;&#21040;&#23545;&#24212;&#30340;&#25991;&#26412;&#26102;&#40664;&#35748;&#20351;&#29992; code &#20316;&#20026;&#20854;&#25991;&#26412;</span>
+        messageSource.setUseCodeAsDefaultMessage(<span style="color: #7fffd4;">true</span>);
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35774;&#32622;&#32531;&#23384;&#26102;&#38271;</span>
+        messageSource.setCacheSeconds(<span style="color: #ffa07a;">60</span>);
+        <span style="color: #66D9EF;">return</span> messageSource;
+    }
+
+    <span style="color: #AE81FF;">@Bean</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">CookieLocaleResolver</span> <span style="color: #F92672; font-style: italic;">localeResolver</span>() {
+        <span style="color: #66D9EF;">CookieLocaleResolver</span> <span style="color: #F92672;">localeResolver</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">CookieLocaleResolver</span>();
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35774;&#32622;&#40664;&#35748;&#22320;&#21306;&#65292;&#23545;&#24212;&#25991;&#20214;&#21517;&#20026; package_cn.properties</span>
+        localeResolver.setDefaultLocale(<span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">Locale</span>(<span style="color: #E6DB74;">"cn"</span>));
+        <span style="color: #66D9EF;">return</span> localeResolver;
+    }
+
+    <span style="color: #AE81FF;">@Bean</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">LocaleChangeInterceptor</span> <span style="color: #F92672; font-style: italic;">localeChangeInterceptor</span>() {
+        <span style="color: #66D9EF;">LocaleChangeInterceptor</span> <span style="color: #F92672;">lci</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">LocaleChangeInterceptor</span>();
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35774;&#32622;&#25913;&#21464;&#22320;&#21306;&#30340;&#21442;&#25968;&#21517;</span>
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">http://www.xxx.com/index?language=cn &#35821;&#35328;&#20026;&#20013;&#25991;</span>
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">http://www.xxx.com/index?language=en &#35821;&#35328;&#20026;English</span>
+        lci.setParamName(<span style="color: #E6DB74;">"language"</span>);
+        <span style="color: #66D9EF;">return</span> lci;
+    }
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">addInterceptors</span>(<span style="color: #66D9EF;">InterceptorRegistry</span> <span style="color: #F92672;">registry</span>) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#28155;&#21152;&#25318;&#25130;&#22120;</span>
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5-12-4" class="outline-5">
+<h5 id="sec-1-5-12-4"><span class="section-number-5">1.5.12.4</span> Spring Boot 配置首页跳转</h5>
+<div class="outline-text-5" id="text-1-5-12-4">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #AE81FF;">@EnableWebMvc</span>
+<span style="color: #AE81FF;">@Configuration</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">WebConfig</span> <span style="color: #66D9EF;">extends</span> <span style="color: #66D9EF;">WebMvcConfigurerAdapter</span> {
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">addViewControllers</span>(<span style="color: #66D9EF;">ViewControllerRegistry</span> <span style="color: #F92672;">registry</span>) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35774;&#32622;&#40664;&#35748;&#39318;&#39029;&#36339;&#36716;&#33267; /login</span>
+        registry.addViewController(<span style="color: #E6DB74;">"/"</span>).setViewName(<span style="color: #E6DB74;">"redirect:/login"</span>);
+    }
+
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5-12-5" class="outline-5">
+<h5 id="sec-1-5-12-5"><span class="section-number-5">1.5.12.5</span> Spring Boot 获取 ApplicationContext</h5>
+<div class="outline-text-5" id="text-1-5-12-5">
+<ul class="org-ul">
+<li>将 SpringContext 放在 Spring 的扫描路径内
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.beans.</span><span style="color: #66D9EF;">BeansException</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.</span><span style="color: #66D9EF;">ApplicationContext</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.</span><span style="color: #66D9EF;">ApplicationContextAware</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.annotation.</span><span style="color: #66D9EF;">Lazy</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.stereotype.</span><span style="color: #66D9EF;">Component</span>;
+
+<span style="color: #AE81FF;">@Component</span>
+<span style="color: #AE81FF;">@Lazy</span>(<span style="color: #7fffd4;">false</span>)
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">SpringContext</span> <span style="color: #66D9EF;">implements</span> <span style="color: #66D9EF;">ApplicationContextAware</span> {
+
+    <span style="color: #b0c4de;">private</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">ApplicationContext</span> <span style="color: #F92672;">applicationContext</span>;
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">setApplicationContext</span>(<span style="color: #66D9EF;">ApplicationContext</span> <span style="color: #F92672;">applicationContext</span>) <span style="color: #66D9EF;">throws</span> <span style="color: #66D9EF;">BeansException</span> {
+        <span style="color: #66D9EF;">if</span> (<span style="color: #7fffd4;">null</span> == SpringContext.applicationContext) {
+            SpringContext.applicationContext = applicationContext;
+        }
+    }
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">ApplicationContext</span> <span style="color: #F92672; font-style: italic;">getApplicationContext</span>() {
+        <span style="color: #66D9EF;">return</span> applicationContext;
+    }
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">Object</span> <span style="color: #F92672; font-style: italic;">getBean</span>(<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">name</span>) {
+        <span style="color: #66D9EF;">return</span> getApplicationContext().getBean(name);
+    }
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> &lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #66D9EF;">T</span> <span style="color: #F92672; font-style: italic;">getBean</span>(<span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #F92672;">clazz</span>) {
+        <span style="color: #66D9EF;">return</span> getApplicationContext().getBean(clazz);
+    }
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> &lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #66D9EF;">T</span> <span style="color: #F92672; font-style: italic;">getBean</span>(<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">name</span>, <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #F92672;">clazz</span>) {
+        <span style="color: #66D9EF;">return</span> getApplicationContext().getBean(name, clazz);
+    }
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>如果 SpringContext 无法被 Spring 扫描到，则需要在启动类里直接引入，并且 SpringContext 中不需要添加@Component注解
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.boot.</span><span style="color: #66D9EF;">SpringApplication</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.boot.autoconfigure.</span><span style="color: #66D9EF;">SpringBootApplication</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.annotation.</span><span style="color: #66D9EF;">Import</span>;
+
+<span style="color: #AE81FF;">@SpringBootApplication</span>
+<span style="color: #AE81FF;">@Import</span>(SpringContext.<span style="color: #66D9EF;">class</span>)
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Application</span> {
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">main</span>(<span style="color: #66D9EF;">String</span>[] <span style="color: #F92672;">args</span>) {
+        SpringApplication.run(Application.<span style="color: #66D9EF;">class</span>, args);
+    }
+
+}
+</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -2622,6 +3059,18 @@ $ docker-enter &lt;containerId&gt; # 进入指定容器
 </pre>
 </div>
 </div>
+<div id="outline-container-sec-1-8-2" class="outline-4">
+<h4 id="sec-1-8-2"><span class="section-number-4">1.8.2</span> 批量删除 &lt;none&gt; 镜像</h4>
+<div class="outline-text-4" id="text-1-8-2">
+<pre class="example">
+# 删除所有停止的容器，防止删除镜像时应有依赖的容器存在，而导致删除失败
+$ docker rm $(docker ps -a | grep "Exited" | awk '{print $1}')
+
+# 删除所有 &lt;none&gt; 镜像
+$ docker rmi $(docker images | grep "&lt;none&gt;" | awk '{print $3}')
+</pre>
+</div>
+</div>
 </div>
 
 <div id="outline-container-sec-1-9" class="outline-3">
@@ -2852,7 +3301,7 @@ $ git remote -v
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2017-07-12 Wed 17:31</p>
+<p class="date">Created: 2017-10-13 Fri 11:08</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
