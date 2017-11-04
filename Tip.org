@@ -1297,6 +1297,34 @@
          
      }
      #+END_SRC
+**** Spring Boot 读取 Properties 文件
+     - config.properties 放在 classpath 路径下
+     #+BEGIN_SRC
+     # 超时时间
+     config.timeout=10000
+     #+END_SRC
+     - Properties.java 使用 PropertySource 注解设置文件路径，使用 Value 注解注入属性值
+     #+BEGIN_SRC java
+     package net.saisimon.utils
+
+     import org.springframework.beans.factory.annotation.Value;
+     import org.springframework.context.annotation.PropertySource;
+     import org.springframework.stereotype.Component;
+
+     @Component
+     @PropertySource("classpath:email/config.properties") // 设置 Properties 文件路径
+     public class Properties {
+
+         // 设置默认值为 10000
+         @Value("${config.timeout:10000}")
+         private Long timeout;
+
+         public Long getTimeout() {
+             return timeout;
+         }
+             
+     }
+     #+END_SRC
 
 ** Python
 *** Python
