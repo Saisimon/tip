@@ -688,6 +688,10 @@
       ,*/
      public static final Pattern ID_CARD_PATTERN = Pattern.compile("^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$");
      #+END_SRC
+**** 正则表达式中需要转义的特殊字符
+     #+BEGIN_SRC 
+     * . ? + $ ^ [ ] ( ) { } | \ /
+     #+END_SRC
 *** JUnit
 **** JUnit 4 中实现测试用例按指定顺序执行
     #+BEGIN_QUOTE
