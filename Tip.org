@@ -692,6 +692,30 @@
      #+BEGIN_SRC 
      * . ? + $ ^ [ ] ( ) { } | \ /
      #+END_SRC
+**** Java 根据文件名获取其 Content-Type
+     - 使用 Java 1.7 中 Files 提供的方法
+     #+BEGIN_SRC java
+     import java.io.File;
+     import java.nio.file.Files;
+     import java.nio.file.Path;
+     import java.nio.file.Paths;
+
+     private static final String defaultType = "application/octet-stream";
+
+     public static String parseContentType(File file) {
+         String contentType = defaultType;
+         if (file != null) {
+             Path path = Paths.get(file.getAbsolutePath());
+             try {
+                 contentType = Files.probeContentType(path);
+             } catch (IOException e) {
+                 LOG.error("Unknown Content-Type", e);
+             }
+         }
+         return contentType;
+     }
+     #+END_SRC
+     
 *** JUnit
 **** JUnit 4 中实现测试用例按指定顺序执行
     #+BEGIN_QUOTE
