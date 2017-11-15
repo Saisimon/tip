@@ -38,6 +38,10 @@
     START ${xshell path} ${session path}
     ECHO "..."
     #+END_SRC
+*** 命令提示符(CMD)显示中文乱码
+    1. Win + R 运行 regedit
+    2. 找到 计算机 > HKEY_CURRENT_USER > Console > %SystemRoot%_system32_cmd.exe
+    3. 将 CodePage 的数值数据修改为十六进制 3a8 或十进制 936 (简体中文 GBK) 或者十六进制 fde9 或十进制 65001 (UTF-8)
 
 ** Linux
 *** 查看 Linux 系统信息
