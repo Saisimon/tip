@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<email>
+	<item key="sendprotocol">smtp</item>
+	<item key="sendService">smtp-mail.outlook.com</item>
+	<item key="sendServicePort">587</item>
+	<item key="sendServiceEncrypt">starttls</item>
+	<item key="receiveProtocol">imaps</item>
+	<item key="receiveService">imap-mail.outlook.com</item>
+	<item key="receiveServicePort">993</item>
+</email>

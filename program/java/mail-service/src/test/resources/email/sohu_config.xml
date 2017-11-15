@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<email>
+	<item key="sendprotocol">smtp</item>
+	<item key="sendService">smtp.sohu.com</item>
+	<item key="sendServicePort">465</item>
+	<item key="sendServiceEncrypt">ssl</item>
+	<item key="receiveProtocol">imaps</item>
+	<item key="receiveService">imap.sohu.com</item>
+	<item key="receiveServicePort">993</item>
+</email>
