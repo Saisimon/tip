@@ -1380,6 +1380,97 @@
              
      }
      #+END_SRC
+**** Spring Boot 配置 HTTPS ，HTTP 重定向到 HTTPS (Tomcat)
+     - https.properties 放在 classpath 路径下
+       #+BEGIN_SRC 
+       https.port=443
+       https.secure=true
+       https.scheme=https
+       https.ssl=true
+       https.keystore=/keystore/dir/server.jks
+       https.keystore-password=********
+       #+END_SRC
+     - WebConfig.java Web 配置类中添加处理 HTTPS 请求的 Container
+       #+BEGIN_SRC java
+       package net.saisimon.config;
+
+       import java.io.File;
+
+       import org.apache.catalina.Context;
+       import org.apache.catalina.connector.Connector;
+       import org.apache.tomcat.util.descriptor.web.SecurityCollection;
+       import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+       import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+       import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+       import org.springframework.boot.context.properties.ConfigurationProperties;
+       import org.springframework.boot.context.properties.EnableConfigurationProperties;
+       import org.springframework.context.annotation.Bean;
+       import org.springframework.context.annotation.Configuration;
+       import org.springframework.context.annotation.PropertySource;
+
+       import lombok.Data;
+
+       @Configuration
+       @PropertySource("classpath:https.properties")
+       @EnableConfigurationProperties(WebConfig.SslProperties.class)
+       public class WebConfig {
+           
+           @Bean
+           public EmbeddedServletContainerFactory servletContainer(SslProperties properties) {
+               TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
+                   @Override
+                   protected void postProcessContext(Context context) {
+                       SecurityConstraint securityConstraint = new SecurityConstraint();
+                       securityConstraint.setUserConstraint("CONFIDENTIAL");
+                       SecurityCollection collection = new SecurityCollection();
+                       collection.addPattern("/*");
+                       securityConstraint.addCollection(collection);
+                       context.addConstraint(securityConstraint);
+                   }
+               };
+               tomcat.addAdditionalTomcatConnectors(createSslConnector(properties));
+               return tomcat;
+           }
+
+           private Connector createSslConnector(SslProperties properties) {
+               Connector connector = new Connector();
+               properties.configureConnector(connector);
+               return connector;
+           }
+           
+           @ConfigurationProperties(prefix = "https")
+           @Data
+           public static class SslProperties {
+               
+               private Integer port;
+               private Boolean ssl = true;
+               private Boolean secure = true;
+               private String scheme = "https";
+               private File keystore;
+               private String keystorePassword;
+               
+               public void configureConnector(Connector connector) {
+                   if (port != null) {
+                       connector.setPort(port);
+                   }
+                   if (secure != null) {
+                       connector.setSecure(secure);
+                   }
+                   if (scheme != null) {
+                       connector.setScheme(scheme);
+                   }
+                   if (ssl != null) {
+                       connector.setProperty("SSLEnabled", ssl.toString());
+                   }
+                   if (keystore != null && keystore.exists()) {
+                       connector.setProperty("keystoreFile", keystore.getAbsolutePath());
+                       connector.setProperty("keystorePass", keystorePassword);
+                   }
+               }
+           }
+           
+       }
+       #+END_SRC
 
 ** Python
 *** Python
