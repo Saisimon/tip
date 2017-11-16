@@ -888,6 +888,29 @@
      String xpath = "//ul[@id='meun']/li[@class='sub_meun' and @name='phone']/p/parent::li/span/a[normalize-space(text())='go']";
      #+END_SRC
      [[http://www.zvon.org/xxl/XPathTutorial/General_chi/examples.html][XPath 教程]]
+**** 生成自签名 HTTPS 证书
+     #+BEGIN_SRC 
+       # 生成 CA 私钥
+       $ openssl genrsa -out ca.key 2048
+       
+       # 生成 CA 证书
+       $ openssl req -x509 -new -key ca.key -out ca.crt
+       
+       # 生成服务端私钥
+       $ openssl genrsa -out server.key 2048
+
+       # 生成服务端证书请求文件
+       $ openssl req -new -key server.key -out server.csr
+
+       # 使用CA证书生成服务端证书
+       $ openssl x509 -req -sha256 -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -days 365 -out server.crt
+
+       # 服务端证书转为 pkcs12 格式
+       $ openssl pkcs12 -export -in server.crt -inkey server.key -out server.pkcs12
+
+       # 生成服务端的keystore
+       $ keytool -importkeystore -srckeystore server.pkcs12 -destkeystore server.jks -srcstoretype pkcs12
+     #+END_SRC
 *** Maven
 **** Maven 基本操作
      #+BEGIN_SRC
@@ -986,7 +1009,7 @@
        $ javah net.saisimon.jni.HelloWorld
      - 即可生成头文件 net_saisimon_jni_HelloWorld.h
      #+END_SRC
-*** 多线程
+*** Thread
 **** 统计所有线程消耗的总时间
      #+BEGIN_SRC java
      package net.saisimon.test
