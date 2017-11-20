@@ -935,8 +935,12 @@
 **** Maven 跳单元测试
     - 跳过单元测试
       #+BEGIN_SRC 
+        # 直接跳过测试，测试类不会被编译
         $ mvn install -Dmaven.test.skip=true
+        # 跳过测试运行，但会编译测试类
+        $ mvn install -DskipTests
       #+END_SRC
+      [[http://maven.apache.org/plugins-archives/maven-surefire-plugin-2.12.4/examples/skipping-test.html ][Skipping Tests]]
 **** Maven 指定编译版本
     - 添加编译插件
       #+BEGIN_SRC xml
