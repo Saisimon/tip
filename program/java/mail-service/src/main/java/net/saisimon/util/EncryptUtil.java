@@ -23,7 +23,7 @@ public class EncryptUtil {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(EncryptUtil.class);
 	
-	public EncryptUtil() {
+	private EncryptUtil() {
 		throw new IllegalAccessError();
 	}
 	
@@ -48,11 +48,6 @@ public class EncryptUtil {
 		}
 	}
 	
-	/**
-	 * @param content
-	 * @param password
-	 * @return
-	 */
 	public static byte[] decrypt(byte[] content, String password) {
 		try {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");

@@ -3,7 +3,6 @@ package net.saisimon.util;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.ClassUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,16 +13,8 @@ public class SystemUtil {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SystemUtil.class);
 	
-	public SystemUtil() {
+	private SystemUtil() {
 		throw new IllegalAccessError();
-	}
-	
-	public static String getAppPath() {
-		String appPath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
-		if (!appPath.endsWith("/")) {
-			appPath += "/";
-		}
-		return appPath;
 	}
 	
 	public static String toJson(Object object) {

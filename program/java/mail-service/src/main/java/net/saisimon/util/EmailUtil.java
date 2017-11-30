@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 import com.google.common.collect.Maps;
 
@@ -44,9 +45,9 @@ public class EmailUtil {
 		String host = fetchEmailHost(email);
 		if (StringUtils.isNotBlank(host)) {
 			Builder builder = new Builder();
-			String configPath = SystemUtil.getAppPath() + "email/" + host + "_config.xml";
+			ClassPathResource classPathResource = new ClassPathResource("email/" + host + "_config.xml");
 			try {
-				Document doc = builder.build(configPath);
+				Document doc = builder.build(classPathResource.getInputStream());
 				Element element = doc.getRootElement();
 				Elements items = element.getChildElements("item");
 				for (int i = 0; i < items.size(); i++) {

@@ -18,7 +18,7 @@ public class ConfigProperties {
 	private Long mailTimeout;
 	@Value("${mail.smtp.writetimeout:60000}")
 	private Long mailWritetimeout;
-	@Value("${password.encrypt.key:tomtoperp}")
+	@Value("${password.encrypt.key:Saisimon}")
 	private String key;
 	
 	public Long getMailConnectiontimeout() {

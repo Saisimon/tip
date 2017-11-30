@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import lombok.Data;
-import net.saisimon.util.SystemUtil;
 
 @Configuration
 @PropertySource("classpath:https.properties")
@@ -71,7 +70,7 @@ public class TomcatWebConfig {
 				connector.setProperty("SSLEnabled", ssl.toString());
 			}
 			if (StringUtils.isNotBlank(keystore)) {
-				File keystoreFile = new File(SystemUtil.getAppPath() + keystore);
+				File keystoreFile = new File(keystore);
 				if (keystoreFile.exists()) {
 					connector.setProperty("keystoreFile", keystoreFile.getAbsolutePath());
 					connector.setProperty("keystorePass", keystorePassword);

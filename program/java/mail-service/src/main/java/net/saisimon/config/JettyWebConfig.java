@@ -25,7 +25,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import lombok.Data;
-import net.saisimon.util.SystemUtil;
 
 @Configuration
 @PropertySource("classpath:https.properties")
@@ -76,9 +75,9 @@ public class JettyWebConfig {
 				httpsConfig.addCustomizer(new SecureRequestCustomizer());
 				HttpConnectionFactory connectionFactory = new HttpConnectionFactory(httpsConfig);
 				SslContextFactory sslContextFactory = new SslContextFactory();
-				File keystoreFile = new File(SystemUtil.getAppPath() + properties.getKeystore());
+				File keystoreFile = new File(properties.getKeystore());
 				if (keystoreFile.exists()) {
-					sslContextFactory.setKeyStorePath(keystoreFile.getAbsolutePath());
+					sslContextFactory.setKeyStorePath(properties.getKeystore());
 					sslContextFactory.setKeyStorePassword(properties.getKeystorePassword());
 				}
 				SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory,
