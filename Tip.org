@@ -961,7 +961,7 @@
       #+END_SRC
 **** pom.xml 文件 - Missing artifact jdk.tools:jdk.tools:jar:1.x
      - pom 文件添加 tools 依赖
-     #+BEGIN_SRC 
+     #+BEGIN_SRC xml
        <dependency>
 			<groupId>jdk.tools</groupId>
 			<artifactId>jdk.tools</artifactId>
@@ -969,6 +969,16 @@
 			<scope>system</scope>
     		<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
 	  </dependency>
+     #+END_SRC
+**** Maven 添加本地 jar 包依赖
+     #+BEGIN_SRC xml
+     <dependency>
+         <groupId>net.saisimon</groupId>
+         <artifactId>local-jar</artifactId>
+         <version>1.0</version>
+         <scope>system</scope>
+         <systemPath>/local/path/local-jar-1.0.jar</systemPath>
+     </dependency>
      #+END_SRC
 *** Tomcat
 **** 导入 Web 项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X...
