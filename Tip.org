@@ -272,6 +272,14 @@
     [root@localhost]$ (mvn -Djetty.port=8888 jetty:run > jetty.log 2>&1 &)
     #+END_SRC
     [[https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html ][参考]]
+*** CentOS 7 开放防火墙的 80 等端口
+    #+BEGIN_SRC 
+    # 防火墙开启作用域为 public，80 端口，并且永久生效
+    [root@localhost]$ firewall-cmd --zone=public --add-port=80/tcp --permanent
+
+    # 重新启动防火墙
+    [root@localhost]$ systemctl restart firewalld.service
+    #+END_SRC
 
 ** Database
 *** Mysql
