@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.saisimon</groupId>
 	<artifactId>mail-service</artifactId>
-	<version>0.1.4</version>
+	<version>0.1.5</version>
 	<packaging>jar</packaging>
 
 	<name>mail-service</name>
@@ -27,7 +27,14 @@
 	    </dependency>
 	    <dependency>
 	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-tomcat</artifactId>
+	        <scope>provided</scope>
+	        <optional>true</optional>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter-jetty</artifactId>
+	        <scope>provided</scope>
 	        <optional>true</optional>
 	    </dependency>
 	    <dependency>

@@ -7,6 +7,8 @@ import org.apache.catalina.connector.Connector;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,6 +22,8 @@ import lombok.Data;
 @Configuration
 @PropertySource("classpath:https.properties")
 @EnableConfigurationProperties(TomcatWebConfig.SslProperties.class)
+@ConditionalOnClass(Connector.class)
+@ConditionalOnProperty(prefix = "mail.service.https", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class TomcatWebConfig {
 
 	@Bean

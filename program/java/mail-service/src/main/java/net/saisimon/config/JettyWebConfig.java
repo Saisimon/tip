@@ -15,6 +15,8 @@ import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.util.security.Constraint;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.jetty.JettyServerCustomizer;
@@ -29,6 +31,8 @@ import lombok.Data;
 @Configuration
 @PropertySource("classpath:https.properties")
 @EnableConfigurationProperties(JettyWebConfig.SslProperties.class)
+@ConditionalOnClass(Connector.class)
+@ConditionalOnProperty(prefix = "mail.service.https", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class JettyWebConfig {
 
 	@Bean
