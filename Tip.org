@@ -1212,6 +1212,7 @@
      }
      #+END_SRC
 **** Spring 获取项目 classpath 路径
+     - *该方法在 Spring Boot 以 java -jar 启动时获取的路径不正确，改用[[Spring Boot 中获取 classpath 下的文件资源][文件流的形式]]*
      #+BEGIN_SRC java
      import org.springframework.util.ClassUtils;
 
@@ -1595,6 +1596,14 @@
 
        }
        #+END_SRC
+**** Spring Boot 中获取 classpath 下的文件资源
+     <<Spring Boot 中获取 classpath 下的文件资源>>
+     #+BEGIN_SRC java
+     import org.springframework.core.io.ClassPathResource;
+
+     ClassPathResource classPathResource = new ClassPathResource("path/file.xml");
+     InputStream in = classPathResource.getInputStream();
+     #+END_SRC
 
 ** Python
 *** Python
