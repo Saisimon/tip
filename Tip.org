@@ -1640,6 +1640,25 @@
      ClassPathResource classPathResource = new ClassPathResource("path/file.xml");
      InputStream in = classPathResource.getInputStream();
      #+END_SRC
+**** Spring Boot 中将非 Spring 管理对象装配成 Spring 管理对象
+     #+BEGIN_SRC java
+     /**
+      ,* 装配非 Spring 管理对象
+      ,*
+      ,* 获取 ApplicationContext 请参考[Spring Boot 获取 ApplicationContext]
+      ,* 
+      ,* @param obj non-spring object
+      ,* @return spring object
+      ,* @see SpringContext#getApplicationContext
+      ,*/
+     public static Object autowire(Object obj) {
+         if (obj == null) {
+             return null;
+         }
+         getApplicationContext().getAutowireCapableBeanFactory().autowireBean(obj);
+         return obj;
+     }
+     #+END_SRC
 
 ** Python
 *** Python
