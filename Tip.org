@@ -2192,9 +2192,20 @@
 *** Git push 时，fatal: Authentication failed
     - 修改 remote 地址
       #+BEGIN_SRC 
-         $ git remote set-url origin <ssh url>
+        $ git remote set-url origin <ssh url>
       #+END_SRC
     - 查看 remote 地址
-     #+BEGIN_SRC 
-         $ git remote -v
-     #+END_SRC 
+      #+BEGIN_SRC 
+        $ git remote -v
+      #+END_SRC 
+*** GitLab 服务启动与关闭
+    - 开机自动开启 GitLab 服务
+      #+BEGIN_SRC 
+        $ systemctl enable gitlab-runsvdir.service
+        $ systemctl start gitlab-runsvdir.service
+      #+END_SRC
+    - 关闭开机自启动 GitLab 服务
+      #+BEGIN_SRC 
+        $ systemctl disable gitlab-runsvdir.service
+        $ systemctl stop gitlab-runsvdir.service
+      #+END_SRC
