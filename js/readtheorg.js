@@ -58,7 +58,7 @@ $( document ).ready(function() {
 	var toggleBtn = $('<div class="toggle-table" attr="0" onclick="toggleTable()" ><</div>');
 	$('#content').append(toggleBtn);
 	
-	var scrollBtn = $('<a class="scroll-top" href="#sec-1">^</a>');
+	var scrollBtn = $('<div class="scroll-top" onclick="scroll()">^</div>');
 	$('#content').append(scrollBtn);
 	
 	$( window ).scroll(function() {
@@ -67,6 +67,10 @@ $( document ).ready(function() {
 		} else {
 			$(".scroll-top").hide();
 		}
+	});
+	
+	scrollBtn.click(function () {
+		$("html,body").animate({ scrollTop: 0 }, 1000);
 	});
 });
 
