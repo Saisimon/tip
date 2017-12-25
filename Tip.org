@@ -1738,6 +1738,18 @@
        }
      </style>
      #+END_SRC
+**** 滚动条样式
+     #+BEGIN_SRC css
+     body::-webkit-scrollbar {
+         width: 8px;
+         height: 8px;
+         background-color: #F5F5F5;
+     }
+
+     body::-webkit-scrollbar-thumb {
+         background-color: #666;
+     }
+     #+END_SRC
 *** JavaScript
 **** JavaScript 类型判断
     - 是否为数字
