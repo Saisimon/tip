@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Tip</title>
-<!-- 2017-12-01 Fri 11:32 -->
+<!-- 2017-12-25 Mon 09:11 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon" />
@@ -209,6 +209,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-2-10">1.2.10. Shell 脚本查询指定文件夹下的所有文件</a></li>
 <li><a href="#sec-1-2-11">1.2.11. Linux SSH 证书登录</a></li>
 <li><a href="#sec-1-2-12">1.2.12. Linux 让进程在后台运行的方法</a></li>
+<li><a href="#sec-1-2-13">1.2.13. CentOS 7 开放防火墙的 80 等端口</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-3">1.3. Database</a>
@@ -276,6 +277,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-5-4-3">1.5.4.3. Maven 指定编译版本</a></li>
 <li><a href="#sec-1-5-4-4">1.5.4.4. pom.xml 文件 - Missing artifact jdk.tools:jdk.tools:jar:1.x</a></li>
 <li><a href="#sec-1-5-4-5">1.5.4.5. Maven 添加本地 jar 包依赖</a></li>
+<li><a href="#sec-1-5-4-6">1.5.4.6. Maven 上传 jar 包到 Nexus 私服仓库</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-5-5">1.5.5. Tomcat</a>
@@ -331,6 +333,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-5-12-7">1.5.12.7. Spring Boot 配置 HTTPS ，HTTP 重定向到 HTTPS (Tomcat)</a></li>
 <li><a href="#sec-1-5-12-8">1.5.12.8. Spring Boot 配置 HTTPS ，HTTP 重定向到 HTTPS (Jetty 9)</a></li>
 <li><a href="#sec-1-5-12-9">1.5.12.9. Spring Boot 中获取 classpath 下的文件资源</a></li>
+<li><a href="#sec-1-5-12-10">1.5.12.10. Spring Boot 中将非 Spring 管理对象装配成 Spring 管理对象</a></li>
 </ul>
 </li>
 </ul>
@@ -417,6 +420,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-11-7">1.11.7. 添加新 ssh_key 至 Github</a></li>
 <li><a href="#sec-1-11-8">1.11.8. Git status 输出中文为 UNICODE 解决方法</a></li>
 <li><a href="#sec-1-11-9">1.11.9. Git push 时，fatal: Authentication failed</a></li>
+<li><a href="#sec-1-11-10">1.11.10. GitLab 服务启动与关闭</a></li>
 </ul>
 </li>
 </ul>
@@ -424,7 +428,13 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<link rel="stylesheet" href="css/main.css" >
+<link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="css/readtheorg.css"/>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="js/readtheorg.js"></script>
 
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Tip</h2>
@@ -912,6 +922,18 @@ PasswordAuthentication no
 <p>
 <a href="https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html%20">参考</a>
 </p>
+</div>
+</div>
+<div id="outline-container-sec-1-2-13" class="outline-4">
+<h4 id="sec-1-2-13"><span class="section-number-4">1.2.13</span> CentOS 7 开放防火墙的 80 等端口</h4>
+<div class="outline-text-4" id="text-1-2-13">
+<pre class="example">
+# 防火墙开启作用域为 public，80 端口，并且永久生效
+[root@localhost]$ firewall-cmd --zone=public --add-port=80/tcp --permanent
+
+# 重新启动防火墙
+[root@localhost]$ systemctl restart firewalld.service
+</pre>
 </div>
 </div>
 </div>
@@ -1993,6 +2015,45 @@ $ mvn install -DskipTests
 </div>
 </div>
 </div>
+<div id="outline-container-sec-1-5-4-6" class="outline-5">
+<h5 id="sec-1-5-4-6"><span class="section-number-5">1.5.4.6</span> Maven 上传 jar 包到 Nexus 私服仓库</h5>
+<div class="outline-text-5" id="text-1-5-4-6">
+<ul class="org-ul">
+<li>$MAVEN_HOME/conf/settings.xml
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #F92672; font-style: italic;">settings</span>&gt;
+  ...
+  &lt;<span style="color: #F92672; font-style: italic;">servers</span>&gt;
+    ...
+    &lt;<span style="color: #F92672; font-style: italic;">server</span>&gt;
+      &lt;<span style="color: #F92672; font-style: italic;">id</span>&gt;nexus-snapshots&lt;/<span style="color: #F92672; font-style: italic;">id</span>&gt;
+      &lt;<span style="color: #F92672; font-style: italic;">username</span>&gt;admin&lt;/<span style="color: #F92672; font-style: italic;">username</span>&gt;
+      &lt;<span style="color: #F92672; font-style: italic;">password</span>&gt;admin123&lt;/<span style="color: #F92672; font-style: italic;">password</span>&gt;
+    &lt;/<span style="color: #F92672; font-style: italic;">server</span>&gt;
+    ...
+  &lt;/<span style="color: #F92672; font-style: italic;">servers</span>&gt;
+  ...
+&lt;/<span style="color: #F92672; font-style: italic;">settings</span>&gt;
+</pre>
+</div>
+<pre class="example">
+$ mvn deploy:deploy-file 
+   -DgroupId=net.saisimon                                  # groupId
+   -DartifactId=test                                       # artifactId
+   -Dversion=0.0.1-SNAPSHOT                                # version
+   -Dpackaging=jar                                         # packaging
+   -Dfile=/file/test/target/test-0.0.1-SNAPSHOT.jar        # file path
+   -Durl=http://127.0.0.1:8081/repository/maven-3rd/       # deploy url
+   -DrepositoryId=nexus-snapshots                          # settings.xml 中 Servers 配置的 ID 名称
+</pre>
+<p>
+<a href="https://maven.apache.org/plugins/maven-deploy-plugin/deploy-file-mojo.html%20">deploy:deploy-file</a>
+</p>
+</div>
+</div>
 </div>
 <div id="outline-container-sec-1-5-5" class="outline-4">
 <h4 id="sec-1-5-5"><span class="section-number-4">1.5.5</span> Tomcat</h4>
@@ -2828,6 +2889,31 @@ https.keystore-password=********
 
 <span style="color: #66D9EF;">ClassPathResource</span> <span style="color: #F92672;">classPathResource</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">ClassPathResource</span>(<span style="color: #E6DB74;">"path/file.xml"</span>);
 <span style="color: #66D9EF;">InputStream</span> <span style="color: #F92672;">in</span> = classPathResource.getInputStream();
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5-12-10" class="outline-5">
+<h5 id="sec-1-5-12-10"><span class="section-number-5">1.5.12.10</span> Spring Boot 中将非 Spring 管理对象装配成 Spring 管理对象</h5>
+<div class="outline-text-5" id="text-1-5-12-10">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * &#35013;&#37197;&#38750; Spring &#31649;&#29702;&#23545;&#35937;</span>
+<span style="color: #E6DB74; font-style: italic;"> *</span>
+<span style="color: #E6DB74; font-style: italic;"> * &#33719;&#21462; ApplicationContext &#35831;&#21442;&#32771;[Spring Boot &#33719;&#21462; ApplicationContext]</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">obj</span><span style="color: #E6DB74; font-style: italic;"> non-spring object</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@return</span><span style="color: #E6DB74; font-style: italic;"> spring object</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@see</span><span style="color: #E6DB74; font-style: italic;"> </span>SpringContext#getApplicationContext
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">Object</span> <span style="color: #F92672; font-style: italic;">autowire</span>(<span style="color: #66D9EF;">Object</span> <span style="color: #F92672;">obj</span>) {
+    <span style="color: #66D9EF;">if</span> (obj == <span style="color: #7fffd4;">null</span>) {
+        <span style="color: #66D9EF;">return</span> <span style="color: #7fffd4;">null</span>;
+    }
+    getApplicationContext().getAutowireCapableBeanFactory().autowireBean(obj);
+    <span style="color: #66D9EF;">return</span> obj;
+}
 </pre>
 </div>
 </div>
@@ -3691,12 +3777,31 @@ $ git remote -v
 </ul>
 </div>
 </div>
+<div id="outline-container-sec-1-11-10" class="outline-4">
+<h4 id="sec-1-11-10"><span class="section-number-4">1.11.10</span> GitLab 服务启动与关闭</h4>
+<div class="outline-text-4" id="text-1-11-10">
+<ul class="org-ul">
+<li>开机自动开启 GitLab 服务
+<pre class="example">
+$ systemctl enable gitlab-runsvdir.service
+$ systemctl start gitlab-runsvdir.service
+</pre>
+</li>
+<li>关闭开机自启动 GitLab 服务
+<pre class="example">
+$ systemctl disable gitlab-runsvdir.service
+$ systemctl stop gitlab-runsvdir.service
+</pre>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2017-12-01 Fri 11:32</p>
+<p class="date">Created: 2017-12-25 Mon 09:11</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
