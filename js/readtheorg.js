@@ -13,47 +13,34 @@ $(function() {
 });
 
 $( document ).ready(function() {
-
     // Shift nav in mobile when clicking the menu.
     $(document).on('click', "[data-toggle='wy-nav-top']", function() {
-      $("[data-toggle='wy-nav-shift']").toggleClass("shift");
-      $("[data-toggle='rst-versions']").toggleClass("shift");
+		$("[data-toggle='wy-nav-shift']").toggleClass("shift");
+		$("[data-toggle='rst-versions']").toggleClass("shift");
     });
     // Close menu when you click a link.
     $(document).on('click', ".wy-menu-vertical .current ul li a", function() {
-      $("[data-toggle='wy-nav-shift']").removeClass("shift");
-      $("[data-toggle='rst-versions']").toggleClass("shift");
+		$("[data-toggle='wy-nav-shift']").removeClass("shift");
+		$("[data-toggle='rst-versions']").toggleClass("shift");
     });
     $(document).on('click', "[data-toggle='rst-current-version']", function() {
-      $("[data-toggle='rst-versions']").toggleClass("shift-up");
+		$("[data-toggle='rst-versions']").toggleClass("shift-up");
     });
     // Make tables responsive
     $("table.docutils:not(.field-list)").wrap("<div class='wy-table-responsive'></div>");
-});
-
-$( document ).ready(function() {
-    $('#text-table-of-contents ul').first().addClass('nav');
-                                        // ScrollSpy also requires that we use
-                                        // a Bootstrap nav component.
+	
+	$('#text-table-of-contents ul').first().addClass('nav');
     $('body').scrollspy({target: '#text-table-of-contents'});
 
     // add sticky table headers
     $('table').stickyTableHeaders();
-
-    // set the height of tableOfContents
+	
+	// set the height of tableOfContents
     var $postamble = $('#postamble');
+	var views = $('<p><span id="busuanzi_container_site_pv">Views: <span id="busuanzi_value_site_pv"></span></span></p>');
+	$postamble.append(views);
     var $tableOfContents = $('#table-of-contents');
     $tableOfContents.css({paddingBottom: $postamble.outerHeight()});
-
-    // add TOC button
-    var toggleSidebar = $('<div id="toggle-sidebar"><a href="#table-of-contents"><h2>目录</h2></a></div>');
-    $('#content').prepend(toggleSidebar);
-
-    // add close button when sidebar showed in mobile screen
-    var closeBtn = $('<a class="close-sidebar" href="#">Close</a>');
-    var tocTitle = $('#table-of-contents').find('h2');
-	tocTitle.text("目录");
-    tocTitle.append(closeBtn);
 	
 	var toggleBtn = $('<div class="toggle-table" attr="0" onclick="toggleTable()" ><</div>');
 	$('#content').append(toggleBtn);
@@ -72,6 +59,7 @@ $( document ).ready(function() {
 	scrollBtn.click(function () {
 		$("html,body").animate({ scrollTop: 0 }, 1000);
 	});
+	
 });
 
 window.SphinxRtdTheme = (function (jquery) {
