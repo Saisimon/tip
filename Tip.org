@@ -3,7 +3,10 @@
 #+OPTIONS: H:6
 
 #+HTML_DOCTYPE: <!DOCTYPE html>
-#+KEYWORDS: Tip, Java, Org-mode, Python, C++, Spring, Spring Boot, Linux, Emacs, Vim, Git, Web, Mysql, HTML, CSS, JavaScript, js
+#+KEYWORDS: Tip, Saisimon, Java, Org-mode, Python, C++, Spring, Spring Boot, Linux, Emacs, Vim, Git, Web, Mysql, HTML, CSS, JavaScript, js
+#+DESCRIPTION: Code Tips and Tricks.
+
+#+HTML_HEAD: <meta name="google-site-verification" content="EkLeSg2TItVkDXCwTaFkONfEMb4bAm0IDIyUXJecjS0" />
 #+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 #+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
