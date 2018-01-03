@@ -1,24 +1,23 @@
 #+AUTHOR: [[http://blog.saisimon.net][Saisimon]]
+#+TITLE: Code Tips
+#+LANGUAGE: zh-CN
 #+OPTIONS: ^:nil
 #+OPTIONS: H:6
-
 #+HTML_DOCTYPE: <!DOCTYPE html>
 #+KEYWORDS: Tip, Saisimon, Java, Org-mode, Python, C++, Spring, Spring Boot, Linux, Emacs, Vim, Git, Web, Mysql, HTML, CSS, JavaScript, js
 #+DESCRIPTION: Code Tips and Tricks.
-
 #+HTML_HEAD: <meta name="google-site-verification" content="EkLeSg2TItVkDXCwTaFkONfEMb4bAm0IDIyUXJecjS0" />
 #+HTML_HEAD: <meta name="msvalidate.01" content="498C625AE766F944B349A46928CF8056" />
+#+HTML_HEAD: <meta http-equiv="content-language" content="zh-CN" />
 #+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 #+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="css/readtheorg.css"/>
-
 #+HTML_HEAD: <script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 #+HTML_HEAD: <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 #+HTML_HEAD: <script src="//cdn.bootcss.com/sticky-table-headers/0.1.19/js/jquery.stickytableheaders.min.js"></script>
-#+HTML_HEAD: <script type="text/javascript" src="js/readtheorg.js"></script>
 #+HTML_HEAD: <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
+#+HTML_HEAD: <script type="text/javascript" src="js/readtheorg.js"></script>
 #+HTML_MATHJAX:  path:"//cdn.bootcss.com/mathjax/2.7.2/MathJax.js"
 #+BEGIN_HTML
 <a href="https://github.com/Saisimon/tip">
