@@ -11,14 +11,11 @@ $(function() {
     $('.error').before("<p class='admonition-title error'>Error</p>");
     $('.danger').before("<p class='admonition-title danger'>Danger</p>");
 });
-
 $( document ).ready(function() {
-    // Shift nav in mobile when clicking the menu.
     $(document).on('click', "[data-toggle='wy-nav-top']", function() {
 		$("[data-toggle='wy-nav-shift']").toggleClass("shift");
 		$("[data-toggle='rst-versions']").toggleClass("shift");
     });
-    // Close menu when you click a link.
     $(document).on('click', ".wy-menu-vertical .current ul li a", function() {
 		$("[data-toggle='wy-nav-shift']").removeClass("shift");
 		$("[data-toggle='rst-versions']").toggleClass("shift");
@@ -26,28 +23,19 @@ $( document ).ready(function() {
     $(document).on('click', "[data-toggle='rst-current-version']", function() {
 		$("[data-toggle='rst-versions']").toggleClass("shift-up");
     });
-    // Make tables responsive
     $("table.docutils:not(.field-list)").wrap("<div class='wy-table-responsive'></div>");
-	
 	$('#text-table-of-contents ul').first().addClass('nav');
     $('body').scrollspy({target: '#text-table-of-contents'});
-
-    // add sticky table headers
     $('table').stickyTableHeaders();
-	
-	// set the height of tableOfContents
     var $postamble = $('#postamble');
 	var views = $('<p><span id="busuanzi_container_site_pv">Views: <span id="busuanzi_value_site_pv"></span></span></p>');
 	$postamble.append(views);
     var $tableOfContents = $('#table-of-contents');
     $tableOfContents.css({paddingBottom: $postamble.outerHeight()});
-	
 	var toggleBtn = $('<div class="toggle-table" attr="0" onclick="toggleTable()" ><</div>');
 	$('#content').append(toggleBtn);
-	
 	var scrollBtn = $('<div class="scroll-top" onclick="scroll()">^</div>');
 	$('#content').append(scrollBtn);
-	
 	$( window ).scroll(function() {
 		if ($(this).scrollTop() >= 400) {
 			$(".scroll-top").show();
@@ -55,13 +43,10 @@ $( document ).ready(function() {
 			$(".scroll-top").hide();
 		}
 	});
-	
 	scrollBtn.click(function () {
 		$("html,body").animate({ scrollTop: 0 }, 1000);
 	});
-	
 });
-
 window.SphinxRtdTheme = (function (jquery) {
     var stickyNav = (function () {
         var navBar,
@@ -91,7 +76,6 @@ window.SphinxRtdTheme = (function (jquery) {
         StickyNav : stickyNav
     };
 }($));
-
 function toggleTable() {
 	if ($(".toggle-table").attr("attr") == "0") {
 		$(".toggle-table").attr("attr", "1");
