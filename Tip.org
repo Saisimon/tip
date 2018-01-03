@@ -7,6 +7,7 @@
 #+DESCRIPTION: Code Tips and Tricks.
 
 #+HTML_HEAD: <meta name="google-site-verification" content="EkLeSg2TItVkDXCwTaFkONfEMb4bAm0IDIyUXJecjS0" />
+#+HTML_HEAD: <meta name="msvalidate.01" content="498C625AE766F944B349A46928CF8056" />
 #+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 #+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
