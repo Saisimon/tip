@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Code Tips</title>
-<!-- 2018-01-03 Wed 14:52 -->
+<!-- 2018-01-04 Thu 11:18 -->
 <meta  charset="utf-8">
 <meta  name="generator" content="Org-mode">
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon">
@@ -93,15 +93,16 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-2-3">1.2.3. Linux 下 nginx 安装、启动、重启、停止</a></li>
 <li><a href="#sec-1-2-4">1.2.4. Nginx 反向代理配置</a></li>
 <li><a href="#sec-1-2-5">1.2.5. Nginx 配置 http 请求重定向到 https</a></li>
-<li><a href="#sec-1-2-6">1.2.6. Linux 下安装 cheat 命令</a></li>
-<li><a href="#sec-1-2-7">1.2.7. Linux 设置命令别名</a></li>
-<li><a href="#sec-1-2-8">1.2.8. Shell 脚本中运用 Linux 中设置的别名</a></li>
-<li><a href="#sec-1-2-9">1.2.9. 判断用户是否登录 Linux</a></li>
-<li><a href="#sec-1-2-10">1.2.10. Linux 创建新用户，并设置 sudo 权限</a></li>
-<li><a href="#sec-1-2-11">1.2.11. Shell 脚本查询指定文件夹下的所有文件</a></li>
-<li><a href="#sec-1-2-12">1.2.12. Linux SSH 证书登录</a></li>
-<li><a href="#sec-1-2-13">1.2.13. Linux 让进程在后台运行的方法</a></li>
-<li><a href="#sec-1-2-14">1.2.14. CentOS 7 开放防火墙的 80 等端口</a></li>
+<li><a href="#sec-1-2-6">1.2.6. Nginx 配置 Let`s Encrypt 提供的免费 SSL 证书</a></li>
+<li><a href="#sec-1-2-7">1.2.7. Linux 下安装 cheat 命令</a></li>
+<li><a href="#sec-1-2-8">1.2.8. Linux 设置命令别名</a></li>
+<li><a href="#sec-1-2-9">1.2.9. Shell 脚本中运用 Linux 中设置的别名</a></li>
+<li><a href="#sec-1-2-10">1.2.10. 判断用户是否登录 Linux</a></li>
+<li><a href="#sec-1-2-11">1.2.11. Linux 创建新用户，并设置 sudo 权限</a></li>
+<li><a href="#sec-1-2-12">1.2.12. Shell 脚本查询指定文件夹下的所有文件</a></li>
+<li><a href="#sec-1-2-13">1.2.13. Linux SSH 证书登录</a></li>
+<li><a href="#sec-1-2-14">1.2.14. Linux 让进程在后台运行的方法</a></li>
+<li><a href="#sec-1-2-15">1.2.15. CentOS 7 开放防火墙的 80 等端口</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-3">1.3. Database</a>
@@ -661,8 +662,120 @@ $ sudo service nginx restart
 </div>
 </div>
 <div id="outline-container-sec-1-2-6" class="outline-4">
-<h4 id="sec-1-2-6"><span class="section-number-4">1.2.6</span> Linux 下安装 cheat 命令</h4>
+<h4 id="sec-1-2-6"><span class="section-number-4">1.2.6</span> Nginx 配置 Let`s Encrypt 提供的免费 SSL 证书</h4>
 <div class="outline-text-4" id="text-1-2-6">
+<ul class="org-ul">
+<li>安装 <a href="https://github.com/Neilpang/acme.sh%20">acme.sh</a> 脚本
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#30452;&#25509;&#36890;&#36807; url &#23433;&#35013;</span>
+$ curl https://get.acme.sh | sh
+
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#25110;&#32773;&#20174; git &#20013;&#23433;&#35013;</span>
+$ git clone https://github.com/Neilpang/acme.sh.git
+$ cd ./acme.sh
+$ ./acme.sh --install
+</pre>
+</div>
+</li>
+<li>为域名申请 SSL 证书，以 www.saisimon.net 为例
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">www.saisimon.net &#38656;&#35201;&#30003;&#35831; SSL &#35777;&#20070;&#30340;&#22495;&#21517;&#22320;&#22336;</span>
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">/home/saisimon/public nginx &#37197;&#32622;&#30340; root &#30446;&#24405;&#65292;acme.sh &#20250;&#22312; Nginx &#26681;&#30446;&#24405;&#19979;&#29983;&#25104;&#39564;&#35777;&#25991;&#20214;&#65292;&#39564;&#35777;&#23436;&#25104;&#21518;&#33258;&#21160;&#21024;&#38500;&#39564;&#35777;&#25991;&#20214;</span>
+$ acme.sh -- issue -d www.saisimon.net -w /home/saisimon/public
+Your cert is<span style="color: #66D9EF;"> in</span>  /home/saisimon/.acme.sh/www.saisimon.net/www.saisimon.net.cer 
+Your cert key is<span style="color: #66D9EF;"> in</span>  /home/saisimon/.acme.sh/www.saisimon.net/www.saisimon.net.key 
+The intermediate CA cert is<span style="color: #66D9EF;"> in</span>  /home/saisimon/.acme.sh/www.saisimon.net/ca.cer 
+And the full chain certs is there:  /home/saisimon/.acme.sh/www.saisimon.net/fullchain.cer
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#33509;&#25552;&#31034; acme.sh &#19981;&#23384;&#22312;&#65292;&#35831;&#37325;&#26032;&#21152;&#36733;&#24403;&#21069;&#29992;&#25143;&#29615;&#22659;</span>
+$ source ~/.bashrc
+</pre>
+</div>
+</li>
+<li>复制/安装 SSL 证书
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#25351;&#23450; key &#19982; fullchain &#30340;&#23433;&#35013;&#36335;&#24452;&#65292;&#37197;&#32622;&#37325;&#21551; Nginx &#30340;&#21629;&#20196;&#65292;&#20351;&#29992; force-reload &#21629;&#20196;&#26469;&#21152;&#36733;&#35777;&#20070;</span>
+acme.sh --installcert -d www.saisimon.net <span style="color: #E6DB74;">\</span>
+         --keypath       /home/saisimon/ssl/www.saisimon.net.key  <span style="color: #E6DB74;">\</span>
+         --fullchainpath /home/saisimon/ssl/www.saisimon.net.pem <span style="color: #E6DB74;">\</span>
+         --reloadcmd     <span style="color: #E6DB74;">"sudo service nginx force-reload"</span>
+</pre>
+</div>
+</li>
+<li>配置 DH 密钥
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#25351;&#23450; dh &#20445;&#23384;&#36335;&#24452;</span>
+openssl dhparam -out /home/saisimon/ssl/dhparam.pem 2048
+</pre>
+</div>
+</li>
+<li>配置 Nginx 启用 SSL
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#35831;&#30830;&#20445; Nginx &#24102;&#26377; http_ssl_module &#30340; module&#65292;&#19981;&#30693;&#36947;&#26377;&#20160;&#20040; module&#65292;&#21487;&#20197;&#20351;&#29992;&#20197;&#19979;&#21629;&#20196;&#26597;&#30475;</span>
+$ sudo nginx -V
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#22914;&#26524;&#27809;&#26377; http_ssl_module&#65292;&#35831;&#24102;&#19978; ssl module &#37325;&#26032;&#32534;&#35793;&#23433;&#35013; Nginx</span>
+$ cd $<span style="color: #F92672;">NGINX_HOME</span>
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#35760;&#24471;&#24102;&#19978; nginx -V &#33719;&#24471;&#30340;&#21407;&#26469;&#30340;&#21442;&#25968;</span>
+$ ./configure --prefix=/usr/share/nginx ... --with-http_ssl_module
+$ make
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-conf">#...
+<span style="color: #66D9EF;">http</span> {
+     #...
+     # &#20351;&#29992;&#30340; SSL &#21327;&#35758;&#29256;&#26412;
+     ssl_protocols TLSv1 TLSv1.1 TLSv1.2<span style="color: #465457; font-style: italic;">;</span>
+     # &#26381;&#21153;&#22120;&#23494;&#30721;&#20248;&#20808;
+     ssl_prefer_server_ciphers on<span style="color: #465457; font-style: italic;">;</span>
+     # &#31105;&#27490;&#20351;&#29992;&#19981;&#23433;&#20840;&#30340;&#21152;&#23494;&#31639;&#27861;
+     ssl_ciphers <span style="color: #E6DB74;">'ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4'</span><span style="color: #465457; font-style: italic;">;</span>
+     #...
+     <span style="color: #66D9EF;">server</span> {
+            listen                  443 ssl<span style="color: #465457; font-style: italic;">;</span>
+            server_name             www.saisimon.net<span style="color: #465457; font-style: italic;">;</span>
+            root                    /home/saisimon/public<span style="color: #465457; font-style: italic;">;</span>
+            ssl_certificate         /home/saisimon/ssl/www.saisimon.net.key.pem<span style="color: #465457; font-style: italic;">;</span>
+            ssl_certificate_key     /home/saisimon/ssl/www.saisimon.net.key<span style="color: #465457; font-style: italic;">;</span>
+            ssl_dhparam             /home/saisimon/ssl/dhparam.pem<span style="color: #465457; font-style: italic;">;</span>
+            #...
+     }
+     #...
+}
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#27979;&#35797; Nginx &#37197;&#32622;&#25991;&#20214;&#26159;&#21542;&#27491;&#30830;</span>
+$ sudo nginx -t
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#37325;&#21551; Nginx &#26381;&#21153;</span>
+$ sudo nginx -s reload
+</pre>
+</div>
+</li>
+<li>验证 SSL 是否生效
+使用 <a href="https://www.ssllabs.com/ssltest/analyze.html%20">SSL Labs</a> 测试
+</li>
+<li>证书有效期
+Let`s Encrypt 的证书有效期为 90 天，acme.sh 脚本已经往 crontab 增加了一行每天执行的命令，当证书快过期时去自动更新证书内容
+<div class="org-src-container">
+
+<pre class="src src-sh">$ crontab -l
+6 0 * * * <span style="color: #E6DB74;">"/home/saisimon/.acme.sh"</span>/acme.sh --cron --home <span style="color: #E6DB74;">"/home/saisimon/.acme.sh"</span> &gt; /dev/null
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1-2-7" class="outline-4">
+<h4 id="sec-1-2-7"><span class="section-number-4">1.2.7</span> Linux 下安装 cheat 命令</h4>
+<div class="outline-text-4" id="text-1-2-7">
 <ul class="org-ul">
 <li>通过 pip 安装 cheat
 </li>
@@ -695,9 +808,9 @@ $ sudo service nginx restart
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-2-7" class="outline-4">
-<h4 id="sec-1-2-7"><span class="section-number-4">1.2.7</span> Linux 设置命令别名</h4>
-<div class="outline-text-4" id="text-1-2-7">
+<div id="outline-container-sec-1-2-8" class="outline-4">
+<h4 id="sec-1-2-8"><span class="section-number-4">1.2.8</span> Linux 设置命令别名</h4>
+<div class="outline-text-4" id="text-1-2-8">
 <ul class="org-ul">
 <li>列出目前所有的别名设置
 <pre class="example">
@@ -737,9 +850,9 @@ $ source .bash_profile
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-1-2-8" class="outline-4">
-<h4 id="sec-1-2-8"><span class="section-number-4">1.2.8</span> Shell 脚本中运用 Linux 中设置的别名</h4>
-<div class="outline-text-4" id="text-1-2-8">
+<div id="outline-container-sec-1-2-9" class="outline-4">
+<h4 id="sec-1-2-9"><span class="section-number-4">1.2.9</span> Shell 脚本中运用 Linux 中设置的别名</h4>
+<div class="outline-text-4" id="text-1-2-9">
 <pre class="example">
 #!/bin/bash
 
@@ -752,9 +865,9 @@ shopt -s expand_aliases
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-2-9" class="outline-4">
-<h4 id="sec-1-2-9"><span class="section-number-4">1.2.9</span> 判断用户是否登录 Linux</h4>
-<div class="outline-text-4" id="text-1-2-9">
+<div id="outline-container-sec-1-2-10" class="outline-4">
+<h4 id="sec-1-2-10"><span class="section-number-4">1.2.10</span> 判断用户是否登录 Linux</h4>
+<div class="outline-text-4" id="text-1-2-10">
 <pre class="example">
 #!/bin/bash
 
@@ -768,9 +881,9 @@ else
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-2-10" class="outline-4">
-<h4 id="sec-1-2-10"><span class="section-number-4">1.2.10</span> Linux 创建新用户，并设置 sudo 权限</h4>
-<div class="outline-text-4" id="text-1-2-10">
+<div id="outline-container-sec-1-2-11" class="outline-4">
+<h4 id="sec-1-2-11"><span class="section-number-4">1.2.11</span> Linux 创建新用户，并设置 sudo 权限</h4>
+<div class="outline-text-4" id="text-1-2-11">
 <pre class="example">
 # one
 sudo useradd -m -g sudo username # 创建名为 username 的新用户，创建默认 home 目录，指定用户组为 sudo
@@ -780,9 +893,9 @@ sudo usermod -aG sudo username # 加入 sudo 组
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-2-11" class="outline-4">
-<h4 id="sec-1-2-11"><span class="section-number-4">1.2.11</span> Shell 脚本查询指定文件夹下的所有文件</h4>
-<div class="outline-text-4" id="text-1-2-11">
+<div id="outline-container-sec-1-2-12" class="outline-4">
+<h4 id="sec-1-2-12"><span class="section-number-4">1.2.12</span> Shell 脚本查询指定文件夹下的所有文件</h4>
+<div class="outline-text-4" id="text-1-2-12">
 <pre class="example">
 #!/bin/bash
 function searchFile() {
@@ -799,9 +912,9 @@ searchFile "/home"
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-2-12" class="outline-4">
-<h4 id="sec-1-2-12"><span class="section-number-4">1.2.12</span> Linux SSH 证书登录</h4>
-<div class="outline-text-4" id="text-1-2-12">
+<div id="outline-container-sec-1-2-13" class="outline-4">
+<h4 id="sec-1-2-13"><span class="section-number-4">1.2.13</span> Linux SSH 证书登录</h4>
+<div class="outline-text-4" id="text-1-2-13">
 <pre class="example">
 # 客户端生成公钥与私钥
 [client@localhost]$ ssh-keygen -t rsa 
@@ -826,9 +939,9 @@ PasswordAuthentication no
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-2-13" class="outline-4">
-<h4 id="sec-1-2-13"><span class="section-number-4">1.2.13</span> Linux 让进程在后台运行的方法</h4>
-<div class="outline-text-4" id="text-1-2-13">
+<div id="outline-container-sec-1-2-14" class="outline-4">
+<h4 id="sec-1-2-14"><span class="section-number-4">1.2.14</span> Linux 让进程在后台运行的方法</h4>
+<div class="outline-text-4" id="text-1-2-14">
 <pre class="example">
 # 1. Ctrl + z, bg
 [root@localhost]$ mvn -Djetty.port=8888 jetty:run &gt; jetty.log 2&gt;&amp;1
@@ -850,9 +963,9 @@ PasswordAuthentication no
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-2-14" class="outline-4">
-<h4 id="sec-1-2-14"><span class="section-number-4">1.2.14</span> CentOS 7 开放防火墙的 80 等端口</h4>
-<div class="outline-text-4" id="text-1-2-14">
+<div id="outline-container-sec-1-2-15" class="outline-4">
+<h4 id="sec-1-2-15"><span class="section-number-4">1.2.15</span> CentOS 7 开放防火墙的 80 等端口</h4>
+<div class="outline-text-4" id="text-1-2-15">
 <pre class="example">
 # 防火墙开启作用域为 public，80 端口，并且永久生效
 [root@localhost]$ firewall-cmd --zone=public --add-port=80/tcp --permanent
@@ -3745,7 +3858,7 @@ $ systemctl stop gitlab-runsvdir.service
 </div>
 <div id="postamble" class="status">
 <p class="author">&#20316;&#32773;: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2018-01-03 Wed 14:52</p>
+<p class="date">Created: 2018-01-04 Thu 11:18</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
