@@ -172,6 +172,89 @@
     $ sudo service nginx configtest
     $ sudo service nginx restart
     #+END_SRC
+*** Nginx 配置 Let`s Encrypt 提供的免费 SSL 证书
+    - 安装 [[https://github.com/Neilpang/acme.sh ][acme.sh]] 脚本
+      #+BEGIN_SRC sh
+      # 直接通过 url 安装
+      $ curl https://get.acme.sh | sh
+
+      # 或者从 git 中安装
+      $ git clone https://github.com/Neilpang/acme.sh.git
+      $ cd ./acme.sh
+      $ ./acme.sh --install
+      #+END_SRC
+    - 为域名申请 SSL 证书，以 www.saisimon.net 为例
+      #+BEGIN_SRC sh
+      # www.saisimon.net 需要申请 SSL 证书的域名地址
+      # /home/saisimon/public nginx 配置的 root 目录，acme.sh 会在 Nginx 根目录下生成验证文件，验证完成后自动删除验证文件
+      $ acme.sh -- issue -d www.saisimon.net -w /home/saisimon/public
+      Your cert is in  /home/saisimon/.acme.sh/www.saisimon.net/www.saisimon.net.cer 
+      Your cert key is in  /home/saisimon/.acme.sh/www.saisimon.net/www.saisimon.net.key 
+      The intermediate CA cert is in  /home/saisimon/.acme.sh/www.saisimon.net/ca.cer 
+      And the full chain certs is there:  /home/saisimon/.acme.sh/www.saisimon.net/fullchain.cer
+      # 若提示 acme.sh 不存在，请重新加载当前用户环境
+      $ source ~/.bashrc
+      #+END_SRC
+    - 复制/安装 SSL 证书
+      #+BEGIN_SRC sh
+      # 指定 key 与 fullchain 的安装路径，配置重启 Nginx 的命令，使用 force-reload 命令来加载证书
+      acme.sh --installcert -d www.saisimon.net \
+               --keypath       /home/saisimon/ssl/www.saisimon.net.key  \
+               --fullchainpath /home/saisimon/ssl/www.saisimon.net.pem \
+               --reloadcmd     "sudo service nginx force-reload"
+      #+END_SRC
+    - 配置 DH 密钥
+      #+BEGIN_SRC sh
+      # 指定 dh 保存路径
+      openssl dhparam -out /home/saisimon/ssl/dhparam.pem 2048
+      #+END_SRC
+    - 配置 Nginx 启用 SSL
+      #+BEGIN_SRC sh
+      # 请确保 Nginx 带有 http_ssl_module 的 module，不知道有什么 module，可以使用以下命令查看
+      $ sudo nginx -V
+      # 如果没有 http_ssl_module，请带上 ssl module 重新编译安装 Nginx
+      $ cd $NGINX_HOME
+      # 记得带上 nginx -V 获得的原来的参数
+      $ ./configure --prefix=/usr/share/nginx ... --with-http_ssl_module
+      $ make
+      #+END_SRC
+      #+BEGIN_SRC conf
+      #...
+      http {
+           #...
+           # 使用的 SSL 协议版本
+           ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+           # 服务器密码优先
+           ssl_prefer_server_ciphers on;
+           # 禁止使用不安全的加密算法
+           ssl_ciphers 'ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4';
+           #...
+           server {
+                  listen                  443 ssl;
+                  server_name             www.saisimon.net;
+                  root                    /home/saisimon/public;
+                  ssl_certificate         /home/saisimon/ssl/www.saisimon.net.key.pem;
+                  ssl_certificate_key     /home/saisimon/ssl/www.saisimon.net.key;
+                  ssl_dhparam             /home/saisimon/ssl/dhparam.pem;
+                  #...
+           }
+           #...
+      }
+      #+END_SRC
+      #+BEGIN_SRC sh
+      # 测试 Nginx 配置文件是否正确
+      $ sudo nginx -t
+      # 重启 Nginx 服务
+      $ sudo nginx -s reload
+      #+END_SRC
+    - 验证 SSL 是否生效
+      使用 [[https://www.ssllabs.com/ssltest/analyze.html ][SSL Labs]] 测试
+    - 证书有效期
+      Let`s Encrypt 的证书有效期为 90 天，acme.sh 脚本已经往 crontab 增加了一行每天执行的命令，当证书快过期时去自动更新证书内容
+      #+BEGIN_SRC sh
+      $ crontab -l
+      6 0 * * * "/home/saisimon/.acme.sh"/acme.sh --cron --home "/home/saisimon/.acme.sh" > /dev/null
+      #+END_SRC
 *** Linux 下安装 cheat 命令
     - 通过 pip 安装 cheat
     #+BEGIN_SRC 
