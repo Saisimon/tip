@@ -46,6 +46,8 @@ $( document ).ready(function() {
 	scrollBtn.click(function () {
 		$("html,body").animate({ scrollTop: 0 }, 1000);
 	});
+	var commentsDiv = $('<section id="isso-thread"></section>');
+	$('#content').append(commentsDiv);
 });
 window.SphinxRtdTheme = (function (jquery) {
     var stickyNav = (function () {

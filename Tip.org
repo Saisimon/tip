@@ -20,6 +20,7 @@
 #+HTML_HEAD: <script src="//cdn.bootcss.com/sticky-table-headers/0.1.19/js/jquery.stickytableheaders.min.js"></script>
 #+HTML_HEAD: <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 #+HTML_HEAD: <script type="text/javascript" src="js/readtheorg.js"></script>
+#+HTML_HEAD: <script data-isso="//www.saisimon.net/isso/" data-isso-css="true" data-isso-reply-to-self="false" data-isso-require-author="false" data-isso-require-email="false" data-isso-max-comments-top="10" data-isso-max-comments-nested="5" data-isso-reveal-on-click="5" data-isso-avatar="true" data-isso-avatar-bg="#f0f0f0" data-isso-avatar-fg="#9abf88 #5698c4 #e279a3 #9163b6 ..." data-isso-vote="true" data-vote-levels="" src="//www.saisimon.net/isso/js/embed.min.js"></script>
 #+BEGIN_HTML
 <a href="https://github.com/Saisimon/tip">
     <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png">
