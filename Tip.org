@@ -409,6 +409,32 @@
     # 重新启动防火墙
     [root@localhost]$ systemctl restart firewalld.service
     #+END_SRC
+*** 使用 GoAccess 分析 Nginx 日志
+    - 安装 GoAccess
+    #+BEGIN_SRC sh
+    # 安装 NCurses 依赖
+    $ sudo yum install ncurses-devel
+    # 到 Home 目录
+    $ cd ~
+    # 下载 GoAccess 安装包
+    $ wget http://tar.goaccess.io/goaccess-1.2.tar.gz
+    # 解压
+    $ tar -xzvf goaccess-1.2.tar.gz
+    $ cd goaccess-1.2/
+    # 检查依赖，配置参数，生成 Makefile 文件
+    $ sudo ./configure --enable-utf8 --enable-geoip=legacy
+    # 编译
+    $ sudo make
+    # 安装
+    $ sudo make install
+    #+END_SRC
+    - 分析 Nginx 日志
+    #+BEGIN_SRC sh
+    # 将分析结果输出到当前终端
+    $ goaccess access.log -c
+    # 将分析结果输出为 HTML 文件，-o 指定输出位置，--log-format 指定 Nginx 日志的格式
+    $ goaccess access.log -o report.html --log-format=COMBINED
+    #+END_SRC
 
 ** Database
 *** Mysql
@@ -1381,7 +1407,8 @@
      #+BEGIN_SRC java
      import org.springframework.util.ClassUtils;
 
-     String classpath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
+     // need handler URISyntaxException
+     String classpath = ClassUtils.getDefaultClassLoader().getResource("").toURI().getPath();
      #+END_SRC
      - ClassUtils#getDefaultClassLoader()
      #+BEGIN_SRC java
