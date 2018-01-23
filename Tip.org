@@ -48,6 +48,7 @@
     | zip            | 50 4B 03 04                   | rar         | 52 61 72 21    |
     | avi            | 41 56 49 20                   | class       | ca fe ba be    |
     | exe            | 4D 5A 90 00 03                | psd         | 38 42 50 53    |
+    #+ATTR_HTML: :target _blank
     [[https://en.wikipedia.org/wiki/Magic_number_(programming)][更多]]
 *** 批处理脚本运行程序
     #+BEGIN_SRC 
@@ -174,7 +175,9 @@
     $ sudo service nginx restart
     #+END_SRC
 *** Nginx 配置 Let`s Encrypt 提供的免费 SSL 证书
-    - 安装 [[https://github.com/Neilpang/acme.sh ][acme.sh]] 脚本
+    - 安装脚本
+      #+ATTR_HTML: :target _blank
+       [[https://github.com/Neilpang/acme.sh ][acme.sh]]
       #+BEGIN_SRC sh
       # 直接通过 url 安装
       $ curl https://get.acme.sh | sh
@@ -249,6 +252,7 @@
       $ sudo nginx -s reload
       #+END_SRC
     - 验证 SSL 是否生效
+      #+ATTR_HTML: :target _blank
       使用 [[https://www.ssllabs.com/ssltest/analyze.html ][SSL Labs]] 测试
     - 证书有效期
       Let`s Encrypt 的证书有效期为 90 天，acme.sh 脚本已经往 crontab 增加了一行每天执行的命令，当证书快过期时去自动更新证书内容
@@ -400,6 +404,7 @@
     # 3. & 将命令放入后台运行
     [root@localhost]$ (mvn -Djetty.port=8888 jetty:run > jetty.log 2>&1 &)
     #+END_SRC
+    #+ATTR_HTML: :target _blank
     [[https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html ][参考]]
 *** CentOS 7 开放防火墙的 80 等端口
     #+BEGIN_SRC 
@@ -496,8 +501,9 @@
     30 1 * * * 3 date > date.log
     #+END_SRC
     **使用 crontab 定时执行脚本时要注意当前的环境变量，避免出现在定时执行时命令不存在的问题，当定时任务执行有误时,而没有将错误重定向到其他位置，cron默认会通过邮件的形式将执行结果保存在 /var/mail/{user} 文件下**
-   
-    [[http://man.linuxde.net/crontab ][crontab命令]]
+    
+    #+ATTR_HTML: :target _blank
+    [[http://man.linuxde.net/crontab][crontab命令]]
 
 ** Database
 *** Mysql
@@ -547,12 +553,14 @@
      -- 导入 cvs 文件数据。指定编码为 utf-8 ，按照','隔开字段，'\n'换行符隔开一行，指定对应导入的字段，id 字段自增长
      load data local infile '${filepath}' into table ${tablename} character set utf8 fields terminated by ',' lines terminated by '\n' (username, age) set id = NULL;
      #+END_SRC
+     #+ATTR_HTML: :target _blank
      [[https://dev.mysql.com/doc/refman/5.7/en/load-data.html ][LOAD DATA INFILE Syntax]]
 **** Mysql 导出表数据到指定文件
      #+BEGIN_SRC sql
      -- 导出表数据到指定文件
      select * info outfile '${filepath}' fields terminated by ',' optionally enclosed by '"' lines terminated by '\n' from ${tablename};
      #+END_SRC
+     #+ATTR_HTML: :target _blank
      [[https://dev.mysql.com/doc/refman/5.7/en/select-into.html ][SELECT ... INTO Syntax]]
 **** 重置 Mysql root 密码
     #+BEGIN_SRC 
@@ -595,7 +603,7 @@
              printf("第%d位值为0", bit_number);
      }
      #+END_SRC
-
+     
 ** Java
 *** Java
 **** 操作 jar 包
@@ -809,6 +817,7 @@
      }
      #+END_SRC
      - main 方法中 1，2 位置调用的方法为都是接口中默认的方法,因为接口中的默认方法提供了更加准确的匹配
+     #+ATTR_HTML: :target _blank
      [[http://rednaxelafx.iteye.com/blog/2033089 ][来源]]
 **** 使用 commons-beanutils 复制属性，当对象中的数值类型属性为 null 时复制成 0 的问题
      #+BEGIN_SRC java
@@ -1090,7 +1099,8 @@
      | .jpeg            | image/jpeg                                                        |
      | .js              | application/x-javascript                                          |
      | .css             | text/css                                                          |
-     | .*(未知二进制流)  | application/octet-stream                                          |
+     | .*(未知二进制流)  | application/octet-stream                                           |
+     #+ATTR_HTML: :target _blank
      [[http://tool.oschina.net/commons][更多]]
 **** xpath 基础
      #+BEGIN_SRC java
@@ -1113,6 +1123,7 @@
       */
      String xpath = "//ul[@id='meun']/li[@class='sub_meun' and @name='phone']/p/parent::li/span/a[normalize-space(text())='go']";
      #+END_SRC
+     #+ATTR_HTML: :target _blank
      [[http://www.zvon.org/xxl/XPathTutorial/General_chi/examples.html][XPath 教程]]
 **** 生成自签名 HTTPS 证书
      #+BEGIN_SRC 
@@ -1166,6 +1177,7 @@
         # 跳过测试运行，但会编译测试类
         $ mvn install -DskipTests
       #+END_SRC
+      #+ATTR_HTML: :target _blank
       [[http://maven.apache.org/plugins-archives/maven-surefire-plugin-2.12.4/examples/skipping-test.html ][Skipping Tests]]
 **** Maven 指定编译版本
     - 添加编译插件
@@ -1233,6 +1245,7 @@
         -Durl=http://127.0.0.1:8081/repository/maven-3rd/       # deploy url
         -DrepositoryId=nexus-snapshots                          # settings.xml 中 Servers 配置的 ID 名称
      #+END_SRC
+     #+ATTR_HTML: :target _blank
      [[https://maven.apache.org/plugins/maven-deploy-plugin/deploy-file-mojo.html ][deploy:deploy-file]]
 *** Tomcat
 **** 导入 Web 项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X...
@@ -1390,7 +1403,7 @@
 **** 修改 Eclipse 格式化代码自动换行
      Project - Properties - Java Code Style - Formatter - Enable project specific settings - 新建一个配置 - Line Wrapping - 设置 Maximum line width
 **** Eclipse console 控制台 log4j 日志支持多种颜色
-     - 在 Eclipse Marketplace 安装 ANSI Escape in Console 插件 
+     - 在 Eclipse Marketplace 安装 ANSI Escape in Console 插件
      - 下载 [[https://github.com/mihnita/java-color-loggers/releases/download/v1.0.4.1/color-loggers-1.0.4.1.jar][java-color-loggers.jar]] 包，并加入到 build path 中
      - 在 log4j.properties 文件中添加如下代码
      #+BEGIN_SRC
@@ -1927,6 +1940,7 @@
 ** Web
 *** HTML
 **** HTML 转义字符
+     #+ATTR_HTML: :target _blank
      [[https://dev.w3.org/html5/html-author/charref ][HTML Entities]]
 *** CSS
 **** CSS 文本两端对齐
@@ -2042,6 +2056,7 @@
      - 各浏览器的对 LocalStorage 的支持情况
      |   IE | Firefox | Chrome | Opera | Safari |  IOS | Android |
      | 8.0+ |    3.5+ |   4.0+ | 11.5+ |   4.0+ | 3.2+ |    2.1+ |
+     #+ATTR_HTML: :target _blank
      [[http://caniuse.com/#search=localStorage ][数据来源]]
 
      - LocalStorage 的使用
@@ -2210,6 +2225,7 @@
      });
      </script>
      #+END_SRC
+     #+ATTR_HTML: :target _blank
      [[https://jquery-form.github.io/form/ ][jQuery Form Plugin]]
 *** Prototype
 **** Prototype 获取 select 选择框中选中文本
@@ -2271,6 +2287,7 @@
         fi
     }
     #+END_SRC
+    #+ATTR_HTML: :target _blank
     [[https://github.com/yeasy/docker_practice/blob/master/_local/.bashrc_docker ][文件来源]]
     - 进入指定 Docker 容器
     #+BEGIN_SRC 
@@ -2300,6 +2317,7 @@
     轻量级标记语言是一种 *语法简单* 的标记语言。它使用易于理解的格式标记，没有古怪的<标签>。
     md为Markdown，gfm是GitHub风格的Markdown，rst为reStructedText，ttl为Textile，asc为AsciiDoc，org为Org-mode
     #+END_QUOTE
+    #+ATTR_HTML: :target _blank
     [[http://www.worldhello.net/gotgithub/appendix/markups.html#tbl-markups ][常用轻量级标记语言对比]]
 
 ** Vim
