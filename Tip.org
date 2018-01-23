@@ -435,6 +435,69 @@
     # 将分析结果输出为 HTML 文件，-o 指定输出位置，--log-format 指定 Nginx 日志的格式
     $ goaccess access.log -o report.html --log-format=COMBINED
     #+END_SRC
+*** Crontab 命令使用
+    - Crontab 命令参数说明
+    #+BEGIN_SRC sh
+    # 用法
+    $ crontab <选项> 参数
+    # 编辑当前用户的定时器任务
+    $ crontab -e
+    # 显示当前用户的定时器任务列表
+    $ crontab -l
+    # 清空当前用户的定时器任务
+    $ crontab -r
+    # 指定 someone 用户的定时器任务操作
+    $ crontab -u someone -e
+    # 指定 someone 用户的定时器任务
+    $ crontab -u someone /home/someone/cronfile
+    #+END_SRC
+    - Crontab 用户任务格式
+    #+BEGIN_SRC 
+    # 任务格式: cron表达式 + 命令
+    # cron表达式:
+    # .---------------- 分钟 (0 - 59)
+    # |  .------------- 小时 (0 - 23)
+    # |  |  .---------- 天 (1 - 31)
+    # |  |  |  .------- 月 (1 - 12)
+    # |  |  |  |  .---- 星期 (0 - 6), 0或者7代表星期日
+    # |  |  |  |  |
+    # *  *  *  *  * command
+    #+END_SRC
+    - 一些常用的 cron 表达式
+    #+BEGIN_SRC 
+    # 每一分钟执行一次
+    # 2018/01/23 00:00:00 
+    # 2018/01/23 00:01:00
+    * * * * * * date > date.log
+
+    # 每五分钟执行一次
+    # 2018/01/23 00:00:00 
+    # 2018/01/23 00:05:00
+    0/5 * * * * * date > date.log
+
+    # 每一小时执行一次
+    # 2018/01/23 00:00:00 
+    # 2018/01/23 01:00:00
+    0/5 * * * * * date > date.log
+
+    # 每天01：30执行一次
+    # 2018/01/23 01:30:00 
+    # 2018/01/24 01:30:00
+    30 1 * * * * date > date.log
+
+    # 每月12号01：30执行一次
+    # 2018/01/12 01:30:00 
+    # 2018/02/12 01:30:00
+    30 1 12 * * * date > date.log
+
+    # 每周三01：30执行一次
+    # 2018/01/24 01:30:00 
+    # 2018/01/30 01:30:00
+    30 1 * * * 3 date > date.log
+    #+END_SRC
+    **使用 crontab 定时执行脚本时要注意当前的环境变量，避免出现在定时执行时命令不存在的问题，当定时任务执行有误时,而没有将错误重定向到其他位置，cron默认会通过邮件的形式将执行结果保存在 /var/mail/{user} 文件下**
+   
+    [[http://man.linuxde.net/crontab ][crontab命令]]
 
 ** Database
 *** Mysql
