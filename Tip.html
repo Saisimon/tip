@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Code Tips</title>
-<!-- 2018-01-10 Wed 17:56 -->
+<!-- 2018-01-23 Tue 17:06 -->
 <meta  charset="utf-8">
 <meta  name="generator" content="Org-mode">
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon">
@@ -104,6 +104,8 @@ for the JavaScript code in this tag.
 <li><a href="#sec-1-2-13">1.2.13. Linux SSH 证书登录</a></li>
 <li><a href="#sec-1-2-14">1.2.14. Linux 让进程在后台运行的方法</a></li>
 <li><a href="#sec-1-2-15">1.2.15. CentOS 7 开放防火墙的 80 等端口</a></li>
+<li><a href="#sec-1-2-16">1.2.16. 使用 GoAccess 分析 Nginx 日志</a></li>
+<li><a href="#sec-1-2-17">1.2.17. Crontab 命令使用</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-3">1.3. Database</a>
@@ -432,7 +434,7 @@ for the JavaScript code in this tag.
 </tbody>
 </table>
 <p>
-<a href="https://en.wikipedia.org/wiki/Magic_number_(programming)">更多</a>
+<a href="https://en.wikipedia.org/wiki/Magic_number_(programming)" target="_blank">更多</a>
 </p>
 </div>
 </div>
@@ -666,7 +668,10 @@ $ sudo service nginx restart
 <h4 id="sec-1-2-6"><span class="section-number-4">1.2.6</span> Nginx 配置 Let`s Encrypt 提供的免费 SSL 证书</h4>
 <div class="outline-text-4" id="text-1-2-6">
 <ul class="org-ul">
-<li>安装 <a href="https://github.com/Neilpang/acme.sh%20">acme.sh</a> 脚本
+<li>安装脚本
+<p>
+<a href="https://github.com/Neilpang/acme.sh%20" target="_blank">acme.sh</a>
+</p>
 <div class="org-src-container">
 
 <pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#30452;&#25509;&#36890;&#36807; url &#23433;&#35013;</span>
@@ -760,7 +765,9 @@ $ sudo nginx -s reload
 </div>
 </li>
 <li>验证 SSL 是否生效
-使用 <a href="https://www.ssllabs.com/ssltest/analyze.html%20">SSL Labs</a> 测试
+<p>
+使用 <a href="https://www.ssllabs.com/ssltest/analyze.html%20" target="_blank">SSL Labs</a> 测试
+</p>
 </li>
 <li>证书有效期
 Let`s Encrypt 的证书有效期为 90 天，acme.sh 脚本已经往 crontab 增加了一行每天执行的命令，当证书快过期时去自动更新证书内容
@@ -960,7 +967,7 @@ PasswordAuthentication no
 [root@localhost]$ (mvn -Djetty.port=8888 jetty:run &gt; jetty.log 2&gt;&amp;1 &amp;)
 </pre>
 <p>
-<a href="https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html%20">参考</a>
+<a href="https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html%20" target="_blank">参考</a>
 </p>
 </div>
 </div>
@@ -974,6 +981,128 @@ PasswordAuthentication no
 # 重新启动防火墙
 [root@localhost]$ systemctl restart firewalld.service
 </pre>
+</div>
+</div>
+<div id="outline-container-sec-1-2-16" class="outline-4">
+<h4 id="sec-1-2-16"><span class="section-number-4">1.2.16</span> 使用 GoAccess 分析 Nginx 日志</h4>
+<div class="outline-text-4" id="text-1-2-16">
+<ul class="org-ul">
+<li>安装 GoAccess
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#23433;&#35013; NCurses &#20381;&#36182;</span>
+$ sudo yum install ncurses-devel
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#21040; Home &#30446;&#24405;</span>
+$ cd ~
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#19979;&#36733; GoAccess &#23433;&#35013;&#21253;</span>
+$ wget http://tar.goaccess.io/goaccess-1.2.tar.gz
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#35299;&#21387;</span>
+$ tar -xzvf goaccess-1.2.tar.gz
+$ cd goaccess-1.2/
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#26816;&#26597;&#20381;&#36182;&#65292;&#37197;&#32622;&#21442;&#25968;&#65292;&#29983;&#25104; Makefile &#25991;&#20214;</span>
+$ sudo ./configure --enable-utf8 --enable-geoip=legacy
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#32534;&#35793;</span>
+$ sudo make
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#23433;&#35013;</span>
+$ sudo make install
+</pre>
+</div>
+<ul class="org-ul">
+<li>分析 Nginx 日志
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#23558;&#20998;&#26512;&#32467;&#26524;&#36755;&#20986;&#21040;&#24403;&#21069;&#32456;&#31471;</span>
+$ goaccess access.log -c
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#23558;&#20998;&#26512;&#32467;&#26524;&#36755;&#20986;&#20026; HTML &#25991;&#20214;&#65292;-o &#25351;&#23450;&#36755;&#20986;&#20301;&#32622;&#65292;--log-format &#25351;&#23450; Nginx &#26085;&#24535;&#30340;&#26684;&#24335;</span>
+$ goaccess access.log -o report.html --log-format=COMBINED
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-2-17" class="outline-4">
+<h4 id="sec-1-2-17"><span class="section-number-4">1.2.17</span> Crontab 命令使用</h4>
+<div class="outline-text-4" id="text-1-2-17">
+<ul class="org-ul">
+<li>Crontab 命令参数说明
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#29992;&#27861;</span>
+$ crontab &lt;&#36873;&#39033;&gt; &#21442;&#25968;
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#32534;&#36753;&#24403;&#21069;&#29992;&#25143;&#30340;&#23450;&#26102;&#22120;&#20219;&#21153;</span>
+$ crontab -e
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#26174;&#31034;&#24403;&#21069;&#29992;&#25143;&#30340;&#23450;&#26102;&#22120;&#20219;&#21153;&#21015;&#34920;</span>
+$ crontab -l
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#28165;&#31354;&#24403;&#21069;&#29992;&#25143;&#30340;&#23450;&#26102;&#22120;&#20219;&#21153;</span>
+$ crontab -r
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#25351;&#23450; someone &#29992;&#25143;&#30340;&#23450;&#26102;&#22120;&#20219;&#21153;&#25805;&#20316;</span>
+$ crontab -u someone -e
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#25351;&#23450; someone &#29992;&#25143;&#30340;&#23450;&#26102;&#22120;&#20219;&#21153;</span>
+$ crontab -u someone /home/someone/cronfile
+</pre>
+</div>
+<ul class="org-ul">
+<li>Crontab 用户任务格式
+</li>
+</ul>
+<pre class="example">
+# 任务格式: cron表达式 + 命令
+# cron表达式:
+# .---------------- 分钟 (0 - 59)
+# |  .------------- 小时 (0 - 23)
+# |  |  .---------- 天 (1 - 31)
+# |  |  |  .------- 月 (1 - 12)
+# |  |  |  |  .---- 星期 (0 - 6), 0或者7代表星期日
+# |  |  |  |  |
+# *  *  *  *  * command
+</pre>
+<ul class="org-ul">
+<li>一些常用的 cron 表达式
+</li>
+</ul>
+<pre class="example">
+# 每一分钟执行一次
+# 2018/01/23 00:00:00 
+# 2018/01/23 00:01:00
+* * * * * * date &gt; date.log
+
+# 每五分钟执行一次
+# 2018/01/23 00:00:00 
+# 2018/01/23 00:05:00
+0/5 * * * * * date &gt; date.log
+
+# 每一小时执行一次
+# 2018/01/23 00:00:00 
+# 2018/01/23 01:00:00
+0/5 * * * * * date &gt; date.log
+
+# 每天01：30执行一次
+# 2018/01/23 01:30:00 
+# 2018/01/24 01:30:00
+30 1 * * * * date &gt; date.log
+
+# 每月12号01：30执行一次
+# 2018/01/12 01:30:00 
+# 2018/02/12 01:30:00
+30 1 12 * * * date &gt; date.log
+
+# 每周三01：30执行一次
+# 2018/01/24 01:30:00 
+# 2018/01/30 01:30:00
+30 1 * * * 3 date &gt; date.log
+</pre>
+<p>
+<b><b>使用 crontab 定时执行脚本时要注意当前的环境变量，避免出现在定时执行时命令不存在的问题，当定时任务执行有误时,而没有将错误重定向到其他位置，cron默认会通过邮件的形式将执行结果保存在 /var/mail/{user} 文件下</b></b>
+</p>
+
+<p>
+<a href="http://man.linuxde.net/crontab" target="_blank">crontab命令</a>
+</p>
 </div>
 </div>
 </div>
@@ -1075,7 +1204,7 @@ load <span style="color: #66D9EF;">data</span> <span style="color: #66D9EF;">loc
 </pre>
 </div>
 <p>
-<a href="https://dev.mysql.com/doc/refman/5.7/en/load-data.html%20">LOAD DATA INFILE Syntax</a>
+<a href="https://dev.mysql.com/doc/refman/5.7/en/load-data.html%20" target="_blank">LOAD DATA INFILE Syntax</a>
 </p>
 </div>
 </div>
@@ -1089,7 +1218,7 @@ load <span style="color: #66D9EF;">data</span> <span style="color: #66D9EF;">loc
 </pre>
 </div>
 <p>
-<a href="https://dev.mysql.com/doc/refman/5.7/en/select-into.html%20">SELECT &#x2026; INTO Syntax</a>
+<a href="https://dev.mysql.com/doc/refman/5.7/en/select-into.html%20" target="_blank">SELECT &#x2026; INTO Syntax</a>
 </p>
 </div>
 </div>
@@ -1447,7 +1576,7 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 </li>
 </ul>
 <p>
-<a href="http://rednaxelafx.iteye.com/blog/2033089%20">来源</a>
+<a href="http://rednaxelafx.iteye.com/blog/2033089%20" target="_blank">来源</a>
 </p>
 </div>
 </div>
@@ -1885,7 +2014,7 @@ JUnit 中提供了三种方式来决定执行顺序
 </tbody>
 </table>
 <p>
-<a href="http://tool.oschina.net/commons">更多</a>
+<a href="http://tool.oschina.net/commons" target="_blank">更多</a>
 </p>
 </div>
 </div>
@@ -1915,7 +2044,7 @@ JUnit 中提供了三种方式来决定执行顺序
 </pre>
 </div>
 <p>
-<a href="http://www.zvon.org/xxl/XPathTutorial/General_chi/examples.html">XPath 教程</a>
+<a href="http://www.zvon.org/xxl/XPathTutorial/General_chi/examples.html" target="_blank">XPath 教程</a>
 </p>
 </div>
 </div>
@@ -1986,7 +2115,7 @@ $ mvn install -Dmaven.test.skip=true
 $ mvn install -DskipTests
 </pre>
 <p>
-<a href="http://maven.apache.org/plugins-archives/maven-surefire-plugin-2.12.4/examples/skipping-test.html%20">Skipping Tests</a>
+<a href="http://maven.apache.org/plugins-archives/maven-surefire-plugin-2.12.4/examples/skipping-test.html%20" target="_blank">Skipping Tests</a>
 </p>
 </li>
 </ul>
@@ -2090,7 +2219,7 @@ $ mvn deploy:deploy-file
    -DrepositoryId=nexus-snapshots                          # settings.xml 中 Servers 配置的 ID 名称
 </pre>
 <p>
-<a href="https://maven.apache.org/plugins/maven-deploy-plugin/deploy-file-mojo.html%20">deploy:deploy-file</a>
+<a href="https://maven.apache.org/plugins/maven-deploy-plugin/deploy-file-mojo.html%20" target="_blank">deploy:deploy-file</a>
 </p>
 </div>
 </div>
@@ -2342,7 +2471,7 @@ Project - Properties - Java Code Style - Formatter - Enable project specific set
 <h5 id="sec-1-5-11-3"><span class="section-number-5">1.5.11.3</span> Eclipse console 控制台 log4j 日志支持多种颜色</h5>
 <div class="outline-text-5" id="text-1-5-11-3">
 <ul class="org-ul">
-<li>在 Eclipse Marketplace 安装 ANSI Escape in Console 插件 
+<li>在 Eclipse Marketplace 安装 ANSI Escape in Console 插件
 </li>
 <li>下载 <a href="https://github.com/mihnita/java-color-loggers/releases/download/v1.0.4.1/color-loggers-1.0.4.1.jar">java-color-loggers.jar</a> 包，并加入到 build path 中
 </li>
@@ -2465,7 +2594,8 @@ Project Explorer 标签栏 -&gt; v(View Menu) -&gt; Customize View&#x2026; -&gt;
 
 <pre class="src src-java"><span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.util.</span><span style="color: #66D9EF;">ClassUtils</span>;
 
-<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">classpath</span> = ClassUtils.getDefaultClassLoader().getResource(<span style="color: #E6DB74;">""</span>).getPath();
+<span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">need handler URISyntaxException</span>
+<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">classpath</span> = ClassUtils.getDefaultClassLoader().getResource(<span style="color: #E6DB74;">""</span>).toURI().getPath();
 </pre>
 </div>
 <ul class="org-ul">
@@ -3053,7 +3183,7 @@ py -3 main.py
 <h5 id="sec-1-7-1-1"><span class="section-number-5">1.7.1.1</span> HTML 转义字符</h5>
 <div class="outline-text-5" id="text-1-7-1-1">
 <p>
-<a href="https://dev.w3.org/html5/html-author/charref%20">HTML Entities</a>
+<a href="https://dev.w3.org/html5/html-author/charref%20" target="_blank">HTML Entities</a>
 </p>
 </div>
 </div>
@@ -3275,7 +3405,7 @@ console.log(filterFalse([<span style="color: #AE81FF;">false</span>, <span style
 </tbody>
 </table>
 <p>
-<a href="http://caniuse.com/#search=localStorage%20">数据来源</a>
+<a href="http://caniuse.com/#search=localStorage%20" target="_blank">数据来源</a>
 </p>
 
 <ul class="org-ul">
@@ -3502,7 +3632,7 @@ $(function() {
 </pre>
 </div>
 <p>
-<a href="https://jquery-form.github.io/form/%20">jQuery Form Plugin</a>
+<a href="https://jquery-form.github.io/form/%20" target="_blank">jQuery Form Plugin</a>
 </p>
 </div>
 </div>
@@ -3585,7 +3715,7 @@ function docker-enter() {
 }
 </pre>
 <p>
-<a href="https://github.com/yeasy/docker_practice/blob/master/_local/.bashrc_docker%20">文件来源</a>
+<a href="https://github.com/yeasy/docker_practice/blob/master/_local/.bashrc_docker%20" target="_blank">文件来源</a>
 </p>
 <ul class="org-ul">
 <li>进入指定 Docker 容器
@@ -3639,7 +3769,7 @@ md为Markdown，gfm是GitHub风格的Markdown，rst为reStructedText，ttl为Tex
 </p>
 </blockquote>
 <p>
-<a href="http://www.worldhello.net/gotgithub/appendix/markups.html#tbl-markups%20">常用轻量级标记语言对比</a>
+<a href="http://www.worldhello.net/gotgithub/appendix/markups.html#tbl-markups%20" target="_blank">常用轻量级标记语言对比</a>
 </p>
 </div>
 </div>
@@ -3859,7 +3989,7 @@ $ systemctl stop gitlab-runsvdir.service
 </div>
 <div id="postamble" class="status">
 <p class="author">&#20316;&#32773;: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2018-01-10 Wed 17:56</p>
+<p class="date">Created: 2018-01-23 Tue 17:06</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
