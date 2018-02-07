@@ -1522,7 +1522,6 @@
      #+END_SRC
      - 自定义配置国际化信息
      #+BEGIN_SRC java
-     @EnableWebMvc
      @Configuration
      public class I18NConfig extends WebMvcConfigurerAdapter {
 
@@ -1568,7 +1567,6 @@
      #+END_SRC
 **** Spring Boot 配置首页跳转
      #+BEGIN_SRC java
-     @EnableWebMvc
      @Configuration
      public class WebConfig extends WebMvcConfigurerAdapter {
 
@@ -2081,6 +2079,25 @@
          alert('Your browser does not support LocalStorage.');
      }
      #+END_SRC
+**** JavaScript 数组中插入、删除指定位置
+     #+BEGIN_SRC javascript
+     // index 添加/删除值的位置
+     // howmany 要删除的数量，添加时设置为0
+     // item1, ..., itemX 向数组添加的新值
+     arrayObject.splice(index, howmany, item1, ....., itemX)
+
+     var arrayObject = ['1', '2', '3']
+     // 插入
+     arrayObject.splice(2, 0, '2') // ['1', '2', '2', '3']
+     arrayObject.splice(4, 0, '2') // ['1', '2', '2', '3', '2']
+     arrayObject.splice(-1, 0, '5') // ['1', '2', '2', '3', '5', '2']
+     // 删除
+     arrayObject.splice(4, 0) // ['1', '2', '2', '3', '2']
+     arrayObject.splice(0, 3) // ['3', '2']
+
+     #+END_SRC
+     #+ATTR_HTML: :target _blank
+     [[http://www.w3school.com.cn/jsref/jsref_splice.asp][splice()]]
 *** JQuery
 **** JQuery 与 Prototype 中 $ 符号冲突解决方法
     - JQuery 在 prototype 之后引入，即：
