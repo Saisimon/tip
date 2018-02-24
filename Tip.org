@@ -27,46 +27,8 @@
 </a>
 #+END_HTML
 
-* Tip
-** Windows
-*** 右键添加命令提示符(CMD)
-    1. Win + R 运行 regedit
-    2. 找到 计算机 > HKEY_CLASSES_ROOT > Folder > shell
-    3. 右键shell 新建 -> 项 -> 命令提示符
-    4. 右键命令提示符 新建 -> 项 -> command
-    5. 点击(默认)项 输入 C:\Windows\System32\cmd.exe /k cd %1 然后点击确认
-*** 修改 XShell Alt 键作为 Meta 键, Backspace 键作为删除键
-    1. 打开XShell 选择 文件 -> 属性
-    2. 选择 终端 -> 键盘
-    3. 选中 将 Alt 用作 Meta 键
-    4. BACKSPACE 键序列 中选择 ASCII 127 确认
-*** 常见文件头特征（魔数）
-    | jpg            | FF D8 FF                      | png         | 89 50 4E 47    |
-    | gif            | 47 49 46 38                   | bmp         | 42 4D          |
-    | pdf            | 25 50 44 46                   | xml         | 3C 3F 78 6D 6C |
-    | docx/xlsx/pptx | 50 4B 03 04 14 00 06 00 08 00 | doc/xls/ppt | D0 CF 11 E0    |
-    | zip            | 50 4B 03 04                   | rar         | 52 61 72 21    |
-    | avi            | 41 56 49 20                   | class       | ca fe ba be    |
-    | exe            | 4D 5A 90 00 03                | psd         | 38 42 50 53    |
-    #+ATTR_HTML: :target _blank
-    [[https://en.wikipedia.org/wiki/Magic_number_(programming)][更多]]
-*** 批处理脚本运行程序
-    #+BEGIN_SRC 
-    ECHO "Start QQ..."
-    CALL ${qq path}
-    ECHO "Start Chrome..."
-    START ${chrome path} ${url path}
-    ECHO "Start Xshell..."
-    START ${xshell path} ${session path}
-    ECHO "..."
-    #+END_SRC
-*** 命令提示符(CMD)显示中文乱码
-    1. Win + R 运行 regedit
-    2. 找到 计算机 > HKEY_CURRENT_USER > Console > %SystemRoot%_system32_cmd.exe
-    3. 将 CodePage 的数值数据修改为十六进制 3a8 或十进制 936 (简体中文 GBK) 或者十六进制 fde9 或十进制 65001 (UTF-8)
-
-** Linux
-*** 查看 Linux 系统信息
+* Linux
+** 查看 Linux 系统信息
     - 使用 [[http://man.linuxde.net/top][top]] 命令来查看各个进程的使用情况
     | 常用交互命令 | 解释                             |
     |--------------+----------------------------------|
@@ -83,7 +45,7 @@
     # 查看每个 CPU 的核心数
     cat /proc/cpuinfo | grep "physical id" | grep "0" | wc -l
     #+END_SRC
-*** Linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
+** Linux 解压 ([[http://man.linuxde.net/tar][tar]] 命令、[[http://man.linuxde.net/unzip][unzip]] 命令)
     #+BEGIN_SRC
       1. 解压 .tar 文件
       $ tar -xf *.tar
@@ -111,7 +73,7 @@
       $ tar -xzvf *.tar.gz -C ~/dic/
       $ unzip *.zip -d ~/dic/
     #+END_SRC
-*** Linux 下 nginx 安装、启动、重启、停止
+** Linux 下 nginx 安装、启动、重启、停止
     安装
     #+BEGIN_SRC 
       tar -xzf nginx-${version}.tar.gz
@@ -141,7 +103,7 @@
     #+BEGIN_SRC 
       ${nginx_path}/sbin/nginx -s stop
     #+END_SRC
-*** Nginx 反向代理配置
+** Nginx 反向代理配置
     在 http-server-location / 下填写反向代理配置
     #+BEGIN_SRC
       proxy_pass http://localhost:8080;
@@ -149,7 +111,7 @@
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     #+END_SRC
-*** Nginx 配置 http 请求重定向到 https
+** Nginx 配置 http 请求重定向到 https
     - 修改 Nginx 的配置文件
     #+BEGIN_SRC conf
     # ...
@@ -174,7 +136,7 @@
     $ sudo service nginx configtest
     $ sudo service nginx restart
     #+END_SRC
-*** Nginx 配置 Let`s Encrypt 提供的免费 SSL 证书
+** Nginx 配置 Let`s Encrypt 提供的免费 SSL 证书
     - 安装脚本
       #+ATTR_HTML: :target _blank
        [[https://github.com/Neilpang/acme.sh ][acme.sh]]
@@ -260,7 +222,7 @@
       $ crontab -l
       6 0 * * * "/home/saisimon/.acme.sh"/acme.sh --cron --home "/home/saisimon/.acme.sh" > /dev/null
       #+END_SRC
-*** Linux 下安装 cheat 命令
+** Linux 下安装 cheat 命令
     - 通过 pip 安装 cheat
     #+BEGIN_SRC 
     - 安装 python 和 pip
@@ -285,7 +247,7 @@
     - 编译安装 cheat
       $ python setup.py install
     #+END_SRC
-*** Linux 设置命令别名
+** Linux 设置命令别名
     - 列出目前所有的别名设置
       #+BEGIN_SRC 
       $ alias
@@ -318,7 +280,7 @@
       # 重新加载配置文件
       $ source .bash_profile
       #+END_SRC
-*** Shell 脚本中运用 Linux 中设置的别名
+** Shell 脚本中运用 Linux 中设置的别名
     #+BEGIN_SRC
     #!/bin/bash
     
@@ -329,7 +291,7 @@
     # 运用 alias
     ...
     #+END_SRC
-*** 判断用户是否登录 Linux
+** 判断用户是否登录 Linux
     #+BEGIN_SRC 
     #!/bin/bash
 
@@ -341,7 +303,7 @@
     else
         echo "$username login"
     #+END_SRC
-*** Linux 创建新用户，并设置 sudo 权限
+** Linux 创建新用户，并设置 sudo 权限
     #+BEGIN_SRC
     # one
     sudo useradd -m -g sudo username # 创建名为 username 的新用户，创建默认 home 目录，指定用户组为 sudo
@@ -349,7 +311,7 @@
     sudo adduser --home /home/username username # 创建名为 username 的新用户，并指定 home 目录位置
     sudo usermod -aG sudo username # 加入 sudo 组
     #+END_SRC
-*** Shell 脚本查询指定文件夹下的所有文件
+** Shell 脚本查询指定文件夹下的所有文件
     #+BEGIN_SRC
     #!/bin/bash
     function searchFile() {
@@ -364,7 +326,7 @@
     }
     searchFile "/home"
     #+END_SRC
-*** Linux SSH 证书登录
+** Linux SSH 证书登录
     #+BEGIN_SRC 
     # 客户端生成公钥与私钥
     [client@localhost]$ ssh-keygen -t rsa 
@@ -387,7 +349,7 @@
     # 服务端添加客户端的公钥到 authorized_keys 中
     [server@localhost]$ cat id_rsa.pub >> ~/.ssh/authorized_keys
     #+END_SRC
-*** Linux 让进程在后台运行的方法
+** Linux 让进程在后台运行的方法
     #+BEGIN_SRC 
     # 1. Ctrl + z, bg
     [root@localhost]$ mvn -Djetty.port=8888 jetty:run > jetty.log 2>&1
@@ -406,7 +368,7 @@
     #+END_SRC
     #+ATTR_HTML: :target _blank
     [[https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html ][参考]]
-*** CentOS 7 开放防火墙的 80 等端口
+** CentOS 7 开放防火墙的 80 等端口
     #+BEGIN_SRC 
     # 防火墙开启作用域为 public，80 端口，并且永久生效
     [root@localhost]$ firewall-cmd --zone=public --add-port=80/tcp --permanent
@@ -414,7 +376,7 @@
     # 重新启动防火墙
     [root@localhost]$ systemctl restart firewalld.service
     #+END_SRC
-*** 使用 GoAccess 分析 Nginx 日志
+** 使用 GoAccess 分析 Nginx 日志
     - 安装 GoAccess
     #+BEGIN_SRC sh
     # 安装 NCurses 依赖
@@ -440,7 +402,7 @@
     # 将分析结果输出为 HTML 文件，-o 指定输出位置，--log-format 指定 Nginx 日志的格式
     $ goaccess access.log -o report.html --log-format=COMBINED
     #+END_SRC
-*** Crontab 命令使用
+** Crontab 命令使用
     - Crontab 命令参数说明
     #+BEGIN_SRC sh
     # 用法
@@ -505,9 +467,46 @@
     #+ATTR_HTML: :target _blank
     [[http://man.linuxde.net/crontab][crontab命令]]
 
-** Database
-*** Mysql
-**** 查询 Mysql 数据库大小
+* Windows
+** 右键添加命令提示符(CMD)
+    1. Win + R 运行 regedit
+    2. 找到 计算机 > HKEY_CLASSES_ROOT > Folder > shell
+    3. 右键shell 新建 -> 项 -> 命令提示符
+    4. 右键命令提示符 新建 -> 项 -> command
+    5. 点击(默认)项 输入 C:\Windows\System32\cmd.exe /k cd %1 然后点击确认
+** 修改 XShell Alt 键作为 Meta 键, Backspace 键作为删除键
+    1. 打开XShell 选择 文件 -> 属性
+    2. 选择 终端 -> 键盘
+    3. 选中 将 Alt 用作 Meta 键
+    4. BACKSPACE 键序列 中选择 ASCII 127 确认
+** 常见文件头特征（魔数）
+    | jpg            | FF D8 FF                      | png         | 89 50 4E 47    |
+    | gif            | 47 49 46 38                   | bmp         | 42 4D          |
+    | pdf            | 25 50 44 46                   | xml         | 3C 3F 78 6D 6C |
+    | docx/xlsx/pptx | 50 4B 03 04 14 00 06 00 08 00 | doc/xls/ppt | D0 CF 11 E0    |
+    | zip            | 50 4B 03 04                   | rar         | 52 61 72 21    |
+    | avi            | 41 56 49 20                   | class       | ca fe ba be    |
+    | exe            | 4D 5A 90 00 03                | psd         | 38 42 50 53    |
+    #+ATTR_HTML: :target _blank
+    [[https://en.wikipedia.org/wiki/Magic_number_(programming)][更多]]
+** 批处理脚本运行程序
+    #+BEGIN_SRC 
+    ECHO "Start QQ..."
+    CALL ${qq path}
+    ECHO "Start Chrome..."
+    START ${chrome path} ${url path}
+    ECHO "Start Xshell..."
+    START ${xshell path} ${session path}
+    ECHO "..."
+    #+END_SRC
+** 命令提示符(CMD)显示中文乱码
+    1. Win + R 运行 regedit
+    2. 找到 计算机 > HKEY_CURRENT_USER > Console > %SystemRoot%_system32_cmd.exe
+    3. 将 CodePage 的数值数据修改为十六进制 3a8 或十进制 936 (简体中文 GBK) 或者十六进制 fde9 或十进制 65001 (UTF-8)
+
+* Database
+** Mysql
+*** 查询 Mysql 数据库大小
     - 选择指定 [[http://dev.mysql.com/doc/refman/5.7/en/tables-table.html][information_schema 数据库]]
       #+BEGIN_SRC sql
             use information_schema;
@@ -524,12 +523,12 @@
       #+BEGIN_SRC sql
             select concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') as data from TABLES where table_schema='your_database_name' and table_name='your_table_name';
       #+END_SRC
-**** Mysql 数据库存中文字符乱码解决方法
+*** Mysql 数据库存中文字符乱码解决方法
     - 修改 [[http://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html][jdbc.url 配置]]
       #+BEGIN_SRC 
             jdbc.url=jdbc:mysql://ip-address:port/your_database_name?useUnicode=true&characterEncoding=utf8
       #+END_SRC
-**** Mysql 新增用户, 并附指定权限
+*** Mysql 新增用户, 并附指定权限
     - [[http://dev.mysql.com/doc/refman/5.7/en/adding-users.html][新增用户]]
       #+BEGIN_SRC sql
             create user ['username']@['localhost'] identified by ['password'];
@@ -542,7 +541,7 @@
       #+BEGIN_SRC sql
             drop user ['username']@['localhost'];
       #+END_SRC
-**** Mysql 导入本地指定文件数据
+*** Mysql 导入本地指定文件数据
      #+BEGIN_SRC sql
      -- 登录时开启导入本地文件功能。不开启这个功能，导入文件时会报“当前 mysql 版本不支持导入文件功能”的错误
      mysql -u ${username} --local-infile=1 -p
@@ -555,14 +554,14 @@
      #+END_SRC
      #+ATTR_HTML: :target _blank
      [[https://dev.mysql.com/doc/refman/5.7/en/load-data.html ][LOAD DATA INFILE Syntax]]
-**** Mysql 导出表数据到指定文件
+*** Mysql 导出表数据到指定文件
      #+BEGIN_SRC sql
      -- 导出表数据到指定文件
      select * info outfile '${filepath}' fields terminated by ',' optionally enclosed by '"' lines terminated by '\n' from ${tablename};
      #+END_SRC
      #+ATTR_HTML: :target _blank
      [[https://dev.mysql.com/doc/refman/5.7/en/select-into.html ][SELECT ... INTO Syntax]]
-**** 重置 Mysql root 密码
+*** 重置 Mysql root 密码
     #+BEGIN_SRC 
     # 停止 Mysql 服务
     sudo service mysql stop
@@ -576,7 +575,7 @@
     # 重启 mysql 服务
     sudo service mysql restart
     #+END_SRC
-**** Mysql 对于 zero date time 的处理
+*** Mysql 对于 zero date time 的处理
     Java 连接 Mysql 数据库，字段日期为 0 时，会抛出异常 java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column n to TIMESTAMP
     #+BEGIN_SRC 
     # 解决方法为在配置 JDBC 链接时，添加 zeroDateTimeBehavior 属性来处理
@@ -586,9 +585,9 @@
     jdbc:mysql://${mysql.serverUrl}?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull
     #+END_SRC
 
+* C
 ** C
-*** C
-**** 位操作
+*** 位操作
      #+BEGIN_SRC c
      int value;
      // 将指定位设置为1
@@ -604,16 +603,16 @@
      }
      #+END_SRC
      
+* Java
 ** Java
-*** Java
-**** 操作 jar 包
+*** 操作 jar 包
      #+BEGIN_SRC 
      - 查看 jar 包中的内容
        $ jar -tf *.jar
      - 解压出 jar 包中的内容
        $ jar -xf *.jar
      #+END_SRC
-**** byte 数组与 int 互转
+*** byte 数组与 int 互转
      #+BEGIN_SRC java
      // byte 数组转 int
      public static int bytes2Int(byte[] bytes) {
@@ -641,7 +640,7 @@
          return result;
      }
      #+END_SRC
-**** byte 数组与 char 数组互转
+*** byte 数组与 char 数组互转
      #+BEGIN_SRC java
      // byte 数组转 char 数组
      public static char[] bytes2Chars(byte[] bytes) {
@@ -669,7 +668,7 @@
          return bb.array();
      }
      #+END_SRC
-**** 倒序遍历 LinkedHashMap 集合
+*** 倒序遍历 LinkedHashMap 集合
      #+BEGIN_SRC java
      Map<Integer, String> data = new LinkedHashMap<>();
      for (int i = 0; i < 5; i++) {
@@ -681,7 +680,7 @@
          System.out.println("key : " + entry.getKey() + " value : " + entry.getValue());
      }
      #+END_SRC
-**** 使用异或操作交换两个数字
+*** 使用异或操作交换两个数字
      #+BEGIN_SRC java
      /**
        a = a ^ b;
@@ -694,7 +693,7 @@
              nums[a] = nums[a] ^ nums[b];
      }
      #+END_SRC
-**** 分页计算页数
+*** 分页计算页数
      #+BEGIN_SRC java
      // 每页记录数
      int pageSize;
@@ -703,7 +702,7 @@
      // 页数
      int pageCount = (rowCount - 1) / pageSize + 1;
      #+END_SRC
-**** 分割 Map
+*** 分割 Map
      #+BEGIN_SRC java
      /**
      ,* 当数据量较少时，该方法较全部遍历的效率要低
@@ -728,12 +727,12 @@
              res.add(subMap);
      }
      #+END_SRC
-**** Java 获取系统的临时文件夹路径
+*** Java 获取系统的临时文件夹路径
      #+BEGIN_SRC java
      // 获取系统的临时文件夹路径
      String tmp = System.getProperty("java.io.tmpdir");
      #+END_SRC
-**** Java 通过反射获取泛型的类型
+*** Java 通过反射获取泛型的类型
      - 由于 Java 的泛型在运行时会被擦除，不能够直接获取泛型的类型，但是其实在 class 字节码中还是保存着泛型的信息，可以通过特殊的方式获取到泛型的类型
      #+BEGIN_SRC java
      /**
@@ -790,7 +789,7 @@
          
      }
      #+END_SRC
-**** Java 8 接口中的默认方法的“劫持”问题
+*** Java 8 接口中的默认方法的“劫持”问题
      - IFoo 接口中有一默认方法 bar
      #+BEGIN_SRC java
      // Interface IFoo
@@ -819,7 +818,7 @@
      - main 方法中 1，2 位置调用的方法为都是接口中默认的方法,因为接口中的默认方法提供了更加准确的匹配
      #+ATTR_HTML: :target _blank
      [[http://rednaxelafx.iteye.com/blog/2033089 ][来源]]
-**** 使用 commons-beanutils 复制属性，当对象中的数值类型属性为 null 时复制成 0 的问题
+*** 使用 commons-beanutils 复制属性，当对象中的数值类型属性为 null 时复制成 0 的问题
      #+BEGIN_SRC java
      // 当对象的属性对象为 null 时，复制对象中的数值类型属性被初始化为 0
      BeanUtils.copyProperties(entity, copyEntity);
@@ -839,7 +838,7 @@
      // 再复制属性
      BeanUtils.copyProperties(entity, copyEntity);
      #+END_SRC
-**** Java AES 加密解密
+*** Java AES 加密解密
      - 加密
      #+BEGIN_SRC java
      /**
@@ -905,7 +904,7 @@
          System.out.println(content.equals(decryptContent));
      }
      #+END_SRC
-**** Java 常用正则表达式
+*** Java 常用正则表达式
      #+BEGIN_SRC java
      /**
       ,* 匹配国际电话号码
@@ -927,11 +926,11 @@
       ,*/
      public static final Pattern ID_CARD_PATTERN = Pattern.compile("^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$");
      #+END_SRC
-**** 正则表达式中需要转义的特殊字符
+*** 正则表达式中需要转义的特殊字符
      #+BEGIN_SRC 
      * . ? + $ ^ [ ] ( ) { } | \ /
      #+END_SRC
-**** Java 根据文件名获取其 Content-Type
+*** Java 根据文件名获取其 Content-Type
      - 使用 Java 1.7 中 Files 提供的方法
      #+BEGIN_SRC java
      import java.io.File;
@@ -955,8 +954,8 @@
      }
      #+END_SRC
      
-*** JUnit
-**** JUnit 4 中实现测试用例按指定顺序执行
+** JUnit
+*** JUnit 4 中实现测试用例按指定顺序执行
     #+BEGIN_QUOTE
     JUnit 中提供了三种方式来决定执行顺序
     1. MethodSorters.NAME_ASCENDING 按照测试方法的方法名的字母表顺序进行排序
@@ -1062,8 +1061,8 @@
         // 3
     }
     #+END_SRC
-*** Web
-**** 前端页面传中文字符乱码解决方法
+** Web
+*** 前端页面传中文字符乱码解决方法
     - 修改 [[https://docs.oracle.com/cd/E14571_01/web.1111/e13712/web_xml.htm#WBAPP515][web.xml]] 文件, 添加 [[http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/javadoc-api/org/springframework/web/filter/CharacterEncodingFilter.html][CharacterEncodingFilter]] 
       #+BEGIN_SRC xml
           <filter>
@@ -1085,7 +1084,7 @@
           </filter-mapping>
       #+END_SRC
     - filter 需要放在所有 filter 的前面才会生效
-**** 常见 ContentType 与文件后缀名对应关系
+*** 常见 ContentType 与文件后缀名对应关系
      | 文件扩展名        | ContentType                                                       |
      |------------------+-------------------------------------------------------------------|
      | .html            | text/html                                                         |
@@ -1102,7 +1101,7 @@
      | .*(未知二进制流)  | application/octet-stream                                           |
      #+ATTR_HTML: :target _blank
      [[http://tool.oschina.net/commons][更多]]
-**** xpath 基础
+*** xpath 基础
      #+BEGIN_SRC java
      /*
          <body>
@@ -1125,7 +1124,7 @@
      #+END_SRC
      #+ATTR_HTML: :target _blank
      [[http://www.zvon.org/xxl/XPathTutorial/General_chi/examples.html][XPath 教程]]
-**** 生成自签名 HTTPS 证书
+*** 生成自签名 HTTPS 证书
      #+BEGIN_SRC 
        # 生成 CA 私钥
        $ openssl genrsa -out ca.key 2048
@@ -1148,8 +1147,8 @@
        # 生成服务端的keystore
        $ keytool -importkeystore -srckeystore server.pkcs12 -destkeystore server.jks -srcstoretype pkcs12
      #+END_SRC
-*** Maven
-**** Maven 基本操作
+** Maven
+*** Maven 基本操作
      #+BEGIN_SRC
      - 创建Maven的普通java项目
        $ mvn archetype:create -DgroupId=[packageName] -DartifactId=[projectName]
@@ -1169,7 +1168,7 @@
      - 生成站点信息
        $ mvn site
      #+END_SRC
-**** Maven 跳单元测试
+*** Maven 跳单元测试
     - 跳过单元测试
       #+BEGIN_SRC 
         # 直接跳过测试，测试类不会被编译
@@ -1179,7 +1178,7 @@
       #+END_SRC
       #+ATTR_HTML: :target _blank
       [[http://maven.apache.org/plugins-archives/maven-surefire-plugin-2.12.4/examples/skipping-test.html ][Skipping Tests]]
-**** Maven 指定编译版本
+*** Maven 指定编译版本
     - 添加编译插件
       #+BEGIN_SRC xml
       <build>
@@ -1197,7 +1196,7 @@
         </plugins>
       </build> 
       #+END_SRC
-**** pom.xml 文件 - Missing artifact jdk.tools:jdk.tools:jar:1.x
+*** pom.xml 文件 - Missing artifact jdk.tools:jdk.tools:jar:1.x
      - pom 文件添加 tools 依赖
      #+BEGIN_SRC xml
        <dependency>
@@ -1208,7 +1207,7 @@
     		<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
 	  </dependency>
      #+END_SRC
-**** Maven 添加本地 jar 包依赖
+*** Maven 添加本地 jar 包依赖
      #+BEGIN_SRC xml
      <dependency>
          <groupId>net.saisimon</groupId>
@@ -1218,7 +1217,7 @@
          <systemPath>/local/path/local-jar-1.0.jar</systemPath>
      </dependency>
      #+END_SRC
-**** Maven 上传 jar 包到 Nexus 私服仓库
+*** Maven 上传 jar 包到 Nexus 私服仓库
      - $MAVEN_HOME/conf/settings.xml
      #+BEGIN_SRC xml
      <settings>
@@ -1247,13 +1246,13 @@
      #+END_SRC
      #+ATTR_HTML: :target _blank
      [[https://maven.apache.org/plugins/maven-deploy-plugin/deploy-file-mojo.html ][deploy:deploy-file]]
-*** Tomcat
-**** 导入 Web 项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X...
+** Tomcat
+*** 导入 Web 项目，Tomcat 无法添加部署问题 - Tomcat version X.0 only supports J2EE 1.2, 1.3, 1.4, and Java EE X...
      - 其主要原因为当前 Tomcat 版本与该 Web 项目的Web版本不兼容，Tomcat 6支持 Web 2.5及以下版本，tomcat 7支持 Web 3.0及以下版本
      - 在 Eclipse 中：Project -> Properties -> Project Facets -> Dynamic Web Module，检查 Web 项目的Web版本
      1. Eclipse 环境下的修改方法为：项目根目录找到 .setting 文件夹中的 org.eclipse.wst.common.project.facet.core.xml 文件，修改其中 jst.web 的 version 的值至当前 Tomcat 支持的版本
      2. 更新 Tomcat 版本，使其与 Web 版本兼容
-**** 配置从根目录访问 Tomcat 下的 Web 项目
+*** 配置从根目录访问 Tomcat 下的 Web 项目
      #+BEGIN_SRC xml
      <!-- docBase为webapp的路径 path为发布的路径，根目录访问这里留空  -->
      <!-- Context 标签配置在 Tomcat 目录下 conf 文件里的 Server.xml 配置文件中  -->
@@ -1267,7 +1266,7 @@
        </Service>
      </Server>
      #+END_SRC
-**** eclipse 中 Web 项目配置根目录访问
+*** eclipse 中 Web 项目配置根目录访问
      - 修改 Web 项目的 Context Path
      1. 打开 web project folder >> .setting >> org.eclipse.wst.common.component 文件
      2. 编辑该文件，修改其中 content-root 属性为空值
@@ -1279,8 +1278,8 @@
          </wb-module>
      </project-modules>
      #+END_SRC
-*** JNI
-**** 使用 javah 生成头文件问题 - Error: Could not find class file for "X"
+** JNI
+*** 使用 javah 生成头文件问题 - Error: Could not find class file for "X"
      #+BEGIN_SRC
      - HelloWorld.class 在 net.saisimon.jni 包中
        $ javah HelloWorld
@@ -1290,8 +1289,8 @@
        $ javah net.saisimon.jni.HelloWorld
      - 即可生成头文件 net_saisimon_jni_HelloWorld.h
      #+END_SRC
-*** Thread
-**** 统计所有线程消耗的总时间
+** Thread
+*** 统计所有线程消耗的总时间
      #+BEGIN_SRC java
      package net.saisimon.test
 
@@ -1347,18 +1346,18 @@
          }
      }
      #+END_SRC
-*** Solr
-**** Solr 导入 csv 文件数据
+** Solr
+*** Solr 导入 csv 文件数据
      #+BEGIN_SRC 
        http://localhost:8983/solr/item/update?commit=true&stream.file=d:/tmp/solr_data.csv&stream.contentType=application/csv
      #+END_SRC
-*** Dubbo
-**** Fail to decode request due to: RpcInvocation 问题
+** Dubbo
+*** Fail to decode request due to: RpcInvocation 问题
      1. 参数中有没有序列化的对象。所有参数必须继承 Serializable 接口实现序列化
      2. 参数对象中有不能序列化的属性。改变属性，使所有属性可以序列化
      3. 服务提供者与服务消费者依赖版本不一致，导致序列化异常。保证提供者和消费者依赖版本一致
-*** Hadoop
-**** Hadoop 版本依赖关系
+** Hadoop
+*** Hadoop 版本依赖关系
      #+BEGIN_SRC xml
      <!-- Java 要求 -->
      <!-- Hadoop 2.7 以及之后的版本需要 JDK 7 -->
@@ -1394,15 +1393,15 @@
      </dependency>
 
      #+END_SRC
-*** Eclipse
-**** 显示 Eclipse 内存堆占用条，手动 GC
+** Eclipse
+*** 显示 Eclipse 内存堆占用条，手动 GC
      - 修改配置文件 {workspaceHome}/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs 
      #+BEGIN_SRC 
        SHOW_MEMORY_MONITOR=true
      #+END_SRC
-**** 修改 Eclipse 格式化代码自动换行
+*** 修改 Eclipse 格式化代码自动换行
      Project - Properties - Java Code Style - Formatter - Enable project specific settings - 新建一个配置 - Line Wrapping - 设置 Maximum line width
-**** Eclipse console 控制台 log4j 日志支持多种颜色
+*** Eclipse console 控制台 log4j 日志支持多种颜色
      - 在 Eclipse Marketplace 安装 ANSI Escape in Console 插件
      - 下载 [[https://github.com/mihnita/java-color-loggers/releases/download/v1.0.4.1/color-loggers-1.0.4.1.jar][java-color-loggers.jar]] 包，并加入到 build path 中
      - 在 log4j.properties 文件中添加如下代码
@@ -1417,16 +1416,16 @@
          # log4j.appender.CONSOLE.DebugColour={esc}[1;36m  
          # log4j.appender.CONSOLE.TraceColour={esc}[1;30m
      #+END_SRC
-**** Eclipse 导入项目未自动识别为 web 项目
+*** Eclipse 导入项目未自动识别为 web 项目
      - Project - Predicates - Project Facets - 选择 Java 和 Dynamic Web Module (选择对应版本)
      - 当选择了 Dynamic Web Module 后，下方选择 Further Configuration availabe (没有这个选项的话，删除项目中 eclipse 生成的 .settings 文件夹，在 eclipse 中 refresh 项目，然后重复上一步)
      - 设置 classes 路径 和 webroot 的路径 - 保存
-**** Eclipse 部署 web 项目时 lib 为空
+*** Eclipse 部署 web 项目时 lib 为空
      - Project - Predicates - Deployment Assembly - Add 添加 Libraries
-**** Eclipse 隐藏/显示已关闭项目
+*** Eclipse 隐藏/显示已关闭项目
      Project Explorer 标签栏 -> v(View Menu) -> Customize View... -> Filters -> 勾选/取消勾选 Closed projects
-*** Spring
-**** Spring Boot 中添加自定义的监听器，拦截器，过滤器
+** Spring
+*** Spring Boot 中添加自定义的监听器，拦截器，过滤器
      #+BEGIN_SRC java
      /**
       ,* 添加自定义的监听器，拦截器，过滤器
@@ -1478,7 +1477,7 @@
          }
      }
      #+END_SRC
-**** Spring 获取项目 classpath 路径
+*** Spring 获取项目 classpath 路径
      - *该方法在 Spring Boot 以 java -jar 启动时获取的路径不正确，改用[[Spring Boot 中获取 classpath 下的文件资源][文件流的形式]]*
      #+BEGIN_SRC java
      import org.springframework.util.ClassUtils;
@@ -1510,7 +1509,7 @@
          return cl;
      }
      #+END_SRC
-**** Spring Boot 国际化配置
+*** Spring Boot 国际化配置
      - 简单在 application.properties 中配置国际化信息
      #+BEGIN_SRC
      # INTERNATIONALIZATION (MessageSourceAutoConfiguration)
@@ -1565,7 +1564,7 @@
              
      }
      #+END_SRC
-**** Spring Boot 配置首页跳转
+*** Spring Boot 配置首页跳转
      #+BEGIN_SRC java
      @Configuration
      public class WebConfig extends WebMvcConfigurerAdapter {
@@ -1578,7 +1577,7 @@
              
      }
      #+END_SRC
-**** Spring Boot 获取 ApplicationContext
+*** Spring Boot 获取 ApplicationContext
      - 将 SpringContext 放在 Spring 的扫描路径内
      #+BEGIN_SRC java
      import org.springframework.beans.BeansException;
@@ -1633,7 +1632,7 @@
          
      }
      #+END_SRC
-**** Spring Boot 读取 Properties 文件
+*** Spring Boot 读取 Properties 文件
      - config.properties 放在 classpath 路径下
      #+BEGIN_SRC
      # 超时时间
@@ -1661,7 +1660,7 @@
              
      }
      #+END_SRC
-**** Spring Boot 配置 HTTPS ，HTTP 重定向到 HTTPS (Tomcat)
+*** Spring Boot 配置 HTTPS ，HTTP 重定向到 HTTPS (Tomcat)
      - https.properties 放在 classpath 路径下
        #+BEGIN_SRC 
        https.port=443
@@ -1752,7 +1751,7 @@
            
        }
        #+END_SRC
-**** Spring Boot 配置 HTTPS ，HTTP 重定向到 HTTPS (Jetty 9)
+*** Spring Boot 配置 HTTPS ，HTTP 重定向到 HTTPS (Jetty 9)
      - https.properties 放在 classpath 路径下，内容同上
      - WebConfig.java Web 配置类中添加处理 HTTPS 请求的 Connector
        #+BEGIN_SRC java
@@ -1862,7 +1861,7 @@
 
        }
        #+END_SRC
-**** Spring Boot 中获取 classpath 下的文件资源
+*** Spring Boot 中获取 classpath 下的文件资源
      <<Spring Boot 中获取 classpath 下的文件资源>>
      #+BEGIN_SRC java
      import org.springframework.core.io.ClassPathResource;
@@ -1870,7 +1869,7 @@
      ClassPathResource classPathResource = new ClassPathResource("path/file.xml");
      InputStream in = classPathResource.getInputStream();
      #+END_SRC
-**** Spring Boot 中将非 Spring 管理对象装配成 Spring 管理对象
+*** Spring Boot 中将非 Spring 管理对象装配成 Spring 管理对象
      #+BEGIN_SRC java
      /**
       ,* 装配非 Spring 管理对象
@@ -1890,9 +1889,9 @@
      }
      #+END_SRC
 
+* Python
 ** Python
-*** Python
-**** Windows 上 Python2 和 Python3 兼容
+*** Windows 上 Python2 和 Python3 兼容
      - 使用 -2 和 -3 区分 Python 版本
      #+BEGIN_SRC
          # python2 运行 main.py
@@ -1908,18 +1907,18 @@
      # 指定 Python3 解释器 写在代码第一行
      #! python3
      #+END_SRC
-**** 指定 Python 源码编码
+*** 指定 Python 源码编码
      #+BEGIN_SRC python
      # -*- coding:utf-8 -*-
      #+END_SRC
-**** Windows 平台读取和打开二进制文件模式选择
+*** Windows 平台读取和打开二进制文件模式选择
      #+BEGIN_SRC python
      # Python 在 Windows 平台上区分文本文件和二进制文件；读取或写入文本文件中时， 行尾字符会被自动地稍加改变。
      # 在读写二进制文件时，要选择二进制模式打开。
      file = open(filename, 'wb')
      #+END_SRC
-*** SCons
-**** CentOS 下编译安装 SCons
+** SCons
+*** CentOS 下编译安装 SCons
      #+BEGIN_SRC
      - 确定系统中安装了 Python
        $ python -V
@@ -1935,13 +1934,13 @@
        $ scons -v
      #+END_SRC
 
-** Web
-*** HTML
-**** HTML 转义字符
+* Web
+** HTML
+*** HTML 转义字符
      #+ATTR_HTML: :target _blank
      [[https://dev.w3.org/html5/html-author/charref ][HTML Entities]]
-*** CSS
-**** CSS 文本两端对齐
+** CSS
+*** CSS 文本两端对齐
      #+BEGIN_SRC css
      .justify {
          text-align:justify;
@@ -1951,7 +1950,7 @@
          -webkit-text-align-last:justify; /*chrome 20+*/
      }
      #+END_SRC
-**** CSS 文本溢出省略
+*** CSS 文本溢出省略
      #+BEGIN_SRC html
      <div class="text">This is some long text that will not fit in the box</div>
      <style>
@@ -1963,7 +1962,7 @@
        }
      </style>
      #+END_SRC
-**** 滚动条样式
+*** 滚动条样式
      #+BEGIN_SRC css
      body::-webkit-scrollbar {
          width: 8px;
@@ -1975,8 +1974,8 @@
          background-color: #666;
      }
      #+END_SRC
-*** JavaScript
-**** JavaScript 类型判断
+** JavaScript
+*** JavaScript 类型判断
     - 是否为数字
       #+BEGIN_SRC javascript
       function isNumber(obj) {
@@ -1995,7 +1994,7 @@
           return obj === !!obj;
       }
       #+END_SRC
-**** JavaScript 首字母大写
+*** JavaScript 首字母大写
      #+BEGIN_SRC javascript
      function toCapitalizeCase(str) {
          if (!str || str.length === 0) {
@@ -2008,7 +2007,7 @@
          }
      }
      #+END_SRC
-**** JavaScript 日期格式化
+*** JavaScript 日期格式化
      #+BEGIN_SRC javascript
      Date.prototype.format = function(style) {
          var o = {
@@ -2038,7 +2037,7 @@
       ,*/
      var formatDate = new Date().format("yyyy-MM-dd hh:mm:ss");
      #+END_SRC
-**** JavaScript 过滤数组中的假值
+*** JavaScript 过滤数组中的假值
      - 假值有 false, null, 0, "", undefined 和 NaN
      #+BEGIN_SRC javascript
      function filterFalse(arr) {
@@ -2050,7 +2049,7 @@
      console.log(filterFalse([false, null, "aaa", 7, 0, "", NaN]));
      // -> ["aaa", 7]
      #+END_SRC
-**** HTML5 LocalStorage 本地存储
+*** HTML5 LocalStorage 本地存储
      - 各浏览器的对 LocalStorage 的支持情况
      |   IE | Firefox | Chrome | Opera | Safari |  IOS | Android |
      | 8.0+ |    3.5+ |   4.0+ | 11.5+ |   4.0+ | 3.2+ |    2.1+ |
@@ -2079,7 +2078,7 @@
          alert('Your browser does not support LocalStorage.');
      }
      #+END_SRC
-**** JavaScript 数组中插入、删除指定位置
+*** JavaScript 数组中插入、删除指定位置
      #+BEGIN_SRC javascript
      // index 添加/删除值的位置
      // howmany 要删除的数量，添加时设置为0
@@ -2098,7 +2097,7 @@
      #+END_SRC
      #+ATTR_HTML: :target _blank
      [[http://www.w3school.com.cn/jsref/jsref_splice.asp][splice()]]
-**** JavaScript 对象深拷贝
+*** JavaScript 对象深拷贝
      - 遍历对象所有属性进行深拷贝
      #+BEGIN_SRC javascript
      function cloneObj(obj) {
@@ -2119,8 +2118,8 @@
          return JSON.parse(JSON.stringify(obj));
      }
      #+END_SRC
-*** JQuery
-**** JQuery 与 Prototype 中 $ 符号冲突解决方法
+** JQuery
+*** JQuery 与 Prototype 中 $ 符号冲突解决方法
     - JQuery 在 prototype 之后引入，即：
       #+BEGIN_SRC xml
       <script src="prototype.js" type="text/javascript"/> 
@@ -2152,7 +2151,7 @@
       })(jQuery)
       #+END_SRC
 
-**** JQuery 获取 url 参数
+*** JQuery 获取 url 参数
     #+BEGIN_SRC javascript
     $.extend({
         getUrlVars: function(){
@@ -2178,7 +2177,7 @@
     });
     #+END_SRC
 
-**** JQuery 重复绑定问题
+*** JQuery 重复绑定问题
      #+BEGIN_SRC javascript
      $("#id").die().live("click", function() {
          // click event
@@ -2190,7 +2189,7 @@
          ...
      });
      #+END_SRC
-**** JQuery 动态加载 JavaScript 文件
+*** JQuery 动态加载 JavaScript 文件
      1. 加载单个 JavaScript 文件
         #+BEGIN_SRC javascript
         $.ajax({
@@ -2216,7 +2215,7 @@
             // 全部 js 文件加载后的回调函数
         });
         #+END_SRC
-**** 使用 jQuery Form Plugin 进行异步表单提交
+*** 使用 jQuery Form Plugin 进行异步表单提交
      #+BEGIN_SRC html
      <form id="test" method="post" action="/form/submit" >
        <input type="text" name="username" id="username" />
@@ -2265,8 +2264,8 @@
      #+END_SRC
      #+ATTR_HTML: :target _blank
      [[https://jquery-form.github.io/form/ ][jQuery Form Plugin]]
-*** Prototype
-**** Prototype 获取 select 选择框中选中文本
+** Prototype
+*** Prototype 获取 select 选择框中选中文本
      #+BEGIN_SRC javascript
      // 选择框中选中文本的下标
      var idx = $(id).selectedIndex;
@@ -2274,8 +2273,8 @@
      var text = $(id).options[idx].text.strip();
      #+END_SRC
 
-** Docker
-*** 进入 Docker 容器
+* Docker
+** 进入 Docker 容器
     - 运行下面的 .bashrc_docker 文件
     #+BEGIN_SRC 
     # .bashrc_docker
@@ -2333,7 +2332,7 @@
     $ docker-pid <containerId> # 查看容器的 PID
     $ docker-enter <containerId> # 进入指定容器
     #+END_SRC
-*** 批量删除 <none> 镜像
+** 批量删除 <none> 镜像
     #+BEGIN_SRC
     # 删除所有停止的容器，防止删除镜像时应有依赖的容器存在，而导致删除失败
     $ docker rm $(docker ps -a | grep "Exited" | awk '{print $1}')
@@ -2342,15 +2341,15 @@
     $ docker rmi $(docker images | grep "<none>" | awk '{print $3}')
     #+END_SRC
     
-** Emacs
-*** 安装 Emacs 时，error: The required function `tputs' was not found in any library
+* Emacs
+** 安装 Emacs 时，error: The required function `tputs' was not found in any library
     - 缺少 libncurses-dev 包
     #+BEGIN_SRC 
     $ yum install libncurses-dev -y
     或
     $ apt-get install libncurses-dev
     #+END_SRC
-*** 轻量级标记语言对比
+** 轻量级标记语言对比
     #+BEGIN_QUOTE
     轻量级标记语言是一种 *语法简单* 的标记语言。它使用易于理解的格式标记，没有古怪的<标签>。
     md为Markdown，gfm是GitHub风格的Markdown，rst为reStructedText，ttl为Textile，asc为AsciiDoc，org为Org-mode
@@ -2358,8 +2357,8 @@
     #+ATTR_HTML: :target _blank
     [[http://www.worldhello.net/gotgithub/appendix/markups.html#tbl-markups ][常用轻量级标记语言对比]]
 
-** Vim
-*** Vim 查询时忽略大小写
+* Vim
+** Vim 查询时忽略大小写
     - Vim 默认查询是区分大小写的，忽略大小写的配置
     #+BEGIN_SRC 
     // 忽略大小写查询
@@ -2375,8 +2374,8 @@
     : set ignorecase smartcase
     #+END_SRC
 
-** Git
-*** Git 基本操作
+* Git
+** Git 基本操作
     #+BEGIN_SRC 
     - 初始化
       $ git init
@@ -2401,7 +2400,7 @@
     - 将指定分支合并至当前分支
       $ git merge <branch>
     #+END_SRC
-*** 更新 .gitignore 后，清理 Git 仓库
+** 更新 .gitignore 后，清理 Git 仓库
     #+BEGIN_SRC 
     - 清理暂存区的文件
       $ git rm -r --cached .
@@ -2410,11 +2409,11 @@
     - 提交
       $ git commit -m ".gitignore is now working"
     #+END_SRC
-*** Git 在 push 之前撤回最近一次 commit 命令
+** Git 在 push 之前撤回最近一次 commit 命令
     #+BEGIN_SRC 
       $ git reset --soft HEAD^
     #+END_SRC
-*** 修改 Git 别名
+** 修改 Git 别名
     - 修改 .gitconfig 文件中[alias]属性
        #+BEGIN_SRC  
          $ vi ~/.gitconfig
@@ -2429,7 +2428,7 @@
          # 表示将 st 作为 status 的别名，可以直接使用 git st 命令
          $ git config --global alias.st status
       #+END_SRC
-*** Git 推送代码
+** Git 推送代码
     #+BEGIN_SRC  
     - 首次推送，添加远程代码库至配置
       $ git remote add tip https://github.com/Saisimon/tip.git
@@ -2437,7 +2436,7 @@
       $ git push tip master
     - 输入账号密码进行确认
     #+END_SRC
-*** Git 拉取代码
+** Git 拉取代码
     #+BEGIN_SRC 
     - 暂存工作区
      $ git stash
@@ -2447,7 +2446,7 @@
      $ git stash pop
     - 出现冲突时，解决冲突提交即可
     #+END_SRC
-*** 添加新 ssh_key 至 Github
+** 添加新 ssh_key 至 Github
     #+BEGIN_SRC 
     - 检查是否存在 .ssh 文件夹
       $ cd ~/.ssh
@@ -2465,7 +2464,7 @@
       Hi Saisimon! You've successfully authenticated, but GitHub does not provide shell access.
       Connection to github.com closed.
     #+END_SRC
-*** Git status 输出中文为 UNICODE 解决方法
+** Git status 输出中文为 UNICODE 解决方法
     - 修改 git config 属性
       #+BEGIN_SRC 
         $ git config --global core.quotepath false
@@ -2476,7 +2475,7 @@
           [core]
               quotepath = false
       #+END_SRC
-*** Git push 时，fatal: Authentication failed
+** Git push 时，fatal: Authentication failed
     - 修改 remote 地址
       #+BEGIN_SRC 
         $ git remote set-url origin <ssh url>
@@ -2485,7 +2484,7 @@
       #+BEGIN_SRC 
         $ git remote -v
       #+END_SRC 
-*** GitLab 服务启动与关闭
+** GitLab 服务启动与关闭
     - 开机自动开启 GitLab 服务
       #+BEGIN_SRC 
         $ systemctl enable gitlab-runsvdir.service
