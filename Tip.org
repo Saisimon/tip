@@ -1994,6 +1994,12 @@
           return obj === !!obj;
       }
       #+END_SRC
+    - 是否为数组
+      #+BEGIN_SRC javascript
+      function isArray(obj) {
+          return Object.prototype.toString.call(obj) === '[object Array]';   
+      }
+      #+END_SRC
 *** JavaScript 首字母大写
      #+BEGIN_SRC javascript
      function toCapitalizeCase(str) {
