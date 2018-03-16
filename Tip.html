@@ -2,11 +2,11 @@
 <html>
 <head>
 <title>Code Tips</title>
-<!-- 2018-02-24 Sat 09:16 -->
+<!-- 2018-03-16 Fri 18:31 -->
 <meta  charset="utf-8">
 <meta  name="generator" content="Org-mode">
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon">
-<meta  name="description" content="Code Tips and Tricks."
+<meta  name="description" content="Record Some Useful Code Tips and Tricks, Include OS, Web, Database, Languages, etc."
 >
 <meta  name="keywords" content="Tip, Saisimon, Java, Org-mode, Python, C++, Spring, Spring Boot, Linux, Emacs, Vim, Git, Web, Mysql, HTML, CSS, JavaScript, js">
 <meta name="google-site-verification" content="EkLeSg2TItVkDXCwTaFkONfEMb4bAm0IDIyUXJecjS0" />
@@ -3271,6 +3271,15 @@ py -3 main.py
 </pre>
 </div>
 </li>
+<li>是否为数组
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">isArray</span>(<span style="color: #F92672;">obj</span>) {
+    <span style="color: #66D9EF;">return</span> Object.<span style="color: #AE81FF;">prototype</span>.toString.call(obj) === <span style="color: #E6DB74;">'[object Array]'</span>;   
+}
+</pre>
+</div>
+</li>
 </ul>
 </div>
 </div>
@@ -4041,7 +4050,7 @@ $ systemctl stop gitlab-runsvdir.service
 </div>
 <div id="postamble" class="status">
 <p class="author">&#20316;&#32773;: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2018-02-24 Sat 09:16</p>
+<p class="date">Created: 2018-03-16 Fri 18:31</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

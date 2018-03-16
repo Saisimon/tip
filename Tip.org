@@ -7,7 +7,7 @@
 #+OPTIONS: tex:nil
 #+HTML_DOCTYPE: <!DOCTYPE html>
 #+KEYWORDS: Tip, Saisimon, Java, Org-mode, Python, C++, Spring, Spring Boot, Linux, Emacs, Vim, Git, Web, Mysql, HTML, CSS, JavaScript, js
-#+DESCRIPTION: Code Tips and Tricks.
+#+DESCRIPTION: Record Some Useful Code Tips and Tricks, Include OS, Web, Database, Languages, etc.
 #+HTML_HEAD: <meta name="google-site-verification" content="EkLeSg2TItVkDXCwTaFkONfEMb4bAm0IDIyUXJecjS0" />
 #+HTML_HEAD: <meta name="msvalidate.01" content="498C625AE766F944B349A46928CF8056" />
 #+HTML_HEAD: <meta http-equiv="content-language" content="zh-CN" />
