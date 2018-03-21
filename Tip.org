@@ -1888,6 +1888,86 @@
          return obj;
      }
      #+END_SRC
+*** Spring Boot 中配置使用 WebSocket
+    - POM 文件中添加 WebSocket 依赖
+    #+BEGIN_SRC xml
+    ...
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
+    ...
+    #+END_SRC
+    - 配置注册 WebSocket 的处理器
+    #+BEGIN_SRC java
+    package net.saisimon.config
+
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.web.socket.WebSocketHandler;
+    import org.springframework.web.socket.config.annotation.EnableWebSocket;
+    import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+    import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+    import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
+
+    import net.saisimon.handler.MyHandler;
+
+    @Configuration
+    @EnableWebSocket
+    public class WebSocketConfig implements WebSocketConfigurer {
+
+        @Override
+        public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+            // 注册处理器，映射到 /websocket
+            // 并添加 HttpSessionHandshakeInterceptor 拦截器，获取 HttpSession
+            registry.addHandler(myHandler(), "/websocket")
+                    .addInterceptors(new HttpSessionHandshakeInterceptor());
+        }
+
+        @Bean
+        public WebSocketHandler myHandler() {
+            // 处理类
+            return new MyHandler();
+        }
+            
+    }
+    #+END_SRC
+    - 实现处理类
+    #+BEGIN_SRC java
+    package net.saisimon.handler;
+
+    import org.springframework.web.socket.BinaryMessage;
+    import org.springframework.web.socket.PongMessage;
+    import org.springframework.web.socket.TextMessage;
+    import org.springframework.web.socket.WebSocketSession;
+    import org.springframework.web.socket.handler.AbstractWebSocketHandler;
+
+    // 继承抽象处理类，实现对应的处理方法
+    public class MyHandler extends AbstractWebSocketHandler {
+
+        @Override
+        protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+            // 处理文本文件
+            String msg = new String(message.asBytes(), "UTF-8");
+            System.out.println(msg);
+            // 发送消息
+            session.sendMessage(new TextMessage(msg));
+        }
+
+        @Override
+        protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) throws Exception {
+            // 处理二进制文件
+        }
+
+        @Override
+        protected void handlePongMessage(WebSocketSession session, PongMessage message) throws Exception {
+            // 处理 Pone 消息
+        }
+          
+    }
+    #+END_SRC
+    #+ATTR_HTML: :target _blank
+    [[https://docs.spring.io/spring/docs/4.3.12.RELEASE/spring-framework-reference/htmlsingle/#websocket][更多]]
 
 * Python
 ** Python
