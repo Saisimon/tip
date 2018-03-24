@@ -2240,6 +2240,23 @@
          return JSON.parse(JSON.stringify(obj));
      }
      #+END_SRC
+*** JavaScript 判断给定输入是否符合 JSON 格式
+    #+BEGIN_SRC javascript
+    function isJSON(str) {
+        if (typeof str == 'string') {
+            try {
+                var obj = JSON.parse(str);
+                if (typeof obj == 'object' && obj) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (e) {
+                return false;
+            }
+        }
+    }
+    #+END_SRC
 ** JQuery
 *** JQuery 与 Prototype 中 $ 符号冲突解决方法
     - JQuery 在 prototype 之后引入，即：
