@@ -2295,6 +2295,71 @@
         }
     }
     #+END_SRC
+*** JavaScript 控制浏览器全屏模式
+    - 指定对象开启全屏模式
+    #+BEGIN_SRC javascript
+    function launchFullscreen(element) {
+        if (element.requestFullscreen) {
+            // Default
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+            // FireFox 10+
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) {
+            // Google Chrome 15+, Microsoft Edge, Opera 15+, Safari 5.1+
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) {
+            // Internet Explorer 11
+            element.msRequestFullscreen();
+        } else {
+            console.log('不支持全屏API');
+        }
+    }
+    #+END_SRC
+    - 退出全屏模式
+    #+BEGIN_SRC javascript
+    function exitFullscreen() {
+        if (document.exitFullscreen) {
+            // Default
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            // FireFox 10+
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            // Google Chrome 15+, Microsoft Edge, Opera 15+, Safari 5.1+
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            // Internet Explorer 11
+            document.msExitFullscreen();
+        } else {
+            console.log('不支持全屏API');
+        }
+    }
+    #+END_SRC
+    - 全屏模式改变事件
+    #+BEGIN_SRC javascript
+    function fullscreenChange() {
+        document.addEventListener('fullscreenchange', function(e) {
+            console.log('fullscreenchange');
+            console.log(e);
+        });
+        document.addEventListener('mozfullscreenchange', function(e) {
+            console.log('mozfullscreenchange');
+            console.log(e);
+        });
+        document.addEventListener('webkitfullscreenchange', function(e) {
+            console.log('webkitfullscreenchange');
+            console.log(e);
+        });
+        document.addEventListener('msfullscreenchange', function(e) {
+            console.log('msfullscreenchange');
+            console.log(e);
+        });
+    }
+    #+END_SRC
+    *注：基于浏览器安全考虑，全屏模式无法直接调用,必须有用户行为才能调用全屏API。直接调用会提示警告，并调用失败。*
+    #+ATTR_HTML: :target _blank
+    [[https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API][Fullscreen API]]
 ** JQuery
 *** JQuery 与 Prototype 中 $ 符号冲突解决方法
     - JQuery 在 prototype 之后引入，即：
