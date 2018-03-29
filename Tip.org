@@ -2090,6 +2090,44 @@
          background-color: #666;
      }
      #+END_SRC
+*** CSS3 文字循环滚动
+    - HTML 
+    #+BEGIN_SRC html
+     <div class="content">
+        <div class="marquee">
+            <span>A超出文本测试1 B超出文本测试2 C超出文本测试3 D超出文本测试4</span>
+        </div>
+    </div>
+    #+END_SRC
+    - 样式, 鼠标移动到文字上时执行滚动动画
+    #+BEGIN_SRC css
+    .content {
+        width: 300px;
+        border: 1px solid #000;
+        font-size: 20px;
+        margin: auto;
+        height: 50px;
+        line-height: 50px;
+        padding: 0px 5px;
+    }
+    .marquee {
+        white-space: nowrap; /* 不换行 */
+        overflow-x: hidden;
+        width: 100%;
+    }
+    .marquee span:hover {
+        display: inline-block;
+        animation: marquee 5s linear infinite; /* 执行 marquee 动画，5秒一次，线性，无限循环 */
+    }
+    @keyframes marquee {
+        0% { 
+            transform: translate(0, 0); 
+        }
+        100% { 
+            transform: translate(-100%, 0); 
+        }
+    }
+    #+END_SRC
 ** JavaScript
 *** JavaScript 类型判断
     - 是否为数字
