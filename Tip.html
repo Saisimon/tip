@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Code Tips</title>
-<!-- 2018-03-16 Fri 18:31 -->
+<!-- 2018-03-29 Thu 18:24 -->
 <meta  charset="utf-8">
 <meta  name="generator" content="Org-mode">
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon">
@@ -162,6 +162,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-3-2">5.3.2. 常见 ContentType 与文件后缀名对应关系</a></li>
 <li><a href="#sec-5-3-3">5.3.3. xpath 基础</a></li>
 <li><a href="#sec-5-3-4">5.3.4. 生成自签名 HTTPS 证书</a></li>
+<li><a href="#sec-5-3-5">5.3.5. 不同浏览器下载文件时文件名乱码问题</a></li>
 </ul>
 </li>
 <li><a href="#sec-5-4">5.4. Maven</a>
@@ -228,6 +229,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-12-8">5.12.8. Spring Boot 配置 HTTPS ，HTTP 重定向到 HTTPS (Jetty 9)</a></li>
 <li><a href="#sec-5-12-9">5.12.9. Spring Boot 中获取 classpath 下的文件资源</a></li>
 <li><a href="#sec-5-12-10">5.12.10. Spring Boot 中将非 Spring 管理对象装配成 Spring 管理对象</a></li>
+<li><a href="#sec-5-12-11">5.12.11. Spring Boot 中配置使用 WebSocket</a></li>
 </ul>
 </li>
 </ul>
@@ -260,6 +262,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-7-2-1">7.2.1. CSS 文本两端对齐</a></li>
 <li><a href="#sec-7-2-2">7.2.2. CSS 文本溢出省略</a></li>
 <li><a href="#sec-7-2-3">7.2.3. 滚动条样式</a></li>
+<li><a href="#sec-7-2-4">7.2.4. CSS3 文字循环滚动</a></li>
 </ul>
 </li>
 <li><a href="#sec-7-3">7.3. JavaScript</a>
@@ -271,6 +274,9 @@ for the JavaScript code in this tag.
 <li><a href="#sec-7-3-5">7.3.5. HTML5 LocalStorage 本地存储</a></li>
 <li><a href="#sec-7-3-6">7.3.6. JavaScript 数组中插入、删除指定位置</a></li>
 <li><a href="#sec-7-3-7">7.3.7. JavaScript 对象深拷贝</a></li>
+<li><a href="#sec-7-3-8">7.3.8. JavaScript 判断给定输入是否符合 JSON 格式</a></li>
+<li><a href="#sec-7-3-9">7.3.9. JavaScript 控制浏览器全屏模式</a></li>
+<li><a href="#sec-7-3-10">7.3.10. JavaScript 函数防抖与节流</a></li>
 </ul>
 </li>
 <li><a href="#sec-7-4">7.4. JQuery</a>
@@ -2070,6 +2076,52 @@ $ keytool -importkeystore -srckeystore server.pkcs12 -destkeystore server.jks -s
 </pre>
 </div>
 </div>
+<div id="outline-container-sec-5-3-5" class="outline-4">
+<h4 id="sec-5-3-5"><span class="section-number-4">5.3.5</span> 不同浏览器下载文件时文件名乱码问题</h4>
+<div class="outline-text-4" id="text-5-3-5">
+<ul class="org-ul">
+<li>根据 User-Agent 获取编码后的 Content-Disposition 值
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.io.</span><span style="color: #66D9EF;">UnsupportedEncodingException</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.net.</span><span style="color: #66D9EF;">URLEncoder</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">javax.mail.internet.</span><span style="color: #66D9EF;">MimeUtility</span>;
+
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">String</span> <span style="color: #F92672; font-style: italic;">encodeDownloadContentDisposition</span>(<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">userAgent</span>, <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">filename</span>) {
+    <span style="color: #66D9EF;">try</span> {
+        <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">newFilename</span> = URLEncoder.encode(filename, <span style="color: #E6DB74;">"UTF8"</span>);
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#22914;&#26524;&#27809;&#26377;UA&#65292;&#21017;&#40664;&#35748;&#20351;&#29992;IE&#30340;&#26041;&#24335;&#36827;&#34892;&#32534;&#30721;</span>
+        <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">cd</span> = <span style="color: #E6DB74;">"attachment; filename=\""</span> + newFilename + <span style="color: #E6DB74;">"\""</span>;
+        <span style="color: #66D9EF;">if</span> (userAgent != <span style="color: #7fffd4;">null</span>) {
+            userAgent = userAgent.toLowerCase();
+            <span style="color: #66D9EF;">if</span> (userAgent.indexOf(<span style="color: #E6DB74;">"msie"</span>) != -<span style="color: #ffa07a;">1</span>) { <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">IE&#27983;&#35272;&#22120;&#65292;&#21482;&#33021;&#37319;&#29992;URLEncoder&#32534;&#30721;</span>
+                cd = <span style="color: #E6DB74;">"attachment; filename=\""</span> + newFilename + <span style="color: #E6DB74;">"\""</span>;
+            } <span style="color: #66D9EF;">else</span> <span style="color: #66D9EF;">if</span> (userAgent.indexOf(<span style="color: #E6DB74;">"opera"</span>) != -<span style="color: #ffa07a;">1</span>) { <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Opera&#27983;&#35272;&#22120;&#21482;&#33021;&#37319;&#29992;filename*</span>
+                cd = <span style="color: #E6DB74;">"attachment; filename*=UTF-8''"</span> + newFilename;
+            } <span style="color: #66D9EF;">else</span> <span style="color: #66D9EF;">if</span> (userAgent.indexOf(<span style="color: #E6DB74;">"safari"</span>) != -<span style="color: #ffa07a;">1</span>) { <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Safari&#27983;&#35272;&#22120;&#65292;&#21482;&#33021;&#37319;&#29992;ISO&#32534;&#30721;&#30340;&#20013;&#25991;&#36755;&#20986;</span>
+                cd = <span style="color: #E6DB74;">"attachment; filename=\""</span> + <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">String</span>(filename.getBytes(<span style="color: #E6DB74;">"UTF-8"</span>), <span style="color: #E6DB74;">"ISO8859-1"</span>) + <span style="color: #E6DB74;">"\""</span>;
+            } <span style="color: #66D9EF;">else</span> <span style="color: #66D9EF;">if</span> (userAgent.indexOf(<span style="color: #E6DB74;">"applewebkit"</span>) != -<span style="color: #ffa07a;">1</span>) { <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Chrome&#27983;&#35272;&#22120;&#65292;&#21482;&#33021;&#37319;&#29992;MimeUtility&#32534;&#30721;&#25110;ISO&#32534;&#30721;&#30340;&#20013;&#25991;&#36755;&#20986;</span>
+                newFilename = MimeUtility.encodeText(filename, <span style="color: #E6DB74;">"UTF8"</span>, <span style="color: #E6DB74;">"B"</span>);
+                cd = <span style="color: #E6DB74;">"attachment; filename=\""</span> + newFilename + <span style="color: #E6DB74;">"\""</span>;
+            } <span style="color: #66D9EF;">else</span> <span style="color: #66D9EF;">if</span> (userAgent.indexOf(<span style="color: #E6DB74;">"mozilla"</span>) != -<span style="color: #ffa07a;">1</span>) { <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">FireFox&#27983;&#35272;&#22120;&#65292;&#21487;&#20197;&#20351;&#29992;MimeUtility&#25110;filename*&#25110;ISO&#32534;&#30721;&#30340;&#20013;&#25991;&#36755;&#20986;</span>
+                cd = <span style="color: #E6DB74;">"attachment; filename*=UTF-8''"</span> + newFilename;
+            }
+        }
+        <span style="color: #66D9EF;">return</span> cd;
+    } <span style="color: #66D9EF;">catch</span> (<span style="color: #66D9EF;">UnsupportedEncodingException</span> <span style="color: #F92672;">e</span>) {
+        <span style="color: #66D9EF;">return</span> <span style="color: #E6DB74;">"attachment; filename=\""</span> + filename + <span style="color: #E6DB74;">"\""</span>;
+    }
+}
+</pre>
+</div>
+<p>
+<a href="http://java-xp.iteye.com/blog/903048" target="_blank">参考</a>
+</p>
+</div>
+</div>
 </div>
 <div id="outline-container-sec-5-4" class="outline-3">
 <h3 id="sec-5-4"><span class="section-number-3">5.4</span> Maven</h3>
@@ -3081,6 +3133,106 @@ https.keystore-password=********
 </div>
 </div>
 </div>
+<div id="outline-container-sec-5-12-11" class="outline-4">
+<h4 id="sec-5-12-11"><span class="section-number-4">5.12.11</span> Spring Boot 中配置使用 WebSocket</h4>
+<div class="outline-text-4" id="text-5-12-11">
+<ul class="org-ul">
+<li>POM 文件中添加 WebSocket 依赖
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-xml">...
+&lt;<span style="color: #F92672; font-style: italic;">dependency</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">groupId</span>&gt;org.springframework.boot&lt;/<span style="color: #F92672; font-style: italic;">groupId</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">artifactId</span>&gt;spring-boot-starter-websocket&lt;/<span style="color: #F92672; font-style: italic;">artifactId</span>&gt;
+&lt;/<span style="color: #F92672; font-style: italic;">dependency</span>&gt;
+...
+</pre>
+</div>
+<ul class="org-ul">
+<li>配置注册 WebSocket 的处理器
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">package</span> <span style="color: #63b8ff;">net.saisimon.config</span>
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.annotation.</span><span style="color: #66D9EF;">Bean</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.annotation.</span><span style="color: #66D9EF;">Configuration</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.web.socket.</span><span style="color: #66D9EF;">WebSocketHandler</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.web.socket.config.annotation.</span><span style="color: #66D9EF;">EnableWebSocket</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.web.socket.config.annotation.</span><span style="color: #66D9EF;">WebSocketConfigurer</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.web.socket.config.annotation.</span><span style="color: #66D9EF;">WebSocketHandlerRegistry</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.web.socket.server.support.</span><span style="color: #66D9EF;">HttpSessionHandshakeInterceptor</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">net.saisimon.handler.</span><span style="color: #66D9EF;">MyHandler</span>;
+
+<span style="color: #AE81FF;">@Configuration</span>
+<span style="color: #AE81FF;">@EnableWebSocket</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">WebSocketConfig</span> <span style="color: #66D9EF;">implements</span> <span style="color: #66D9EF;">WebSocketConfigurer</span> {
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">registerWebSocketHandlers</span>(<span style="color: #66D9EF;">WebSocketHandlerRegistry</span> <span style="color: #F92672;">registry</span>) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#27880;&#20876;&#22788;&#29702;&#22120;&#65292;&#26144;&#23556;&#21040; /websocket</span>
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#24182;&#28155;&#21152; HttpSessionHandshakeInterceptor &#25318;&#25130;&#22120;&#65292;&#33719;&#21462; HttpSession</span>
+        registry.addHandler(myHandler(), <span style="color: #E6DB74;">"/websocket"</span>)
+                .addInterceptors(<span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">HttpSessionHandshakeInterceptor</span>());
+    }
+
+    <span style="color: #AE81FF;">@Bean</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">WebSocketHandler</span> <span style="color: #F92672; font-style: italic;">myHandler</span>() {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#22788;&#29702;&#31867;</span>
+        <span style="color: #66D9EF;">return</span> <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">MyHandler</span>();
+    }
+
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>实现处理类
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">package</span> <span style="color: #63b8ff;">net.saisimon.handler</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.web.socket.</span><span style="color: #66D9EF;">BinaryMessage</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.web.socket.</span><span style="color: #66D9EF;">PongMessage</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.web.socket.</span><span style="color: #66D9EF;">TextMessage</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.web.socket.</span><span style="color: #66D9EF;">WebSocketSession</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.web.socket.handler.</span><span style="color: #66D9EF;">AbstractWebSocketHandler</span>;
+
+<span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#32487;&#25215;&#25277;&#35937;&#22788;&#29702;&#31867;&#65292;&#23454;&#29616;&#23545;&#24212;&#30340;&#22788;&#29702;&#26041;&#27861;</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">MyHandler</span> <span style="color: #66D9EF;">extends</span> <span style="color: #66D9EF;">AbstractWebSocketHandler</span> {
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">protected</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">handleTextMessage</span>(<span style="color: #66D9EF;">WebSocketSession</span> <span style="color: #F92672;">session</span>, <span style="color: #66D9EF;">TextMessage</span> <span style="color: #F92672;">message</span>) <span style="color: #66D9EF;">throws</span> <span style="color: #66D9EF;">Exception</span> {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#22788;&#29702;&#25991;&#26412;&#25991;&#20214;</span>
+        <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">msg</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">String</span>(message.asBytes(), <span style="color: #E6DB74;">"UTF-8"</span>);
+        System.out.println(msg);
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#21457;&#36865;&#28040;&#24687;</span>
+        session.sendMessage(<span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">TextMessage</span>(msg));
+    }
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">protected</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">handleBinaryMessage</span>(<span style="color: #66D9EF;">WebSocketSession</span> <span style="color: #F92672;">session</span>, <span style="color: #66D9EF;">BinaryMessage</span> <span style="color: #F92672;">message</span>) <span style="color: #66D9EF;">throws</span> <span style="color: #66D9EF;">Exception</span> {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#22788;&#29702;&#20108;&#36827;&#21046;&#25991;&#20214;</span>
+    }
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">protected</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">handlePongMessage</span>(<span style="color: #66D9EF;">WebSocketSession</span> <span style="color: #F92672;">session</span>, <span style="color: #66D9EF;">PongMessage</span> <span style="color: #F92672;">message</span>) <span style="color: #66D9EF;">throws</span> <span style="color: #66D9EF;">Exception</span> {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#22788;&#29702; Pone &#28040;&#24687;</span>
+    }
+
+}
+</pre>
+</div>
+<p>
+<a href="https://docs.spring.io/spring/docs/4.3.12.RELEASE/spring-framework-reference/htmlsingle/#websocket" target="_blank">更多</a>
+</p>
+</div>
+</div>
 </div>
 </div>
 
@@ -3231,6 +3383,58 @@ py -3 main.py
 
 <span style="color: #66D9EF;">body</span>::-webkit-scrollbar-thumb {
     <span style="color: #66D9EF;">background-color</span>: <span style="color: #ffffff; background-color: #666;">#666</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-7-2-4" class="outline-4">
+<h4 id="sec-7-2-4"><span class="section-number-4">7.2.4</span> CSS3 文字循环滚动</h4>
+<div class="outline-text-4" id="text-7-2-4">
+<ul class="org-ul">
+<li>HTML 
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-html"> &lt;<span style="color: #F92672; font-style: italic;">div</span> <span style="color: #F92672;">class</span>=<span style="color: #E6DB74;">"content"</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">div</span> <span style="color: #F92672;">class</span>=<span style="color: #E6DB74;">"marquee"</span>&gt;
+        &lt;<span style="color: #F92672; font-style: italic;">span</span>&gt;A&#36229;&#20986;&#25991;&#26412;&#27979;&#35797;1 B&#36229;&#20986;&#25991;&#26412;&#27979;&#35797;2 C&#36229;&#20986;&#25991;&#26412;&#27979;&#35797;3 D&#36229;&#20986;&#25991;&#26412;&#27979;&#35797;4&lt;/<span style="color: #F92672; font-style: italic;">span</span>&gt;
+    &lt;/<span style="color: #F92672; font-style: italic;">div</span>&gt;
+&lt;/<span style="color: #000000; background-color: #ff00ff;">div</span>&gt;
+</pre>
+</div>
+<ul class="org-ul">
+<li>样式, 鼠标移动到文字上时执行滚动动画
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-css"><span style="color: #F92672;">.content </span>{
+    <span style="color: #66D9EF;">width</span>: 300px;
+    <span style="color: #66D9EF;">border</span>: 1px solid <span style="color: #ffffff; background-color: #000;">#000</span>;
+    <span style="color: #66D9EF;">font-size</span>: 20px;
+    <span style="color: #66D9EF;">margin</span>: auto;
+    <span style="color: #66D9EF;">height</span>: 50px;
+    <span style="color: #66D9EF;">line-height</span>: 50px;
+    <span style="color: #66D9EF;">padding</span>: 0px 5px;
+}
+<span style="color: #F92672;">.marquee </span>{
+    <span style="color: #000000; background-color: #FFFFFF;">white</span>-space: nowrap; <span style="color: #465457; font-style: italic;">/* </span><span style="color: #465457; font-style: italic;">&#19981;&#25442;&#34892; </span><span style="color: #465457; font-style: italic;">*/</span>
+    <span style="color: #66D9EF;">overflow-x</span>: hidden;
+    <span style="color: #66D9EF;">width</span>: 100%;
+}
+<span style="color: #F92672;">.marquee span:hover </span>{
+    <span style="color: #66D9EF;">display</span>: inline-block;
+    <span style="color: #66D9EF;">animation</span>: marquee 5s linear infinite; <span style="color: #465457; font-style: italic;">/* </span><span style="color: #465457; font-style: italic;">&#25191;&#34892; marquee &#21160;&#30011;&#65292;5&#31186;&#19968;&#27425;&#65292;&#32447;&#24615;&#65292;&#26080;&#38480;&#24490;&#29615; </span><span style="color: #465457; font-style: italic;">*/</span>
+}
+<span style="color: #A6E22E;">@keyframes</span> marquee {
+<span style="color: #F92672;">    0% </span>{ 
+        <span style="color: #66D9EF;">transform</span>: translate(0, 0); 
+    }
+<span style="color: #F92672;">    100% </span>{ 
+        <span style="color: #66D9EF;">transform</span>: translate(-100%, 0); 
+    }
 }
 </pre>
 </div>
@@ -3494,6 +3698,172 @@ arrayObject.splice(0, 3) <span style="color: #465457; font-style: italic;">// </
 
 <pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">cloneObj</span>(<span style="color: #F92672;">obj</span>) {
     <span style="color: #66D9EF;">return</span> JSON.parse(JSON.stringify(obj));
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-7-3-8" class="outline-4">
+<h4 id="sec-7-3-8"><span class="section-number-4">7.3.8</span> JavaScript 判断给定输入是否符合 JSON 格式</h4>
+<div class="outline-text-4" id="text-7-3-8">
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">isJSON</span>(<span style="color: #F92672;">str</span>) {
+    <span style="color: #66D9EF;">if</span> (<span style="color: #66D9EF;">typeof</span> str == <span style="color: #E6DB74;">'string'</span>) {
+        <span style="color: #66D9EF;">try</span> {
+            <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">obj</span> = JSON.parse(str);
+            <span style="color: #66D9EF;">if</span> (<span style="color: #66D9EF;">typeof</span> obj == <span style="color: #E6DB74;">'object'</span> &amp;&amp; obj) {
+                <span style="color: #66D9EF;">return</span> <span style="color: #AE81FF;">true</span>;
+            } <span style="color: #66D9EF;">else</span> {
+                <span style="color: #66D9EF;">return</span> <span style="color: #AE81FF;">false</span>;
+            }
+        } <span style="color: #66D9EF;">catch</span> (e) {
+            <span style="color: #66D9EF;">return</span> <span style="color: #AE81FF;">false</span>;
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-7-3-9" class="outline-4">
+<h4 id="sec-7-3-9"><span class="section-number-4">7.3.9</span> JavaScript 控制浏览器全屏模式</h4>
+<div class="outline-text-4" id="text-7-3-9">
+<ul class="org-ul">
+<li>指定对象开启全屏模式
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">launchFullscreen</span>(<span style="color: #F92672;">element</span>) {
+    <span style="color: #66D9EF;">if</span> (element.requestFullscreen) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Default</span>
+        element.requestFullscreen();
+    } <span style="color: #66D9EF;">else</span> <span style="color: #66D9EF;">if</span> (element.mozRequestFullScreen) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">FireFox 10+</span>
+        element.mozRequestFullScreen();
+    } <span style="color: #66D9EF;">else</span> <span style="color: #66D9EF;">if</span> (element.webkitRequestFullscreen) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Google Chrome 15+, Microsoft Edge, Opera 15+, Safari 5.1+</span>
+        element.webkitRequestFullscreen();
+    } <span style="color: #66D9EF;">else</span> <span style="color: #66D9EF;">if</span> (element.msRequestFullscreen) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Internet Explorer 11</span>
+        element.msRequestFullscreen();
+    } <span style="color: #66D9EF;">else</span> {
+        console.log(<span style="color: #E6DB74;">'&#19981;&#25903;&#25345;&#20840;&#23631;API'</span>);
+    }
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>退出全屏模式
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">exitFullscreen</span>() {
+    <span style="color: #66D9EF;">if</span> (document.exitFullscreen) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Default</span>
+        document.exitFullscreen();
+    } <span style="color: #66D9EF;">else</span> <span style="color: #66D9EF;">if</span> (document.mozCancelFullScreen) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">FireFox 10+</span>
+        document.mozCancelFullScreen();
+    } <span style="color: #66D9EF;">else</span> <span style="color: #66D9EF;">if</span> (document.webkitExitFullscreen) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Google Chrome 15+, Microsoft Edge, Opera 15+, Safari 5.1+</span>
+        document.webkitExitFullscreen();
+    } <span style="color: #66D9EF;">else</span> <span style="color: #66D9EF;">if</span> (document.msExitFullscreen) {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Internet Explorer 11</span>
+        document.msExitFullscreen();
+    } <span style="color: #66D9EF;">else</span> {
+        console.log(<span style="color: #E6DB74;">'&#19981;&#25903;&#25345;&#20840;&#23631;API'</span>);
+    }
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>全屏模式改变事件
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">fullscreenChange</span>() {
+    document.addEventListener(<span style="color: #E6DB74;">'fullscreenchange'</span>, <span style="color: #66D9EF;">function</span>(<span style="color: #F92672;">e</span>) {
+        console.log(<span style="color: #E6DB74;">'fullscreenchange'</span>);
+        console.log(e);
+    });
+    document.addEventListener(<span style="color: #E6DB74;">'mozfullscreenchange'</span>, <span style="color: #66D9EF;">function</span>(<span style="color: #F92672;">e</span>) {
+        console.log(<span style="color: #E6DB74;">'mozfullscreenchange'</span>);
+        console.log(e);
+    });
+    document.addEventListener(<span style="color: #E6DB74;">'webkitfullscreenchange'</span>, <span style="color: #66D9EF;">function</span>(<span style="color: #F92672;">e</span>) {
+        console.log(<span style="color: #E6DB74;">'webkitfullscreenchange'</span>);
+        console.log(e);
+    });
+    document.addEventListener(<span style="color: #E6DB74;">'msfullscreenchange'</span>, <span style="color: #66D9EF;">function</span>(<span style="color: #F92672;">e</span>) {
+        console.log(<span style="color: #E6DB74;">'msfullscreenchange'</span>);
+        console.log(e);
+    });
+}
+</pre>
+</div>
+<p>
+<b>注：基于浏览器安全考虑，全屏模式无法直接调用,必须有用户行为才能调用全屏API。直接调用会提示警告，并调用失败。</b>
+</p>
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API" target="_blank">Fullscreen API</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-7-3-10" class="outline-4">
+<h4 id="sec-7-3-10"><span class="section-number-4">7.3.10</span> JavaScript 函数防抖与节流</h4>
+<div class="outline-text-4" id="text-7-3-10">
+<ul class="org-ul">
+<li>防抖与节流都是对多次调用的函数做次数限制。例如函数请求后台，调用频率要做限制，或用户输入、键入、滑动、滚动等事件会大量调用回调函数
+</li>
+</ul>
+<p>
+<b>防抖(debounce)</b>: 在指定时间后调用指定函数，若指定时间内调用该函数，将重置计时器直到指定时间后才会调用指定函数。适用于会大量调用回调函数的事件。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #465457; font-style: italic;">/**</span>
+<span style="color: #465457; font-style: italic;"> * &#38450;&#25238;(debounce)</span>
+<span style="color: #465457; font-style: italic;"> * @param method {Function} &#34987;&#38450;&#25238;&#20989;&#25968;</span>
+<span style="color: #465457; font-style: italic;"> * @param delay {Number(ms)} &#24310;&#36831;&#26102;&#38388;&#65292;&#21333;&#20301;&#20026;&#27627;&#31186;</span>
+<span style="color: #465457; font-style: italic;"> * @param context &#25191;&#34892;&#20989;&#25968;&#30340;&#19978;&#19979;&#25991;</span>
+<span style="color: #465457; font-style: italic;"> */</span>
+<span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">debounce</span>(<span style="color: #F92672;">method</span>, <span style="color: #F92672;">delay</span>, <span style="color: #F92672;">context</span>) {
+    <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">args</span> = <span style="color: #AE81FF;">arguments</span>; 
+    clearTimeout(method.timer);
+    method.timer = setTimeout(<span style="color: #66D9EF;">function</span> () {
+        method.apply(context, args);
+    }, delay);
+}
+</pre>
+</div>
+<p>
+<b>节流(throttle)</b>: 以指定时间为一个周期，调用指定函数，限制调用频率。适用于有后台请求的函数。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-javascript"><span style="color: #465457; font-style: italic;">/**</span>
+<span style="color: #465457; font-style: italic;"> * &#33410;&#27969;(throttle)</span>
+<span style="color: #465457; font-style: italic;"> * @param method {Function} &#34987;&#33410;&#27969;&#20989;&#25968;</span>
+<span style="color: #465457; font-style: italic;"> * @param delay {Number(ms)} &#24310;&#36831;&#26102;&#38388;&#65292;&#21333;&#20301;&#20026;&#27627;&#31186;</span>
+<span style="color: #465457; font-style: italic;"> * @param context &#25191;&#34892;&#20989;&#25968;&#30340;&#19978;&#19979;&#25991;</span>
+<span style="color: #465457; font-style: italic;"> */</span>
+<span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">throttle</span>(<span style="color: #F92672;">method</span>, <span style="color: #F92672;">delay</span>, <span style="color: #F92672;">context</span>){
+    <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">args</span> = <span style="color: #AE81FF;">arguments</span>;
+    <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#26631;&#24535;&#20301;</span>
+    <span style="color: #66D9EF;">var</span> <span style="color: #F92672;">canRun</span> = <span style="color: #AE81FF;">true</span>;
+    <span style="color: #66D9EF;">return</span> <span style="color: #66D9EF;">function</span>() {
+        <span style="color: #66D9EF;">if</span> (!canRun) {
+            <span style="color: #66D9EF;">return</span>;
+        }
+        setTimeout(<span style="color: #66D9EF;">function</span>() {
+            method.apply(context, args);
+            canRun = <span style="color: #AE81FF;">true</span>;
+        }, delay);
+    };
 }
 </pre>
 </div>
@@ -4050,7 +4420,7 @@ $ systemctl stop gitlab-runsvdir.service
 </div>
 <div id="postamble" class="status">
 <p class="author">&#20316;&#32773;: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2018-03-16 Fri 18:31</p>
+<p class="date">Created: 2018-03-29 Thu 18:24</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

@@ -48,6 +48,11 @@ $( document ).ready(function() {
 	});
 	var commentsDiv = $('<section id="isso-thread"></section>');
 	$('#content').append(commentsDiv);
+	$search = $('<input class="search-input" type="search" placeholder="搜索">');
+	$('#text-table-of-contents').prepend($search);
+	$search.on('input', function() {
+		debounce(inputSearch, 300, $search);
+	});
 });
 window.SphinxRtdTheme = (function (jquery) {
     var stickyNav = (function () {
@@ -94,4 +99,36 @@ function toggleTable() {
 		$(".toggle-table").animate({left: "300px"}, 300);
 		$("#content").animate({marginLeft: "300px"}, 300);
 	}
+}
+
+function inputSearch() {
+	var search = $.trim($(this).val()).toLowerCase();
+	tableSearch($('#text-table-of-contents ul'), search);
+}
+
+function tableSearch($ul, search) {
+	$ul.find('li').each(function() {
+		var name = $(this).find('a').text();
+		if (name !== '') {
+			if (name.toLowerCase().indexOf(search) === -1) {
+				$(this).addClass('d-none');
+				$(this).removeClass('active');
+			} else {
+				$(this).removeClass('d-none');
+				$(this).addClass('active');
+			}
+		}
+		tableSearch($(this).find('ul'), search);
+		if (search === '') {
+			$(this).removeClass('active');
+		}
+	});
+}
+
+function debounce(method, delay, context) {
+	var args = arguments; 
+	clearTimeout(method.timer);
+	method.timer = setTimeout(function () {
+		method.apply(context, args);
+	}, delay);
 }
