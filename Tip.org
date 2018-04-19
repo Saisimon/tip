@@ -734,6 +734,7 @@
      #+END_SRC
 *** Java 通过反射获取泛型的类型
      - 由于 Java 的泛型在运行时会被擦除，不能够直接获取泛型的类型，但是其实在 class 字节码中还是保存着泛型的信息，可以通过特殊的方式获取到泛型的类型
+     - 获取父类中的泛型类型
      #+BEGIN_SRC java
      /**
       ,* 定义一个抽象的父类
@@ -765,7 +766,36 @@
          }
          
      }
+     #+END_SRC
+     - 获取父接口中的泛型类型
+     #+BEGIN_SRC java
+     public interface SuperInterface<T> {
+         
+         @SuppressWarnings("unchecked")
+         default Class<T> getEntityClass() {
+             Type[] types = getClass().getGenericInterfaces();
+             for (Type type : types) {
+                 if (type.getTypeName().startsWith(SuperInterface.class.getName())) {
+                     ParameterizedType pt = (ParameterizedType) type;
+                     return (Class<T>)pt.getActualTypeArguments()[0];
+                 }
+             }
+             return null;
+         }
+         
+     }
 
+     public class Children implements SuperInterface<Entity> {
+
+         public static void main() {
+             Children children = new Children();
+             System.out.println(children.getClass()); // class Entity
+         }
+          
+     }
+     #+END_SRC
+     - Entity 对象
+     #+BEGIN_SRC java
      /**
       ,* 简单 Java 对象 POJO
       ,*/
