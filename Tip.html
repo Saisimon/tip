@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Code Tips</title>
-<!-- 2018-03-29 Thu 18:24 -->
+<!-- 2018-04-19 Thu 18:50 -->
 <meta  charset="utf-8">
 <meta  name="generator" content="Org-mode">
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon">
@@ -230,6 +230,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-12-9">5.12.9. Spring Boot 中获取 classpath 下的文件资源</a></li>
 <li><a href="#sec-5-12-10">5.12.10. Spring Boot 中将非 Spring 管理对象装配成 Spring 管理对象</a></li>
 <li><a href="#sec-5-12-11">5.12.11. Spring Boot 中配置使用 WebSocket</a></li>
+<li><a href="#sec-5-12-12">5.12.12. Spring Boot 通过 Hibernate 生成 Mysql 表时指定引擎与编码</a></li>
 </ul>
 </li>
 </ul>
@@ -329,7 +330,7 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<a href="https://github.com/Saisimon/tip">
+<a href="https://github.com/Saisimon/tip" target="_blank" >
     <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png">
 </a>
 
@@ -555,7 +556,7 @@ $ ./acme.sh --install
 
 <pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">www.saisimon.net &#38656;&#35201;&#30003;&#35831; SSL &#35777;&#20070;&#30340;&#22495;&#21517;&#22320;&#22336;</span>
 <span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">/home/saisimon/public nginx &#37197;&#32622;&#30340; root &#30446;&#24405;&#65292;acme.sh &#20250;&#22312; Nginx &#26681;&#30446;&#24405;&#19979;&#29983;&#25104;&#39564;&#35777;&#25991;&#20214;&#65292;&#39564;&#35777;&#23436;&#25104;&#21518;&#33258;&#21160;&#21024;&#38500;&#39564;&#35777;&#25991;&#20214;</span>
-$ acme.sh -- issue -d www.saisimon.net -w /home/saisimon/public
+$ acme.sh --issue -d www.saisimon.net -w /home/saisimon/public
 Your cert is<span style="color: #66D9EF;"> in</span>  /home/saisimon/.acme.sh/www.saisimon.net/www.saisimon.net.cer 
 Your cert key is<span style="color: #66D9EF;"> in</span>  /home/saisimon/.acme.sh/www.saisimon.net/www.saisimon.net.key 
 The intermediate CA cert is<span style="color: #66D9EF;"> in</span>  /home/saisimon/.acme.sh/www.saisimon.net/ca.cer 
@@ -571,7 +572,7 @@ $ source ~/.bashrc
 <pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#25351;&#23450; key &#19982; fullchain &#30340;&#23433;&#35013;&#36335;&#24452;&#65292;&#37197;&#32622;&#37325;&#21551; Nginx &#30340;&#21629;&#20196;&#65292;&#20351;&#29992; force-reload &#21629;&#20196;&#26469;&#21152;&#36733;&#35777;&#20070;</span>
 acme.sh --installcert -d www.saisimon.net <span style="color: #E6DB74;">\</span>
          --keypath       /home/saisimon/ssl/www.saisimon.net.key  <span style="color: #E6DB74;">\</span>
-         --fullchainpath /home/saisimon/ssl/www.saisimon.net.pem <span style="color: #E6DB74;">\</span>
+         --fullchainpath /home/saisimon/ssl/www.saisimon.net.key.pem <span style="color: #E6DB74;">\</span>
          --reloadcmd     <span style="color: #E6DB74;">"sudo service nginx force-reload"</span>
 </pre>
 </div>
@@ -1474,6 +1475,8 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 <ul class="org-ul">
 <li>由于 Java 的泛型在运行时会被擦除，不能够直接获取泛型的类型，但是其实在 class 字节码中还是保存着泛型的信息，可以通过特殊的方式获取到泛型的类型
 </li>
+<li>获取父类中的泛型类型
+</li>
 </ul>
 <div class="org-src-container">
 
@@ -1507,8 +1510,47 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
     }
 
 }
+</pre>
+</div>
+<ul class="org-ul">
+<li>获取父接口中的泛型类型
+</li>
+</ul>
+<div class="org-src-container">
 
-<span style="color: #E6DB74; font-style: italic;">/**</span>
+<pre class="src src-java"><span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">interface</span> <span style="color: #66D9EF;">SuperInterface</span>&lt;<span style="color: #66D9EF;">T</span>&gt; {
+
+    <span style="color: #AE81FF;">@SuppressWarnings</span>(<span style="color: #E6DB74;">"unchecked"</span>)
+    <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; getEntityClass() {
+        <span style="color: #66D9EF;">Type</span>[] <span style="color: #F92672;">types</span> = getClass().getGenericInterfaces();
+        <span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">Type</span> <span style="color: #F92672;">type</span> : types) {
+            <span style="color: #66D9EF;">if</span> (type.getTypeName().startsWith(SuperInterface.<span style="color: #66D9EF;">class</span>.getName())) {
+                <span style="color: #66D9EF;">ParameterizedType</span> <span style="color: #F92672;">pt</span> = (<span style="color: #66D9EF;">ParameterizedType</span>) type;
+                <span style="color: #66D9EF;">return</span> (<span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt;)pt.getActualTypeArguments()[<span style="color: #ffa07a;">0</span>];
+            }
+        }
+        <span style="color: #66D9EF;">return</span> <span style="color: #7fffd4;">null</span>;
+    }
+
+}
+
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Children</span> <span style="color: #66D9EF;">implements</span> <span style="color: #66D9EF;">SuperInterface</span>&lt;<span style="color: #66D9EF;">Entity</span>&gt; {
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">main</span>() {
+        <span style="color: #66D9EF;">Children</span> <span style="color: #F92672;">children</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">Children</span>();
+        System.out.println(children.getClass()); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">class Entity</span>
+    }
+
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>Entity 对象
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #E6DB74; font-style: italic;">/**</span>
 <span style="color: #E6DB74; font-style: italic;"> * &#31616;&#21333; Java &#23545;&#35937; POJO</span>
 <span style="color: #E6DB74; font-style: italic;"> */</span>
 <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Entity</span> {
@@ -3233,6 +3275,44 @@ https.keystore-password=********
 </p>
 </div>
 </div>
+<div id="outline-container-sec-5-12-12" class="outline-4">
+<h4 id="sec-5-12-12"><span class="section-number-4">5.12.12</span> Spring Boot 通过 Hibernate 生成 Mysql 表时指定引擎与编码</h4>
+<div class="outline-text-4" id="text-5-12-12">
+<ol class="org-ol">
+<li>直接在 Mysql 指定默认引擎和编码
+</li>
+<li>代码指定生成的引擎和编码
+</li>
+<li>继承 MySQL5Dialect，重写 getTableTypeString 方法，返回引擎和编码
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">package</span> <span style="color: #63b8ff;">net.saisimon.config</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.hibernate.dialect.</span><span style="color: #66D9EF;">MySQL5Dialect</span>;
+
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">MySQL5UTF8Dialect</span> <span style="color: #66D9EF;">extends</span> <span style="color: #66D9EF;">MySQL5Dialect</span> {
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">String</span> <span style="color: #F92672; font-style: italic;">getTableTypeString</span>() {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#25351;&#23450;&#24341;&#25806;&#21644;&#32534;&#30721;</span>
+        <span style="color: #66D9EF;">return</span> <span style="color: #E6DB74;">" ENGINE=InnoDB DEFAULT CHARSET=utf8"</span>;
+    }
+
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>在 application.properties 中配置 Hibernate 方言
+</li>
+</ul>
+<pre class="example">
+# JPA
+spring.jpa.properties.hibernate.dialect=net.saisimon.config.MySQL5UTF8Dialect
+</pre>
+</div>
+</div>
 </div>
 </div>
 
@@ -4420,7 +4500,7 @@ $ systemctl stop gitlab-runsvdir.service
 </div>
 <div id="postamble" class="status">
 <p class="author">&#20316;&#32773;: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2018-03-29 Thu 18:24</p>
+<p class="date">Created: 2018-04-19 Thu 18:50</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
