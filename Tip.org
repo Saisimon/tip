@@ -153,7 +153,7 @@
       #+BEGIN_SRC sh
       # www.saisimon.net 需要申请 SSL 证书的域名地址
       # /home/saisimon/public nginx 配置的 root 目录，acme.sh 会在 Nginx 根目录下生成验证文件，验证完成后自动删除验证文件
-      $ acme.sh -- issue -d www.saisimon.net -w /home/saisimon/public
+      $ acme.sh --issue -d www.saisimon.net -w /home/saisimon/public
       Your cert is in  /home/saisimon/.acme.sh/www.saisimon.net/www.saisimon.net.cer 
       Your cert key is in  /home/saisimon/.acme.sh/www.saisimon.net/www.saisimon.net.key 
       The intermediate CA cert is in  /home/saisimon/.acme.sh/www.saisimon.net/ca.cer 
@@ -166,7 +166,7 @@
       # 指定 key 与 fullchain 的安装路径，配置重启 Nginx 的命令，使用 force-reload 命令来加载证书
       acme.sh --installcert -d www.saisimon.net \
                --keypath       /home/saisimon/ssl/www.saisimon.net.key  \
-               --fullchainpath /home/saisimon/ssl/www.saisimon.net.pem \
+               --fullchainpath /home/saisimon/ssl/www.saisimon.net.key.pem \
                --reloadcmd     "sudo service nginx force-reload"
       #+END_SRC
     - 配置 DH 密钥
