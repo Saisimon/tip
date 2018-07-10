@@ -983,6 +983,127 @@
          return contentType;
      }
      #+END_SRC
+*** 使用 JSch 库通过 SSH 连接受限 MySQL 数据库（基于 Spring Boot）
+    - 添加 JSch 依赖
+    #+BEGIN_SRC xml
+    <dependency>
+        <groupId>com.jcraft</groupId>
+        <artifactId>jsch</artifactId>
+        <version>${jsch.version}</version>
+    </dependency>
+    #+END_SRC
+    - SSH 属性类
+    #+BEGIN_SRC java
+    import org.springframework.boot.context.properties.ConfigurationProperties;
+
+    import lombok.Getter;
+    import lombok.Setter;
+    import lombok.ToString;
+
+    @Getter
+    @Setter
+    @ToString(exclude="password")
+    @ConfigurationProperties(prefix="ssh")
+    public class SshProperties {
+        
+        private String host;
+        private Integer port;
+        private String username;
+        private String password;
+        private Forward forward;
+        
+        @Getter
+        @Setter
+        @ToString
+        public static class Forward {
+            
+            private String fromHost;
+            private Integer fromPort;
+            private String toHost;
+            private Integer toPort;
+            
+        }
+        
+    }
+    #+END_SRC
+    - SSH 配置类
+    #+BEGIN_SRC java
+    import javax.annotation.PreDestroy;
+
+    import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+    import org.springframework.boot.context.properties.EnableConfigurationProperties;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.context.weaving.LoadTimeWeaverAware;
+    import org.springframework.instrument.classloading.LoadTimeWeaver;
+
+    import com.jcraft.jsch.JSch;
+    import com.jcraft.jsch.JSchException;
+    import com.jcraft.jsch.Session;
+
+    import cn.comein.ssh.config.SshProperties.Forward;
+    import lombok.extern.slf4j.Slf4j;
+
+    @Configuration
+    @EnableConfigurationProperties(SshProperties.class)
+    @ConditionalOnProperty(prefix = "ssh", value = "enabled", havingValue = "true", matchIfMissing = false)
+    @Slf4j
+    // 实现 LoadTimeWeaverAware 接口是因为需要 SSH 正向代理需要在EntityManagerFactory加载前运行
+    public class SshConfiguration implements LoadTimeWeaverAware {
+        
+        private final Session session;
+        
+        public SshConfiguration(SshProperties sshProperties) {
+            Session session = null;
+            try {
+                // 可以自行为 JSch 添加日志，需要实现 com.jcraft.jsch.Logger 接口
+                // JSch.setLogger(new JSchLogger())
+                session = new JSch().getSession(sshProperties.getUsername(), sshProperties.getHost(), sshProperties.getPort());
+                session.setConfig("StrictHostKeyChecking", "no");
+                session.setPassword(sshProperties.getPassword());
+                session.connect();
+                Forward forward = sshProperties.getForward();
+                if (forward != null) {
+                    session.setPortForwardingL(forward.getFromHost(), forward.getFromPort(), forward.getToHost(), forward.getToPort());
+                    log.info("{}:{} -> {}:{}", forward.getFromHost(), forward.getFromPort(), forward.getToHost(), forward.getToPort());
+                }
+            } catch (JSchException e) {
+                log.error("ssh " + sshProperties.getHost() + " failed.", e);
+            }
+            this.session = session;
+        }
+        
+        @PreDestroy
+        // 配置销毁时，断开 SSH 链接
+        public void disconnect() {
+            if (session != null) {
+                session.disconnect();
+            }
+        }
+
+        @Override
+        public void setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver) {
+            
+        }
+
+    }
+    #+END_SRC
+    - application.properties 文件中添加 SSH 相关属性值
+    #+BEGIN_SRC
+    ssh.enabled=false # 是否启用 SSH 配置
+    ssh.host=127.0.0.1 # SSH 地址
+    ssh.port=22 # SSH 端口
+    ssh.username= # SSH 用户名
+    ssh.password= # SSH 密码
+    ssh.forward.from_host= # 绑定的本地地址
+    ssh.forward.from_port= # 绑定的本地端口
+    ssh.forward.to_host= # 正向代理的远程地址
+    ssh.forward.to_port= # 正向代理的远程端口
+    #+END_SRC
+    - 修改数据源为绑定的本地地址与端口
+    - SSH 连接失败可能的原因
+      1. 用户名或密码错误
+      2. sshd_config 中需要配置 PasswordAuthentication yes，允许使用密码登陆
+      3. 使用 root 用户登陆，需要配置 PermitRootLogin yes，才能登陆
      
 ** JUnit
 *** JUnit 4 中实现测试用例按指定顺序执行
