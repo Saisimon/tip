@@ -281,7 +281,7 @@
       $ source .bash_profile
       #+END_SRC
 ** Shell 脚本中运用 Linux 中设置的别名
-    #+BEGIN_SRC
+    #+BEGIN_SRC sh
     #!/bin/bash
     
     # 引入加载存有 alias 的 profile
@@ -292,7 +292,7 @@
     ...
     #+END_SRC
 ** 判断用户是否登录 Linux
-    #+BEGIN_SRC 
+    #+BEGIN_SRC sh
     #!/bin/bash
 
     # x 表示 username 当前在线的个数
@@ -312,7 +312,7 @@
     sudo usermod -aG sudo username # 加入 sudo 组
     #+END_SRC
 ** Shell 脚本查询指定文件夹下的所有文件
-    #+BEGIN_SRC
+    #+BEGIN_SRC sh
     #!/bin/bash
     function searchFile() {
         for file in `ls $1`
@@ -2763,7 +2763,7 @@
 * Docker
 ** 进入 Docker 容器
     - 运行下面的 .bashrc_docker 文件
-    #+BEGIN_SRC 
+    #+BEGIN_SRC sh
     # .bashrc_docker
     alias docker-pid="sudo docker inspect --format '{{.State.Pid}}'"
     alias docker-ip="sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
@@ -2986,14 +2986,14 @@
     - 批量修改提交作者信息脚本，替换 [xxx] 为对应值
       #+BEGIN_SRC sh
       #!/bin/sh
-
+      
       git filter-branch --env-filter '
-
+      
       an="$GIT_AUTHOR_NAME"
       am="$GIT_AUTHOR_EMAIL"
       cn="$GIT_COMMITTER_NAME"
       cm="$GIT_COMMITTER_EMAIL"
-
+      
       if [ "$GIT_COMMITTER_EMAIL" = "[旧邮箱地址]" ]
       then
           cn="[新作者名称]"
@@ -3004,7 +3004,7 @@
           an="[新作者名称]"
           am="[新邮箱地址]"
       fi
-
+      
       export GIT_AUTHOR_NAME="$an"
       export GIT_AUTHOR_EMAIL="$am"
       export GIT_COMMITTER_NAME="$cn"
