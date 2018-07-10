@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Code Tips</title>
-<!-- 2018-07-10 Tue 17:20 -->
+<!-- 2018-07-10 Tue 18:04 -->
 <meta  charset="utf-8">
 <meta  name="generator" content="Org-mode">
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon">
@@ -327,6 +327,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-11-8">11.8. Git status 输出中文为 UNICODE 解决方法</a></li>
 <li><a href="#sec-11-9">11.9. Git push 时，fatal: Authentication failed</a></li>
 <li><a href="#sec-11-10">11.10. GitLab 服务启动与关闭</a></li>
+<li><a href="#sec-11-11">11.11. 修改 Git 仓库提交作者的信息</a></li>
 </ul>
 </li>
 </ul>
@@ -730,32 +731,36 @@ $ source .bash_profile
 <div id="outline-container-sec-1-9" class="outline-3">
 <h3 id="sec-1-9"><span class="section-number-3">1.9</span> Shell 脚本中运用 Linux 中设置的别名</h3>
 <div class="outline-text-3" id="text-1-9">
-<pre class="example">
-#!/bin/bash
+<div class="org-src-container">
 
-# 引入加载存有 alias 的 profile
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;">#</span><span style="color: #465457; font-style: italic;">!/bin/</span><span style="color: #66D9EF;">bash</span>
+
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#24341;&#20837;&#21152;&#36733;&#23384;&#26377; alias &#30340; profile</span>
 source ~/.bash_profile
-# 设置别名在 shell 脚本中可用
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#35774;&#32622;&#21035;&#21517;&#22312; shell &#33050;&#26412;&#20013;&#21487;&#29992;</span>
 shopt -s expand_aliases
-# 运用 alias
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">&#36816;&#29992; alias</span>
 ...
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-sec-1-10" class="outline-3">
 <h3 id="sec-1-10"><span class="section-number-3">1.10</span> 判断用户是否登录 Linux</h3>
 <div class="outline-text-3" id="text-1-10">
-<pre class="example">
-#!/bin/bash
+<div class="org-src-container">
 
-# x 表示 username 当前在线的个数
-x=$(who | grep -c $username)
-if [ $x -lt 1 ]
-then
-    echo "$username not login"
-else
-    echo "$username login"
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;">#</span><span style="color: #465457; font-style: italic;">!/bin/</span><span style="color: #66D9EF;">bash</span>
+
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">x &#34920;&#31034; username &#24403;&#21069;&#22312;&#32447;&#30340;&#20010;&#25968;</span>
+<span style="color: #F92672;">x</span>=$(who | grep -c $<span style="color: #F92672;">username</span>)
+<span style="color: #66D9EF;">if</span> [ $<span style="color: #F92672;">x</span> -lt 1 ]
+<span style="color: #66D9EF;">then</span>
+    <span style="color: #A6E22E;">echo</span> <span style="color: #E6DB74;">"$username not login"</span>
+<span style="color: #66D9EF;">else</span>
+    <span style="color: #A6E22E;">echo</span> <span style="color: #E6DB74;">"$username login"</span>
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-sec-1-11" class="outline-3">
@@ -773,20 +778,22 @@ sudo usermod -aG sudo username # 加入 sudo 组
 <div id="outline-container-sec-1-12" class="outline-3">
 <h3 id="sec-1-12"><span class="section-number-3">1.12</span> Shell 脚本查询指定文件夹下的所有文件</h3>
 <div class="outline-text-3" id="text-1-12">
-<pre class="example">
-#!/bin/bash
-function searchFile() {
-    for file in `ls $1`
-    do
-        if [ -d $1"/"$file ];then
-           searchFile $1"/"$file
-        elif [ -f $1"/"$file ];then
-           echo $1"/"$file
-        fi
-    done
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;">#</span><span style="color: #465457; font-style: italic;">!/bin/</span><span style="color: #66D9EF;">bash</span>
+<span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">searchFile</span>() {
+    <span style="color: #66D9EF;">for</span> file<span style="color: #66D9EF;"> in</span> <span style="color: #fa8072;">`ls $1`</span>
+    <span style="color: #66D9EF;">do</span>
+        <span style="color: #66D9EF;">if</span> [ -d $<span style="color: #F92672;">1</span><span style="color: #E6DB74;">"/"</span>$<span style="color: #F92672;">file</span> ];<span style="color: #66D9EF;">then</span>
+           searchFile $<span style="color: #F92672;">1</span><span style="color: #E6DB74;">"/"</span>$<span style="color: #F92672;">file</span>
+        <span style="color: #66D9EF;">elif</span> [ -f $<span style="color: #F92672;">1</span><span style="color: #E6DB74;">"/"</span>$<span style="color: #F92672;">file</span> ];<span style="color: #66D9EF;">then</span>
+           <span style="color: #A6E22E;">echo</span> $<span style="color: #F92672;">1</span><span style="color: #E6DB74;">"/"</span>$<span style="color: #F92672;">file</span>
+        <span style="color: #66D9EF;">fi</span>
+    <span style="color: #66D9EF;">done</span>
 }
-searchFile "/home"
+searchFile <span style="color: #E6DB74;">"/home"</span>
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-sec-1-13" class="outline-3">
@@ -4367,54 +4374,56 @@ $(function() {
 <li>运行下面的 .bashrc_docker 文件
 </li>
 </ul>
-<pre class="example">
-# .bashrc_docker
-alias docker-pid="sudo docker inspect --format '{{.State.Pid}}'"
-alias docker-ip="sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
+<div class="org-src-container">
 
-# the implementation refs from https://github.com/jpetazzo/nsenter/blob/master/docker-enter
-function docker-enter() {
-    #if [ -e $(dirname "$0")/nsenter ]; then
-    #Change for centos bash running
-    if [ -e $(dirname '$0')/nsenter ]; then
-        # with boot2docker, nsenter is not in the PATH but it is in the same folder
-        NSENTER=$(dirname "$0")/nsenter
-    else
-        # if nsenter has already been installed with path notified, here will be clarified
-        NSENTER=$(which nsenter)
-        #NSENTER=nsenter
-    fi
-    [ -z "$NSENTER" ] &amp;&amp; echo "WARN Cannot find nsenter" &amp;&amp; return
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">.bashrc_docker</span>
+alias docker-pid=<span style="color: #E6DB74;">"sudo docker inspect --format '{{.State.Pid}}'"</span>
+alias docker-ip=<span style="color: #E6DB74;">"sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}'"</span>
 
-    if [ -z "$1" ]; then
-        echo "Usage: `basename "$0"` CONTAINER [COMMAND [ARG]...]"
-        echo ""
-        echo "Enters the Docker CONTAINER and executes the specified COMMAND."
-        echo "If COMMAND is not specified, runs an interactive shell in CONTAINER."
-    else
-        PID=$(sudo docker inspect --format "{{.State.Pid}}" "$1")
-        if [ -z "$PID" ]; then
-            echo "WARN Cannot find the given container"
-            return
-        fi
-        shift
+<span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">the implementation refs from https://github.com/jpetazzo/nsenter/blob/master/docker-enter</span>
+<span style="color: #66D9EF;">function</span> <span style="color: #F92672; font-style: italic;">docker-enter</span>() {
+    <span style="color: #465457; font-style: italic;">#</span><span style="color: #465457; font-style: italic;">if [ -e $(dirname "$0")/nsenter ]; then</span>
+    <span style="color: #465457; font-style: italic;">#</span><span style="color: #465457; font-style: italic;">Change for centos bash running</span>
+    <span style="color: #66D9EF;">if</span> [ -e $(dirname <span style="color: #E6DB74;">'$0'</span>)/nsenter ]; <span style="color: #66D9EF;">then</span>
+        <span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">with boot2docker, nsenter is not in the PATH but it is in the same folder</span>
+        <span style="color: #F92672;">NSENTER</span>=$(dirname <span style="color: #E6DB74;">"$0"</span>)/nsenter
+    <span style="color: #66D9EF;">else</span>
+        <span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">if nsenter has already been installed with path notified, here will be clarified</span>
+        <span style="color: #F92672;">NSENTER</span>=$(which nsenter)
+        <span style="color: #465457; font-style: italic;">#</span><span style="color: #465457; font-style: italic;">NSENTER=nsenter</span>
+    <span style="color: #66D9EF;">fi</span>
+    [ -z <span style="color: #E6DB74;">"$NSENTER"</span> ] &amp;&amp; <span style="color: #A6E22E;">echo</span> <span style="color: #E6DB74;">"WARN Cannot find nsenter"</span> &amp;&amp; <span style="color: #66D9EF;">return</span>
 
-        OPTS="--target $PID --mount --uts --ipc --net --pid"
+    <span style="color: #66D9EF;">if</span> [ -z <span style="color: #E6DB74;">"$1"</span> ]; <span style="color: #66D9EF;">then</span>
+        <span style="color: #A6E22E;">echo</span> <span style="color: #E6DB74;">"Usage: `basename "$0"` CONTAINER [COMMAND [ARG]...]"</span>
+        <span style="color: #A6E22E;">echo</span> <span style="color: #E6DB74;">""</span>
+        <span style="color: #A6E22E;">echo</span> <span style="color: #E6DB74;">"Enters the Docker CONTAINER and executes the specified COMMAND."</span>
+        <span style="color: #A6E22E;">echo</span> <span style="color: #E6DB74;">"If COMMAND is not specified, runs an interactive shell in CONTAINER."</span>
+    <span style="color: #66D9EF;">else</span>
+        <span style="color: #F92672;">PID</span>=$(sudo docker inspect --format <span style="color: #E6DB74;">"{{.State.Pid}}"</span> <span style="color: #E6DB74;">"$1"</span>)
+        <span style="color: #66D9EF;">if</span> [ -z <span style="color: #E6DB74;">"$PID"</span> ]; <span style="color: #66D9EF;">then</span>
+            <span style="color: #A6E22E;">echo</span> <span style="color: #E6DB74;">"WARN Cannot find the given container"</span>
+            <span style="color: #66D9EF;">return</span>
+        <span style="color: #66D9EF;">fi</span>
+        <span style="color: #A6E22E;">shift</span>
 
-        if [ -z "$1" ]; then
-            # No command given.
-            # Use su to clear all host environment variables except for TERM,
-            # initialize the environment variables HOME, SHELL, USER, LOGNAME, PATH,
-            # and start a login shell.
-            #sudo $NSENTER "$OPTS" su - root
-            sudo $NSENTER --target $PID --mount --uts --ipc --net --pid su - root
-        else
-            # Use env to clear all host environment variables.
-            sudo $NSENTER --target $PID --mount --uts --ipc --net --pid env -i $@
-        fi
-    fi
+        <span style="color: #F92672;">OPTS</span>=<span style="color: #E6DB74;">"--target $PID --mount --uts --ipc --net --pid"</span>
+
+        <span style="color: #66D9EF;">if</span> [ -z <span style="color: #E6DB74;">"$1"</span> ]; <span style="color: #66D9EF;">then</span>
+            <span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">No command given.</span>
+            <span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">Use su to clear all host environment variables except for TERM,</span>
+            <span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">initialize the environment variables HOME, SHELL, USER, LOGNAME, PATH,</span>
+            <span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">and start a login shell.</span>
+            <span style="color: #465457; font-style: italic;">#</span><span style="color: #465457; font-style: italic;">sudo $NSENTER "$OPTS" su - root</span>
+            sudo $<span style="color: #F92672;">NSENTER</span> --target $<span style="color: #F92672;">PID</span> --mount --uts --ipc --net --pid su - root
+        <span style="color: #66D9EF;">else</span>
+            <span style="color: #465457; font-style: italic;"># </span><span style="color: #465457; font-style: italic;">Use env to clear all host environment variables.</span>
+            sudo $<span style="color: #F92672;">NSENTER</span> --target $<span style="color: #F92672;">PID</span> --mount --uts --ipc --net --pid env -i $<span style="color: #F92672;">@</span>
+        <span style="color: #66D9EF;">fi</span>
+    <span style="color: #66D9EF;">fi</span>
 }
 </pre>
+</div>
 <p>
 <a href="https://github.com/yeasy/docker_practice/blob/master/_local/.bashrc_docker%20" target="_blank">文件来源</a>
 </p>
@@ -4685,11 +4694,56 @@ $ systemctl stop gitlab-runsvdir.service
 </ul>
 </div>
 </div>
+<div id="outline-container-sec-11-11" class="outline-3">
+<h3 id="sec-11-11"><span class="section-number-3">11.11</span> 修改 Git 仓库提交作者的信息</h3>
+<div class="outline-text-3" id="text-11-11">
+<ul class="org-ul">
+<li>批量修改提交作者信息脚本，替换 [xxx] 为对应值
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #465457; font-style: italic;">#</span><span style="color: #465457; font-style: italic;">!/bin/</span><span style="color: #66D9EF;">sh</span>
+
+git filter-branch --env-filter <span style="color: #E6DB74;">'</span>
+
+<span style="color: #E6DB74;">an="$GIT_AUTHOR_NAME"</span>
+<span style="color: #E6DB74;">am="$GIT_AUTHOR_EMAIL"</span>
+<span style="color: #E6DB74;">cn="$GIT_COMMITTER_NAME"</span>
+<span style="color: #E6DB74;">cm="$GIT_COMMITTER_EMAIL"</span>
+
+<span style="color: #E6DB74;">if [ "$GIT_COMMITTER_EMAIL" = "[&#26087;&#37038;&#31665;&#22320;&#22336;]" ]</span>
+<span style="color: #E6DB74;">then</span>
+<span style="color: #E6DB74;">    cn="[&#26032;&#20316;&#32773;&#21517;&#31216;]"</span>
+<span style="color: #E6DB74;">    cm="[&#26032;&#37038;&#31665;&#22320;&#22336;]"</span>
+<span style="color: #E6DB74;">fi</span>
+<span style="color: #E6DB74;">if [ "$GIT_AUTHOR_EMAIL" = "[&#26087;&#37038;&#31665;&#22320;&#22336;]" ]</span>
+<span style="color: #E6DB74;">then</span>
+<span style="color: #E6DB74;">    an="[&#26032;&#20316;&#32773;&#21517;&#31216;]"</span>
+<span style="color: #E6DB74;">    am="[&#26032;&#37038;&#31665;&#22320;&#22336;]"</span>
+<span style="color: #E6DB74;">fi</span>
+
+<span style="color: #E6DB74;">export GIT_AUTHOR_NAME="$an"</span>
+<span style="color: #E6DB74;">export GIT_AUTHOR_EMAIL="$am"</span>
+<span style="color: #E6DB74;">export GIT_COMMITTER_NAME="$cn"</span>
+<span style="color: #E6DB74;">export GIT_COMMITTER_EMAIL="$cm"</span>
+<span style="color: #E6DB74;">'</span>
+</pre>
+</div>
+</li>
+<li>在待修改的 Git 仓库运行以上脚本
+</li>
+<li>推送修改后的 Git 仓库
+<pre class="example">
+git push --force --tags origin 'refs/heads/*'
+</pre>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">&#20316;&#32773;: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2018-07-10 Tue 17:20</p>
+<p class="date">Created: 2018-07-10 Tue 18:04</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
