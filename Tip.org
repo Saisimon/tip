@@ -2179,6 +2179,35 @@
     # JPA
     spring.jpa.properties.hibernate.dialect=net.saisimon.config.MySQL5UTF8Dialect
     #+END_SRC
+*** 使用 Spring Validator 验证对象属性
+    #+BEGIN_SRC java
+    import org.springframework.validation.BindingResult;
+    import org.springframework.validation.DataBinder;
+    import org.springframework.validation.Validator;
+
+    /**
+     ,* 验证对象属性是否符合预期，支持 validation-api 与 hibernate-validator 验证注解
+     ,*
+     ,* @param target 待验证对象
+     ,* @param validator Spring 验证器，可直接注入获取 Validator 对象或自行实现 Validator 接口
+     ,* @param groups 分组标识类，对应验证注解中的 groups 属性
+     ,* @return 返回验证结果
+     ,*/
+    public static BindingResult validate(Object target, Validator validator, Class<?>... groups) {
+        DataBinder binder = new DataBinder(target);
+        binder.setValidator(validator);
+        List<Class<?>> list = new ArrayList<>();
+        if (groups != null) {
+            for (Class<?> group : groups) {
+                if (group != null) {
+                    list.add(group);
+                }
+            }
+        }
+        binder.validate(list.toArray());
+        return binder.getBindingResult();
+    }
+    #+END_SRC
 
 * Python
 ** Python
