@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Code Tips</title>
-<!-- 2018-04-19 Thu 18:50 -->
+<!-- 2018-07-10 Tue 17:20 -->
 <meta  charset="utf-8">
 <meta  name="generator" content="Org-mode">
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon">
@@ -149,6 +149,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-1-13">5.1.13. Java 常用正则表达式</a></li>
 <li><a href="#sec-5-1-14">5.1.14. 正则表达式中需要转义的特殊字符</a></li>
 <li><a href="#sec-5-1-15">5.1.15. Java 根据文件名获取其 Content-Type</a></li>
+<li><a href="#sec-5-1-16">5.1.16. 使用 JSch 库通过 SSH 连接受限 MySQL 数据库（基于 Spring Boot）</a></li>
 </ul>
 </li>
 <li><a href="#sec-5-2">5.2. JUnit</a>
@@ -231,6 +232,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-12-10">5.12.10. Spring Boot 中将非 Spring 管理对象装配成 Spring 管理对象</a></li>
 <li><a href="#sec-5-12-11">5.12.11. Spring Boot 中配置使用 WebSocket</a></li>
 <li><a href="#sec-5-12-12">5.12.12. Spring Boot 通过 Hibernate 生成 Mysql 表时指定引擎与编码</a></li>
+<li><a href="#sec-5-12-13">5.12.13. 使用 Spring Validator 验证对象属性</a></li>
 </ul>
 </li>
 </ul>
@@ -1521,7 +1523,7 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 <pre class="src src-java"><span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">interface</span> <span style="color: #66D9EF;">SuperInterface</span>&lt;<span style="color: #66D9EF;">T</span>&gt; {
 
     <span style="color: #AE81FF;">@SuppressWarnings</span>(<span style="color: #E6DB74;">"unchecked"</span>)
-    <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; getEntityClass() {
+    <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #F92672; font-style: italic;">getEntityClass</span>() {
         <span style="color: #66D9EF;">Type</span>[] <span style="color: #F92672;">types</span> = getClass().getGenericInterfaces();
         <span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">Type</span> <span style="color: #F92672;">type</span> : types) {
             <span style="color: #66D9EF;">if</span> (type.getTypeName().startsWith(SuperInterface.<span style="color: #66D9EF;">class</span>.getName())) {
@@ -1587,7 +1589,7 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 
 <pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Interface IFoo</span>
 <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">interface</span> <span style="color: #66D9EF;">IFoo</span> {
-       <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">void</span> bar(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span>) {
+       <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">bar</span>(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span>) {
                System.out.println(<span style="color: #E6DB74;">"IFoo.bar(int)"</span>);
        }
 }
@@ -1800,6 +1802,158 @@ BeanUtils.copyProperties(entity, copyEntity);
 }
 </pre>
 </div>
+</div>
+</div>
+<div id="outline-container-sec-5-1-16" class="outline-4">
+<h4 id="sec-5-1-16"><span class="section-number-4">5.1.16</span> 使用 JSch 库通过 SSH 连接受限 MySQL 数据库（基于 Spring Boot）</h4>
+<div class="outline-text-4" id="text-5-1-16">
+<ul class="org-ul">
+<li>添加 JSch 依赖
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #F92672; font-style: italic;">dependency</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">groupId</span>&gt;com.jcraft&lt;/<span style="color: #F92672; font-style: italic;">groupId</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">artifactId</span>&gt;jsch&lt;/<span style="color: #F92672; font-style: italic;">artifactId</span>&gt;
+    &lt;<span style="color: #F92672; font-style: italic;">version</span>&gt;${jsch.version}&lt;/<span style="color: #000000; background-color: #ff00ff; font-style: italic;">version</span>&gt;
+&lt;/<span style="color: #F92672; font-style: italic;">dependency</span>&gt;
+</pre>
+</div>
+<ul class="org-ul">
+<li>SSH 属性类
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.boot.context.properties.</span><span style="color: #66D9EF;">ConfigurationProperties</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">lombok.</span><span style="color: #66D9EF;">Getter</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">lombok.</span><span style="color: #66D9EF;">Setter</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">lombok.</span><span style="color: #66D9EF;">ToString</span>;
+
+<span style="color: #AE81FF;">@Getter</span>
+<span style="color: #AE81FF;">@Setter</span>
+<span style="color: #AE81FF;">@ToString</span>(exclude=<span style="color: #E6DB74;">"password"</span>)
+<span style="color: #AE81FF;">@ConfigurationProperties</span>(prefix=<span style="color: #E6DB74;">"ssh"</span>)
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">SshProperties</span> {
+
+    <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">host</span>;
+    <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">Integer</span> <span style="color: #F92672;">port</span>;
+    <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">username</span>;
+    <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">password</span>;
+    <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">Forward</span> <span style="color: #F92672;">forward</span>;
+
+    <span style="color: #AE81FF;">@Getter</span>
+    <span style="color: #AE81FF;">@Setter</span>
+    <span style="color: #AE81FF;">@ToString</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Forward</span> {
+
+        <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">fromHost</span>;
+        <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">Integer</span> <span style="color: #F92672;">fromPort</span>;
+        <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">String</span> <span style="color: #F92672;">toHost</span>;
+        <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">Integer</span> <span style="color: #F92672;">toPort</span>;
+
+    }
+
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>SSH 配置类
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">javax.annotation.</span><span style="color: #66D9EF;">PreDestroy</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.boot.autoconfigure.condition.</span><span style="color: #66D9EF;">ConditionalOnProperty</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.boot.context.properties.</span><span style="color: #66D9EF;">EnableConfigurationProperties</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.annotation.</span><span style="color: #66D9EF;">Configuration</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.weaving.</span><span style="color: #66D9EF;">LoadTimeWeaverAware</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.instrument.classloading.</span><span style="color: #66D9EF;">LoadTimeWeaver</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">com.jcraft.jsch.</span><span style="color: #66D9EF;">JSch</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">com.jcraft.jsch.</span><span style="color: #66D9EF;">JSchException</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">com.jcraft.jsch.</span><span style="color: #66D9EF;">Session</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">cn.comein.ssh.config.</span><span style="color: #AE81FF;">SshProperties</span>.<span style="color: #66D9EF;">Forward</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">lombok.extern.slf4j.</span><span style="color: #66D9EF;">Slf4j</span>;
+
+<span style="color: #AE81FF;">@Configuration</span>
+<span style="color: #AE81FF;">@EnableConfigurationProperties</span>(SshProperties.<span style="color: #66D9EF;">class</span>)
+<span style="color: #AE81FF;">@ConditionalOnProperty</span>(prefix = <span style="color: #E6DB74;">"ssh"</span>, value = <span style="color: #E6DB74;">"enabled"</span>, havingValue = <span style="color: #E6DB74;">"true"</span>, matchIfMissing = <span style="color: #7fffd4;">false</span>)
+<span style="color: #AE81FF;">@Slf4j</span>
+<span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#23454;&#29616; LoadTimeWeaverAware &#25509;&#21475;&#26159;&#22240;&#20026;&#38656;&#35201; SSH &#27491;&#21521;&#20195;&#29702;&#38656;&#35201;&#22312;EntityManagerFactory&#21152;&#36733;&#21069;&#36816;&#34892;</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">SshConfiguration</span> <span style="color: #66D9EF;">implements</span> <span style="color: #66D9EF;">LoadTimeWeaverAware</span> {
+
+    <span style="color: #b0c4de;">private</span> <span style="color: #b0c4de;">final</span> <span style="color: #66D9EF;">Session</span> <span style="color: #F92672;">session</span>;
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">SshConfiguration</span>(<span style="color: #66D9EF;">SshProperties</span> <span style="color: #F92672;">sshProperties</span>) {
+        <span style="color: #66D9EF;">Session</span> <span style="color: #F92672;">session</span> = <span style="color: #7fffd4;">null</span>;
+        <span style="color: #66D9EF;">try</span> {
+            <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#21487;&#20197;&#33258;&#34892;&#20026; JSch &#28155;&#21152;&#26085;&#24535;&#65292;&#38656;&#35201;&#23454;&#29616; com.jcraft.jsch.Logger &#25509;&#21475;</span>
+            <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">JSch.setLogger(new JSchLogger())</span>
+            session = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">JSch</span>().getSession(sshProperties.getUsername(), sshProperties.getHost(), sshProperties.getPort());
+            session.setConfig(<span style="color: #E6DB74;">"StrictHostKeyChecking"</span>, <span style="color: #E6DB74;">"no"</span>);
+            session.setPassword(sshProperties.getPassword());
+            session.connect();
+            <span style="color: #66D9EF;">Forward</span> <span style="color: #F92672;">forward</span> = sshProperties.getForward();
+            <span style="color: #66D9EF;">if</span> (forward != <span style="color: #7fffd4;">null</span>) {
+                session.setPortForwardingL(forward.getFromHost(), forward.getFromPort(), forward.getToHost(), forward.getToPort());
+                log.info(<span style="color: #E6DB74;">"{}:{} -&gt; {}:{}"</span>, forward.getFromHost(), forward.getFromPort(), forward.getToHost(), forward.getToPort());
+            }
+        } <span style="color: #66D9EF;">catch</span> (<span style="color: #66D9EF;">JSchException</span> <span style="color: #F92672;">e</span>) {
+            log.error(<span style="color: #E6DB74;">"ssh "</span> + sshProperties.getHost() + <span style="color: #E6DB74;">" failed."</span>, e);
+        }
+        <span style="color: #66D9EF;">this</span>.session = session;
+    }
+
+    <span style="color: #AE81FF;">@PreDestroy</span>
+    <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#37197;&#32622;&#38144;&#27585;&#26102;&#65292;&#26029;&#24320; SSH &#38142;&#25509;</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">disconnect</span>() {
+        <span style="color: #66D9EF;">if</span> (session != <span style="color: #7fffd4;">null</span>) {
+            session.disconnect();
+        }
+    }
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">setLoadTimeWeaver</span>(<span style="color: #66D9EF;">LoadTimeWeaver</span> <span style="color: #F92672;">loadTimeWeaver</span>) {
+
+    }
+
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>application.properties 文件中添加 SSH 相关属性值
+</li>
+</ul>
+<pre class="example">
+ssh.enabled=false # 是否启用 SSH 配置
+ssh.host=127.0.0.1 # SSH 地址
+ssh.port=22 # SSH 端口
+ssh.username= # SSH 用户名
+ssh.password= # SSH 密码
+ssh.forward.from_host= # 绑定的本地地址
+ssh.forward.from_port= # 绑定的本地端口
+ssh.forward.to_host= # 正向代理的远程地址
+ssh.forward.to_port= # 正向代理的远程端口
+</pre>
+<ul class="org-ul">
+<li>修改数据源为绑定的本地地址与端口
+</li>
+<li>SSH 连接失败可能的原因
+<ol class="org-ol">
+<li>用户名或密码错误
+</li>
+<li>sshd_config 中需要配置 PasswordAuthentication yes，允许使用密码登陆
+</li>
+<li>使用 root 用户登陆，需要配置 PermitRootLogin yes，才能登陆
+</li>
+</ol>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -3313,6 +3467,41 @@ spring.jpa.properties.hibernate.dialect=net.saisimon.config.MySQL5UTF8Dialect
 </pre>
 </div>
 </div>
+<div id="outline-container-sec-5-12-13" class="outline-4">
+<h4 id="sec-5-12-13"><span class="section-number-4">5.12.13</span> 使用 Spring Validator 验证对象属性</h4>
+<div class="outline-text-4" id="text-5-12-13">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.validation.</span><span style="color: #66D9EF;">BindingResult</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.validation.</span><span style="color: #66D9EF;">DataBinder</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.validation.</span><span style="color: #66D9EF;">Validator</span>;
+
+<span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * &#39564;&#35777;&#23545;&#35937;&#23646;&#24615;&#26159;&#21542;&#31526;&#21512;&#39044;&#26399;&#65292;&#25903;&#25345; validation-api &#19982; hibernate-validator &#39564;&#35777;&#27880;&#35299;</span>
+<span style="color: #E6DB74; font-style: italic;"> *</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">target</span><span style="color: #E6DB74; font-style: italic;"> &#24453;&#39564;&#35777;&#23545;&#35937;</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">validator</span><span style="color: #E6DB74; font-style: italic;"> Spring &#39564;&#35777;&#22120;&#65292;&#21487;&#30452;&#25509;&#27880;&#20837;&#33719;&#21462; Validator &#23545;&#35937;&#25110;&#33258;&#34892;&#23454;&#29616; Validator &#25509;&#21475;</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">groups</span><span style="color: #E6DB74; font-style: italic;"> &#20998;&#32452;&#26631;&#35782;&#31867;&#65292;&#23545;&#24212;&#39564;&#35777;&#27880;&#35299;&#20013;&#30340; groups &#23646;&#24615;</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@return</span><span style="color: #E6DB74; font-style: italic;"> &#36820;&#22238;&#39564;&#35777;&#32467;&#26524;</span>
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">BindingResult</span> <span style="color: #F92672; font-style: italic;">validate</span>(<span style="color: #66D9EF;">Object</span> <span style="color: #F92672;">target</span>, <span style="color: #66D9EF;">Validator</span> <span style="color: #F92672;">validator</span>, <span style="color: #AE81FF;">Class</span>&lt;?&gt;... <span style="color: #F92672;">groups</span>) {
+    <span style="color: #66D9EF;">DataBinder</span> <span style="color: #F92672;">binder</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">DataBinder</span>(target);
+    binder.setValidator(validator);
+    <span style="color: #66D9EF;">List</span>&lt;<span style="color: #66D9EF;">Class</span>&lt;?&gt;&gt; <span style="color: #F92672;">list</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">ArrayList</span>&lt;&gt;();
+    <span style="color: #66D9EF;">if</span> (groups != <span style="color: #7fffd4;">null</span>) {
+        <span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">Class</span>&lt;?&gt; <span style="color: #F92672;">group</span> : groups) {
+            <span style="color: #66D9EF;">if</span> (group != <span style="color: #7fffd4;">null</span>) {
+                list.add(group);
+            }
+        }
+    }
+    binder.validate(list.toArray());
+    <span style="color: #66D9EF;">return</span> binder.getBindingResult();
+}
+</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -3509,10 +3698,10 @@ py -3 main.py
     <span style="color: #66D9EF;">animation</span>: marquee 5s linear infinite; <span style="color: #465457; font-style: italic;">/* </span><span style="color: #465457; font-style: italic;">&#25191;&#34892; marquee &#21160;&#30011;&#65292;5&#31186;&#19968;&#27425;&#65292;&#32447;&#24615;&#65292;&#26080;&#38480;&#24490;&#29615; </span><span style="color: #465457; font-style: italic;">*/</span>
 }
 <span style="color: #A6E22E;">@keyframes</span> marquee {
-<span style="color: #F92672;">    0% </span>{ 
+    <span style="color: #F92672;">0% </span>{ 
         <span style="color: #66D9EF;">transform</span>: translate(0, 0); 
     }
-<span style="color: #F92672;">    100% </span>{ 
+    <span style="color: #F92672;">100% </span>{ 
         <span style="color: #66D9EF;">transform</span>: translate(-100%, 0); 
     }
 }
@@ -4500,8 +4689,8 @@ $ systemctl stop gitlab-runsvdir.service
 </div>
 <div id="postamble" class="status">
 <p class="author">&#20316;&#32773;: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2018-04-19 Thu 18:50</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="date">Created: 2018-07-10 Tue 17:20</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
