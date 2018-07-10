@@ -2982,3 +2982,37 @@
         $ systemctl disable gitlab-runsvdir.service
         $ systemctl stop gitlab-runsvdir.service
       #+END_SRC
+** 修改 Git 仓库提交作者的信息
+    - 批量修改提交作者信息脚本，替换 [xxx] 为对应值
+      #+BEGIN_SRC sh
+      #!/bin/sh
+
+      git filter-branch --env-filter '
+
+      an="$GIT_AUTHOR_NAME"
+      am="$GIT_AUTHOR_EMAIL"
+      cn="$GIT_COMMITTER_NAME"
+      cm="$GIT_COMMITTER_EMAIL"
+
+      if [ "$GIT_COMMITTER_EMAIL" = "[旧邮箱地址]" ]
+      then
+          cn="[新作者名称]"
+          cm="[新邮箱地址]"
+      fi
+      if [ "$GIT_AUTHOR_EMAIL" = "[旧邮箱地址]" ]
+      then
+          an="[新作者名称]"
+          am="[新邮箱地址]"
+      fi
+
+      export GIT_AUTHOR_NAME="$an"
+      export GIT_AUTHOR_EMAIL="$am"
+      export GIT_COMMITTER_NAME="$cn"
+      export GIT_COMMITTER_EMAIL="$cm"
+      '
+      #+END_SRC
+    - 在待修改的 Git 仓库运行以上脚本
+    - 推送修改后的 Git 仓库
+      #+BEGIN_SRC 
+      git push --force --tags origin 'refs/heads/*'
+      #+END_SRC
