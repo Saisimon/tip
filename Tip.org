@@ -490,7 +490,7 @@
     #+ATTR_HTML: :target _blank
     [[https://en.wikipedia.org/wiki/Magic_number_(programming)][更多]]
 ** 批处理脚本运行程序
-    #+BEGIN_SRC 
+    #+BEGIN_SRC bat 
     ECHO "Start QQ..."
     CALL ${qq path}
     ECHO "Start Chrome..."
@@ -503,6 +503,20 @@
     1. Win + R 运行 regedit
     2. 找到 计算机 > HKEY_CURRENT_USER > Console > %SystemRoot%_system32_cmd.exe
     3. 将 CodePage 的数值数据修改为十六进制 3a8 或十进制 936 (简体中文 GBK) 或者十六进制 fde9 或十进制 65001 (UTF-8)
+** BAT批处理文件判断程序是否运行
+    #+BEGIN_SRC bat
+    REM 开启指定可执行程序函数，若已运行则提示，反之则运行该程序
+    REM %1 程序名 %2 可执行文件路径 %3、%4 程序参数
+    :openProgram
+    ECHO Open %1...
+    REM 判断指定程序名是否运行，名称忽略大小写
+    tasklist | find /i "%1.exe"
+    if %errorlevel%==0 (ECHO %1 already running...) else (START %2 %3 %4)
+    goto:eof
+
+    REM 调用函数，启动 Eclipse
+    call:openProgram Eclipse D:\eclipse\eclipse.exe
+    #+END_SRC
 
 * Database
 ** Mysql
