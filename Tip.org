@@ -473,7 +473,7 @@
     2. 找到 计算机 > HKEY_CLASSES_ROOT > Folder > shell
     3. 右键shell 新建 -> 项 -> 命令提示符
     4. 右键命令提示符 新建 -> 项 -> command
-    5. 点击(默认)项 输入 C:\Windows\System32\cmd.exe /k cd %1 然后点击确认
+    5. 点击(默认)项 输入 C:/Windows/System32/cmd.exe /k cd %1 然后点击确认
 ** 修改 XShell Alt 键作为 Meta 键, Backspace 键作为删除键
     1. 打开XShell 选择 文件 -> 属性
     2. 选择 终端 -> 键盘

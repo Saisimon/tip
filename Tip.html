@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Code Tips</title>
-<!-- 2018-07-16 Mon 11:59 -->
+<!-- 2018-07-28 Sat 10:08 -->
 <meta  charset="utf-8">
 <meta  name="generator" content="Org-mode">
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon">
@@ -1000,7 +1000,7 @@ $ crontab -u someone /home/someone/cronfile
 </li>
 <li>右键命令提示符 新建 -&gt; 项 -&gt; command
 </li>
-<li>点击(默认)项 输入 C:32.exe /k cd %1 然后点击确认
+<li>点击(默认)项 输入 C:/Windows/System32/cmd.exe /k cd %1 然后点击确认
 </li>
 </ol>
 </div>
@@ -1554,7 +1554,7 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 <pre class="src src-java"><span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">interface</span> <span style="color: #66D9EF;">SuperInterface</span>&lt;<span style="color: #66D9EF;">T</span>&gt; {
 
     <span style="color: #AE81FF;">@SuppressWarnings</span>(<span style="color: #E6DB74;">"unchecked"</span>)
-    <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #F92672; font-style: italic;">getEntityClass</span>() {
+    <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; getEntityClass() {
         <span style="color: #66D9EF;">Type</span>[] <span style="color: #F92672;">types</span> = getClass().getGenericInterfaces();
         <span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">Type</span> <span style="color: #F92672;">type</span> : types) {
             <span style="color: #66D9EF;">if</span> (type.getTypeName().startsWith(SuperInterface.<span style="color: #66D9EF;">class</span>.getName())) {
@@ -1620,7 +1620,7 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 
 <pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Interface IFoo</span>
 <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">interface</span> <span style="color: #66D9EF;">IFoo</span> {
-       <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">bar</span>(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span>) {
+       <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">void</span> bar(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span>) {
                System.out.println(<span style="color: #E6DB74;">"IFoo.bar(int)"</span>);
        }
 }
@@ -3748,10 +3748,10 @@ py -3 main.py
     <span style="color: #66D9EF;">animation</span>: marquee 5s linear infinite; <span style="color: #465457; font-style: italic;">/* </span><span style="color: #465457; font-style: italic;">&#25191;&#34892; marquee &#21160;&#30011;&#65292;5&#31186;&#19968;&#27425;&#65292;&#32447;&#24615;&#65292;&#26080;&#38480;&#24490;&#29615; </span><span style="color: #465457; font-style: italic;">*/</span>
 }
 <span style="color: #A6E22E;">@keyframes</span> marquee {
-    <span style="color: #F92672;">0% </span>{ 
+<span style="color: #F92672;">    0% </span>{ 
         <span style="color: #66D9EF;">transform</span>: translate(0, 0); 
     }
-    <span style="color: #F92672;">100% </span>{ 
+<span style="color: #F92672;">    100% </span>{ 
         <span style="color: #66D9EF;">transform</span>: translate(-100%, 0); 
     }
 }
@@ -4786,8 +4786,8 @@ git push --force --tags origin 'refs/heads/*'
 </div>
 <div id="postamble" class="status">
 <p class="author">&#20316;&#32773;: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2018-07-16 Mon 11:59</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="date">Created: 2018-07-28 Sat 10:08</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
