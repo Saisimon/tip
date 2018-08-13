@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Code Tips</title>
-<!-- 2018-07-28 Sat 10:08 -->
+<!-- 2018-08-13 Mon 18:01 -->
 <meta  charset="utf-8">
 <meta  name="generator" content="Org-mode">
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon">
@@ -235,6 +235,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-12-11">5.12.11. Spring Boot 中配置使用 WebSocket</a></li>
 <li><a href="#sec-5-12-12">5.12.12. Spring Boot 通过 Hibernate 生成 Mysql 表时指定引擎与编码</a></li>
 <li><a href="#sec-5-12-13">5.12.13. 使用 Spring Validator 验证对象属性</a></li>
+<li><a href="#sec-5-12-14">5.12.14. Spring 读取 properties 与 yml 文件</a></li>
 </ul>
 </li>
 </ul>
@@ -1554,7 +1555,7 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 <pre class="src src-java"><span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">interface</span> <span style="color: #66D9EF;">SuperInterface</span>&lt;<span style="color: #66D9EF;">T</span>&gt; {
 
     <span style="color: #AE81FF;">@SuppressWarnings</span>(<span style="color: #E6DB74;">"unchecked"</span>)
-    <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; getEntityClass() {
+    <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #F92672; font-style: italic;">getEntityClass</span>() {
         <span style="color: #66D9EF;">Type</span>[] <span style="color: #F92672;">types</span> = getClass().getGenericInterfaces();
         <span style="color: #66D9EF;">for</span> (<span style="color: #66D9EF;">Type</span> <span style="color: #F92672;">type</span> : types) {
             <span style="color: #66D9EF;">if</span> (type.getTypeName().startsWith(SuperInterface.<span style="color: #66D9EF;">class</span>.getName())) {
@@ -1620,7 +1621,7 @@ value = value &amp; ~ (1 &lt;&lt; bit_number);
 
 <pre class="src src-java"><span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">Interface IFoo</span>
 <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">interface</span> <span style="color: #66D9EF;">IFoo</span> {
-       <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">void</span> bar(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span>) {
+       <span style="color: #66D9EF;">default</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">bar</span>(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">i</span>) {
                System.out.println(<span style="color: #E6DB74;">"IFoo.bar(int)"</span>);
        }
 }
@@ -3552,6 +3553,53 @@ spring.jpa.properties.hibernate.dialect=net.saisimon.config.MySQL5UTF8Dialect
 </div>
 </div>
 </div>
+<div id="outline-container-sec-5-12-14" class="outline-4">
+<h4 id="sec-5-12-14"><span class="section-number-4">5.12.14</span> Spring 读取 properties 与 yml 文件</h4>
+<div class="outline-text-4" id="text-5-12-14">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.io.</span><span style="color: #66D9EF;">File</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.io.</span><span style="color: #66D9EF;">IOException</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.boot.env.</span><span style="color: #66D9EF;">PropertySourcesLoader</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.core.env.</span><span style="color: #66D9EF;">PropertySource</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.core.io.</span><span style="color: #66D9EF;">FileSystemResource</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.util.</span><span style="color: #66D9EF;">ResourceUtils</span>;
+
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">PropertyUtils</span> {
+
+    <span style="color: #b0c4de;">private</span> <span style="color: #b0c4de;">static</span> <span style="color: #b0c4de;">final</span> <span style="color: #66D9EF;">PropertySource</span>&lt;?&gt; <span style="color: #F92672;">YAMLS</span> = fetchProperties(<span style="color: #E6DB74;">"classpath:application.yml"</span>);
+    <span style="color: #b0c4de;">private</span> <span style="color: #b0c4de;">static</span> <span style="color: #b0c4de;">final</span> <span style="color: #66D9EF;">PropertySource</span>&lt;?&gt; <span style="color: #F92672;">PROPERTIES</span> = fetchProperties(<span style="color: #E6DB74;">"classpath:application.properties"</span>);
+
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">PropertySource</span>&lt;?&gt; <span style="color: #F92672; font-style: italic;">fetchProperties</span>(<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">name</span>) {
+        <span style="color: #66D9EF;">try</span> {
+            <span style="color: #66D9EF;">PropertySourcesLoader</span> <span style="color: #F92672;">loader</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">PropertySourcesLoader</span>();
+            <span style="color: #66D9EF;">File</span> <span style="color: #F92672;">file</span> = ResourceUtils.getFile(name);
+            <span style="color: #66D9EF;">return</span> loader.load(<span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">FileSystemResource</span>(file));
+        } <span style="color: #66D9EF;">catch</span> (<span style="color: #66D9EF;">IOException</span> <span style="color: #F92672;">e</span>) {
+            <span style="color: #66D9EF;">throw</span> <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">IllegalStateException</span>(<span style="color: #E6DB74;">"fetch "</span>+ name +<span style="color: #E6DB74;">" file failed!"</span>);
+        }
+    }
+
+    <span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;">     * &#35835;&#21462; application.yml &#25991;&#20214;&#30340;&#23646;&#24615;</span>
+<span style="color: #E6DB74; font-style: italic;">     */</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">Object</span> <span style="color: #F92672; font-style: italic;">fetchYaml</span>(<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">name</span>) {
+        <span style="color: #66D9EF;">return</span> <span style="color: #7fffd4;">YAMLS</span>.getProperty(name);
+    }
+
+    <span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;">     * &#35835;&#21462; application.properties &#25991;&#20214;&#30340;&#23646;&#24615;</span>
+<span style="color: #E6DB74; font-style: italic;">     */</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">Object</span> <span style="color: #F92672; font-style: italic;">fetchProperty</span>(<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">name</span>) {
+        <span style="color: #66D9EF;">return</span> <span style="color: #7fffd4;">PROPERTIES</span>.getProperty(name);
+    }
+
+}
+</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -3748,10 +3796,10 @@ py -3 main.py
     <span style="color: #66D9EF;">animation</span>: marquee 5s linear infinite; <span style="color: #465457; font-style: italic;">/* </span><span style="color: #465457; font-style: italic;">&#25191;&#34892; marquee &#21160;&#30011;&#65292;5&#31186;&#19968;&#27425;&#65292;&#32447;&#24615;&#65292;&#26080;&#38480;&#24490;&#29615; </span><span style="color: #465457; font-style: italic;">*/</span>
 }
 <span style="color: #A6E22E;">@keyframes</span> marquee {
-<span style="color: #F92672;">    0% </span>{ 
+    <span style="color: #F92672;">0% </span>{ 
         <span style="color: #66D9EF;">transform</span>: translate(0, 0); 
     }
-<span style="color: #F92672;">    100% </span>{ 
+    <span style="color: #F92672;">100% </span>{ 
         <span style="color: #66D9EF;">transform</span>: translate(-100%, 0); 
     }
 }
@@ -4786,8 +4834,8 @@ git push --force --tags origin 'refs/heads/*'
 </div>
 <div id="postamble" class="status">
 <p class="author">&#20316;&#32773;: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2018-07-28 Sat 10:08</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="date">Created: 2018-08-13 Mon 18:01</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
