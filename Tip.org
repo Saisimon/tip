@@ -3084,3 +3084,18 @@
       #+BEGIN_SRC 
       git push --force --tags origin 'refs/heads/*'
       #+END_SRC
+** Git 还原被错误 Merge 的分支
+     #+BEGIN_SRC 
+     # 切换到 merge 操作时的分支
+     $ git checkout [分支名]
+     # 回退到 merge 前的版本
+     $ git reset --hard [merge 前的版本号]
+     # 撤回暂存区提交的修改文件
+     $ git reset HEAD .
+     # 还原所有被追踪的修改文件
+     $ git checkout .
+     # 确定需要删除的未被追踪的新建文件与目录
+     $ git clean -ndf
+     # 删除所有未被追踪的新建文件与目录
+     $ git clean -df
+     #+END_SRC
