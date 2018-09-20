@@ -2276,6 +2276,47 @@
         
     }
     #+END_SRC
+*** Spring 多数据源下设置默认注解事务管理器
+    - 使用 @EnableTransactionManagement 注解开启事物管理，使用 @Transactional 注解控制事物，未指定 value 值，则使用默认指定事务管理器
+    #+BEGIN_SRC java
+    package net.saisimon.config;
+
+    import javax.sql.DataSource;
+
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.beans.factory.annotation.Qualifier;
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.context.annotation.Primary;
+    import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+    import org.springframework.transaction.PlatformTransactionManager;
+    import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+
+    @Configuration
+    public class TransactionManagementConfig implements TransactionManagementConfigurer {
+        
+        @Autowired
+        private PlatformTransactionManager transactionManager;
+        
+        @Bean(name = "transactionManager")
+        @Primary
+        public PlatformTransactionManager transactionManager(@Qualifier("devDB") DataSource devDB) {
+            return new DataSourceTransactionManager(devDB);
+        }
+        
+        @Bean(name = "testDBTransactionManager")
+        public PlatformTransactionManager testDBTransactionManager(@Qualifier("testDB") DataSource testDB) {
+            return new DataSourceTransactionManager(testDB);
+        }
+
+        @Override
+        public PlatformTransactionManager annotationDrivenTransactionManager() {
+            // 设置默认注解事物管理器
+            return transactionManager;
+        }
+        
+    }
+    #+END_SRC
 
 * Python
 ** Python
