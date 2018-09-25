@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Code Tips</title>
-<!-- 2018-09-17 Mon 10:12 -->
+<!-- 2018-09-25 Tue 18:02 -->
 <meta  charset="utf-8">
 <meta  name="generator" content="Org-mode">
 <meta  name="author" content="[[http://blog.saisimon.net][Saisimon]]Saisimon">
@@ -151,6 +151,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-1-14">5.1.14. 正则表达式中需要转义的特殊字符</a></li>
 <li><a href="#sec-5-1-15">5.1.15. Java 根据文件名获取其 Content-Type</a></li>
 <li><a href="#sec-5-1-16">5.1.16. 使用 JSch 库通过 SSH 连接受限 MySQL 数据库（基于 Spring Boot）</a></li>
+<li><a href="#sec-5-1-17">5.1.17. Jackson JSON 工具类，支持泛型解析</a></li>
 </ul>
 </li>
 <li><a href="#sec-5-2">5.2. JUnit</a>
@@ -236,6 +237,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5-12-12">5.12.12. Spring Boot 通过 Hibernate 生成 Mysql 表时指定引擎与编码</a></li>
 <li><a href="#sec-5-12-13">5.12.13. 使用 Spring Validator 验证对象属性</a></li>
 <li><a href="#sec-5-12-14">5.12.14. Spring 读取 properties 与 yml 文件</a></li>
+<li><a href="#sec-5-12-15">5.12.15. Spring 多数据源下设置默认注解事务管理器</a></li>
 </ul>
 </li>
 </ul>
@@ -1989,6 +1991,109 @@ ssh.forward.to_port= # 正向代理的远程端口
 </ul>
 </div>
 </div>
+<div id="outline-container-sec-5-1-17" class="outline-4">
+<h4 id="sec-5-1-17"><span class="section-number-4">5.1.17</span> Jackson JSON 工具类，支持泛型解析</h4>
+<div class="outline-text-4" id="text-5-1-17">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">package</span> <span style="color: #63b8ff;">net.saisimon.util</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.io.</span><span style="color: #66D9EF;">IOException</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.util.</span><span style="color: #66D9EF;">ArrayList</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.util.</span><span style="color: #66D9EF;">Arrays</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.util.</span><span style="color: #66D9EF;">Iterator</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">java.util.</span><span style="color: #66D9EF;">List</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">com.fasterxml.jackson.core.</span><span style="color: #66D9EF;">JsonProcessingException</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">com.fasterxml.jackson.databind.</span><span style="color: #66D9EF;">JavaType</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">com.fasterxml.jackson.databind.</span><span style="color: #66D9EF;">ObjectMapper</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">com.fasterxml.jackson.databind.type.</span><span style="color: #66D9EF;">TypeFactory</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">lombok.extern.slf4j.</span><span style="color: #66D9EF;">Slf4j</span>;
+
+<span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;"> * &lt;p&gt;Jackson JSON &#24037;&#20855;&#31867;&lt;/p&gt;</span>
+<span style="color: #E6DB74; font-style: italic;"> * </span>
+<span style="color: #E6DB74; font-style: italic;"> * </span><span style="color: #f08080;">@author</span><span style="color: #E6DB74; font-style: italic;"> Saisimon</span>
+<span style="color: #E6DB74; font-style: italic;"> */</span>
+<span style="color: #AE81FF;">@Slf4j</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">JsonUtils</span> {
+
+    <span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;">     * &lt;p&gt;&#23545;&#35937;&#36716; JSON&lt;/p&gt;</span>
+<span style="color: #E6DB74; font-style: italic;">     * </span>
+<span style="color: #E6DB74; font-style: italic;">     * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">obj</span><span style="color: #E6DB74; font-style: italic;"> &#30446;&#26631;&#23545;&#35937;</span>
+<span style="color: #E6DB74; font-style: italic;">     * </span><span style="color: #f08080;">@return</span><span style="color: #E6DB74; font-style: italic;"> JSON &#20018;</span>
+<span style="color: #E6DB74; font-style: italic;">     */</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">String</span> <span style="color: #F92672; font-style: italic;">toJson</span>(<span style="color: #66D9EF;">Object</span> <span style="color: #F92672;">obj</span>) {
+        <span style="color: #66D9EF;">try</span> {
+            <span style="color: #66D9EF;">ObjectMapper</span> <span style="color: #F92672;">objectMapper</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">ObjectMapper</span>();
+            <span style="color: #66D9EF;">return</span> objectMapper.writeValueAsString(obj);
+        } <span style="color: #66D9EF;">catch</span> (<span style="color: #66D9EF;">JsonProcessingException</span> <span style="color: #F92672;">e</span>) {
+            log.error(<span style="color: #E6DB74;">"&#29983;&#25104; json &#22833;&#36133;"</span>, e);
+            <span style="color: #66D9EF;">return</span> <span style="color: #7fffd4;">null</span>;
+        }
+    }
+
+    <span style="color: #E6DB74; font-style: italic;">/**</span>
+<span style="color: #E6DB74; font-style: italic;">     * &lt;p&gt;&#35299;&#26512; JSON &#20018;&#65292;&#25903;&#25345;&#27867;&#22411;&lt;/p&gt;</span>
+<span style="color: #E6DB74; font-style: italic;">     * &lt;p&gt;&#30446;&#26631;&#31867;&#20026;  Map&lt;String, List&lt;Long&gt;&gt;&lt;/p&gt;</span>
+<span style="color: #E6DB74; font-style: italic;">     * &lt;p&gt;targetClass =&gt; Map.class&lt;/p&gt;</span>
+<span style="color: #E6DB74; font-style: italic;">     * &lt;p&gt;genericClasses =&gt; String.class, List.class, Long.class&lt;/p&gt;</span>
+<span style="color: #E6DB74; font-style: italic;">     * </span>
+<span style="color: #E6DB74; font-style: italic;">     * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">json</span><span style="color: #E6DB74; font-style: italic;"> JSON &#20018;</span>
+<span style="color: #E6DB74; font-style: italic;">     * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">targetClass</span><span style="color: #E6DB74; font-style: italic;"> &#30446;&#26631;&#31867;</span>
+<span style="color: #E6DB74; font-style: italic;">     * </span><span style="color: #f08080;">@param</span><span style="color: #E6DB74; font-style: italic;"> </span><span style="color: #F92672; font-style: italic;">genericClasses</span><span style="color: #E6DB74; font-style: italic;"> &#30446;&#26631;&#31867;&#30340;&#27867;&#22411;&#25968;&#32452;</span>
+<span style="color: #E6DB74; font-style: italic;">     * </span><span style="color: #f08080;">@return</span><span style="color: #E6DB74; font-style: italic;"> &#30446;&#26631;&#23545;&#35937;</span>
+<span style="color: #E6DB74; font-style: italic;">     */</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #b0c4de;">static</span> &lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #66D9EF;">T</span> <span style="color: #F92672; font-style: italic;">fromJson</span>(<span style="color: #66D9EF;">String</span> <span style="color: #F92672;">json</span>, <span style="color: #66D9EF;">Class</span>&lt;<span style="color: #66D9EF;">T</span>&gt; <span style="color: #F92672;">targetClass</span>, <span style="color: #AE81FF;">Class</span>&lt;?&gt;... <span style="color: #F92672;">genericClasses</span>) {
+        <span style="color: #66D9EF;">try</span> {
+            <span style="color: #66D9EF;">ObjectMapper</span> <span style="color: #F92672;">objectMapper</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">ObjectMapper</span>();
+            <span style="color: #66D9EF;">JavaType</span> <span style="color: #F92672;">javaType</span> = parse(targetClass, genericClasses);
+            System.out.println(javaType);
+            <span style="color: #66D9EF;">return</span> objectMapper.readValue(json, javaType);
+        } <span style="color: #66D9EF;">catch</span> (<span style="color: #66D9EF;">IOException</span> <span style="color: #F92672;">e</span>) {
+            log.error(<span style="color: #E6DB74;">"&#35299;&#26512; json &#22833;&#36133;"</span>, e);
+            <span style="color: #66D9EF;">return</span> <span style="color: #7fffd4;">null</span>;
+        }
+    }
+
+    <span style="color: #b0c4de;">private</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">JavaType</span> <span style="color: #F92672; font-style: italic;">parse</span>(<span style="color: #66D9EF;">Class</span>&lt;?&gt; <span style="color: #F92672;">targetClass</span>, <span style="color: #AE81FF;">Class</span>&lt;?&gt;... <span style="color: #F92672;">genericClasses</span>) {
+        <span style="color: #66D9EF;">if</span> (genericClasses == <span style="color: #7fffd4;">null</span>) {
+            <span style="color: #66D9EF;">return</span> TypeFactory.defaultInstance().constructType(targetClass);
+        } <span style="color: #66D9EF;">else</span> {
+            <span style="color: #66D9EF;">List</span>&lt;<span style="color: #66D9EF;">Class</span>&lt;?&gt;&gt; <span style="color: #F92672;">genericClassList</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">ArrayList</span>&lt;&gt;(Arrays.asList(genericClasses));
+            <span style="color: #66D9EF;">return</span> construct(targetClass, parse(genericClassList, genericClassList.iterator()));
+        }
+    }
+
+    <span style="color: #b0c4de;">private</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">List</span>&lt;<span style="color: #66D9EF;">JavaType</span>&gt; <span style="color: #F92672; font-style: italic;">parse</span>(<span style="color: #66D9EF;">List</span>&lt;<span style="color: #66D9EF;">Class</span>&lt;?&gt;&gt; <span style="color: #F92672;">genericClassList</span>, <span style="color: #66D9EF;">Iterator</span>&lt;<span style="color: #66D9EF;">Class</span>&lt;?&gt;&gt; <span style="color: #F92672;">it</span>) {
+        <span style="color: #66D9EF;">List</span>&lt;<span style="color: #66D9EF;">JavaType</span>&gt; <span style="color: #F92672;">javaTypes</span> = <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">ArrayList</span>&lt;&gt;();
+        <span style="color: #66D9EF;">while</span> (it.hasNext()) {
+            <span style="color: #66D9EF;">Class</span>&lt;?&gt; <span style="color: #F92672;">cls</span> = it.next();
+            <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">genericLenght</span> = cls.getTypeParameters().length;
+            <span style="color: #66D9EF;">if</span> (genericLenght &gt; <span style="color: #ffa07a;">0</span>) {
+                <span style="color: #66D9EF;">List</span>&lt;<span style="color: #66D9EF;">JavaType</span>&gt; <span style="color: #F92672;">subJavaTypes</span> = parse(genericClassList.subList(<span style="color: #ffa07a;">1</span>, genericClassList.size()), it);
+                <span style="color: #66D9EF;">JavaType</span> <span style="color: #F92672;">javaType</span> = construct(cls, subJavaTypes.subList(<span style="color: #ffa07a;">0</span>, genericLenght));
+                javaTypes.add(javaType);
+                javaTypes.addAll(subJavaTypes.subList(genericLenght, subJavaTypes.size()));
+            } <span style="color: #66D9EF;">else</span> {
+                <span style="color: #66D9EF;">JavaType</span> <span style="color: #F92672;">javaType</span> = TypeFactory.defaultInstance().constructType(cls);
+                javaTypes.add(javaType);
+            }
+        }
+        <span style="color: #66D9EF;">return</span> javaTypes;
+    }
+
+    <span style="color: #b0c4de;">private</span> <span style="color: #b0c4de;">static</span> <span style="color: #66D9EF;">JavaType</span> <span style="color: #F92672; font-style: italic;">construct</span>(<span style="color: #66D9EF;">Class</span>&lt;?&gt; <span style="color: #F92672;">cls</span>, <span style="color: #66D9EF;">List</span>&lt;<span style="color: #66D9EF;">JavaType</span>&gt; <span style="color: #F92672;">javaTypes</span>) {
+        <span style="color: #66D9EF;">return</span> TypeFactory.defaultInstance().constructParametricType(cls, javaTypes.toArray(<span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">JavaType</span>[javaTypes.size()]));
+    }
+
+}
+</pre>
+</div>
+</div>
+</div>
 </div>
 
 <div id="outline-container-sec-5-2" class="outline-3">
@@ -3601,6 +3706,56 @@ spring.jpa.properties.hibernate.dialect=net.saisimon.config.MySQL5UTF8Dialect
 </div>
 </div>
 </div>
+<div id="outline-container-sec-5-12-15" class="outline-4">
+<h4 id="sec-5-12-15"><span class="section-number-4">5.12.15</span> Spring 多数据源下设置默认注解事务管理器</h4>
+<div class="outline-text-4" id="text-5-12-15">
+<ul class="org-ul">
+<li>使用 @EnableTransactionManagement 注解开启事物管理，使用 @Transactional 注解控制事物，未指定 value 值，则使用默认指定事务管理器
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #66D9EF;">package</span> <span style="color: #63b8ff;">net.saisimon.config</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">javax.sql.</span><span style="color: #66D9EF;">DataSource</span>;
+
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.beans.factory.annotation.</span><span style="color: #66D9EF;">Autowired</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.beans.factory.annotation.</span><span style="color: #66D9EF;">Qualifier</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.annotation.</span><span style="color: #66D9EF;">Bean</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.annotation.</span><span style="color: #66D9EF;">Configuration</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.context.annotation.</span><span style="color: #66D9EF;">Primary</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.jdbc.datasource.</span><span style="color: #66D9EF;">DataSourceTransactionManager</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.transaction.</span><span style="color: #66D9EF;">PlatformTransactionManager</span>;
+<span style="color: #66D9EF;">import</span> <span style="color: #63b8ff;">org.springframework.transaction.annotation.</span><span style="color: #66D9EF;">TransactionManagementConfigurer</span>;
+
+<span style="color: #AE81FF;">@Configuration</span>
+<span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">TransactionManagementConfig</span> <span style="color: #66D9EF;">implements</span> <span style="color: #66D9EF;">TransactionManagementConfigurer</span> {
+
+    <span style="color: #AE81FF;">@Autowired</span>
+    <span style="color: #b0c4de;">private</span> <span style="color: #66D9EF;">PlatformTransactionManager</span> <span style="color: #F92672;">transactionManager</span>;
+
+    <span style="color: #AE81FF;">@Bean</span>(name = <span style="color: #E6DB74;">"transactionManager"</span>)
+    <span style="color: #AE81FF;">@Primary</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">PlatformTransactionManager</span> <span style="color: #F92672; font-style: italic;">transactionManager</span>(<span style="color: #AE81FF;">@Qualifier</span>(<span style="color: #E6DB74;">"devDB"</span>) <span style="color: #66D9EF;">DataSource</span> <span style="color: #F92672;">devDB</span>) {
+        <span style="color: #66D9EF;">return</span> <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">DataSourceTransactionManager</span>(devDB);
+    }
+
+    <span style="color: #AE81FF;">@Bean</span>(name = <span style="color: #E6DB74;">"testDBTransactionManager"</span>)
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">PlatformTransactionManager</span> <span style="color: #F92672; font-style: italic;">testDBTransactionManager</span>(<span style="color: #AE81FF;">@Qualifier</span>(<span style="color: #E6DB74;">"testDB"</span>) <span style="color: #66D9EF;">DataSource</span> <span style="color: #F92672;">testDB</span>) {
+        <span style="color: #66D9EF;">return</span> <span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">DataSourceTransactionManager</span>(testDB);
+    }
+
+    <span style="color: #AE81FF;">@Override</span>
+    <span style="color: #b0c4de;">public</span> <span style="color: #66D9EF;">PlatformTransactionManager</span> <span style="color: #F92672; font-style: italic;">annotationDrivenTransactionManager</span>() {
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#35774;&#32622;&#40664;&#35748;&#27880;&#35299;&#20107;&#29289;&#31649;&#29702;&#22120;</span>
+        <span style="color: #66D9EF;">return</span> transactionManager;
+    }
+
+}
+</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -4854,7 +5009,7 @@ $ git clean -df
 </div>
 <div id="postamble" class="status">
 <p class="author">&#20316;&#32773;: <a href="http://blog.saisimon.net">Saisimon</a></p>
-<p class="date">Created: 2018-09-17 Mon 10:12</p>
+<p class="date">Created: 2018-09-25 Tue 18:02</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
