@@ -1118,6 +1118,104 @@
       1. 用户名或密码错误
       2. sshd_config 中需要配置 PasswordAuthentication yes，允许使用密码登陆
       3. 使用 root 用户登陆，需要配置 PermitRootLogin yes，才能登陆
+*** Jackson JSON 工具类，支持泛型解析
+    #+BEGIN_SRC java
+    package net.saisimon.util;
+
+    import java.io.IOException;
+    import java.util.ArrayList;
+    import java.util.Arrays;
+    import java.util.Iterator;
+    import java.util.List;
+
+    import com.fasterxml.jackson.core.JsonProcessingException;
+    import com.fasterxml.jackson.databind.JavaType;
+    import com.fasterxml.jackson.databind.ObjectMapper;
+    import com.fasterxml.jackson.databind.type.TypeFactory;
+
+    import lombok.extern.slf4j.Slf4j;
+
+    /**
+     ,* <p>Jackson JSON 工具类</p>
+     ,* 
+     ,* @author Saisimon
+     ,*/
+    @Slf4j
+    public class JsonUtils {
+        
+        /**
+         ,* <p>对象转 JSON</p>
+         ,* 
+         ,* @param obj 目标对象
+         ,* @return JSON 串
+         ,*/
+        public static String toJson(Object obj) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                return objectMapper.writeValueAsString(obj);
+            } catch (JsonProcessingException e) {
+                log.error("生成 json 失败", e);
+                return null;
+            }
+        }
+        
+        /**
+         ,* <p>解析 JSON 串，支持泛型</p>
+         ,* <p>目标类为  Map<String, List<Long>></p>
+         ,* <p>targetClass => Map.class</p>
+         ,* <p>genericClasses => String.class, List.class, Long.class</p>
+         ,* 
+         ,* @param json JSON 串
+         ,* @param targetClass 目标类
+         ,* @param genericClasses 目标类的泛型数组
+         ,* @return 目标对象
+         ,*/
+        public static <T> T fromJson(String json, Class<T> targetClass, Class<?>... genericClasses) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JavaType javaType = parse(targetClass, genericClasses);
+                System.out.println(javaType);
+                return objectMapper.readValue(json, javaType);
+            } catch (IOException e) {
+                log.error("解析 json 失败", e);
+                return null;
+            }
+        }
+        
+        private static JavaType parse(Class<?> targetClass, Class<?>... genericClasses) {
+            if (genericClasses == null) {
+                return TypeFactory.defaultInstance().constructType(targetClass);
+            } else {
+                List<Class<?>> genericClassList = new ArrayList<>(Arrays.asList(genericClasses));
+                return construct(targetClass, parse(genericClassList, genericClassList.iterator()));
+            }
+        }
+        
+        private static List<JavaType> parse(List<Class<?>> genericClassList, Iterator<Class<?>> it) {
+            List<JavaType> javaTypes = new ArrayList<>();
+            while (it.hasNext()) {
+                Class<?> cls = it.next();
+                int genericLenght = cls.getTypeParameters().length;
+                if (genericLenght > 0) {
+                    List<JavaType> subJavaTypes = parse(genericClassList.subList(1, genericClassList.size()), it);
+                    JavaType javaType = construct(cls, subJavaTypes.subList(0, genericLenght));
+                    javaTypes.add(javaType);
+                    javaTypes.addAll(subJavaTypes.subList(genericLenght, subJavaTypes.size()));
+                } else {
+                    JavaType javaType = TypeFactory.defaultInstance().constructType(cls);
+                    javaTypes.add(javaType);
+                }
+            }
+            return javaTypes;
+        }
+        
+        private static JavaType construct(Class<?> cls, List<JavaType> javaTypes) {
+            return TypeFactory.defaultInstance().constructParametricType(cls, javaTypes.toArray(new JavaType[javaTypes.size()]));
+        }
+        
+    }
+
+    #+END_SRC
      
 ** JUnit
 *** JUnit 4 中实现测试用例按指定顺序执行
