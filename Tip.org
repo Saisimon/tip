@@ -598,6 +598,19 @@
     # 3.zeroDateTimeBehavior=round 将值转为最近的正确值，即'0001-01-01'
     jdbc:mysql://${mysql.serverUrl}?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull
     #+END_SRC
+*** Mysql 设置 max_allowed_packet
+    - 查看 [[https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_allowed_packet ][max_allowed_packet]] 值
+      #+BEGIN_SRC sql
+      show VARIABLES like '%max_allowed_packet%';
+      #+END_SRC
+    - 修改 max_allowed_packet 值
+      #+BEGIN_SRC sql
+      SET GLOBAL max_allowed_packet=20 * 1024 * 1024
+      #+END_SRC
+    - 修改 /etc/mysql/my.cnf 文件中 [mysqld] 下的配置
+      #+BEGIN_SRC
+      max_allowed_packet=20M
+      #+END_SRC
 
 * C
 ** C
@@ -1174,7 +1187,6 @@
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
                 JavaType javaType = parse(targetClass, genericClasses);
-                System.out.println(javaType);
                 return objectMapper.readValue(json, javaType);
             } catch (IOException e) {
                 log.error("解析 json 失败", e);
