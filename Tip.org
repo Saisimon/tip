@@ -629,7 +629,7 @@
              printf("第%d位值为0", bit_number);
      }
      #+END_SRC
-     
+    
 * Java
 ** Java
 *** 操作 jar 包
@@ -2347,41 +2347,65 @@
     #+END_SRC
 *** Spring 读取 properties 与 yml 文件
     #+BEGIN_SRC java
+    package net.saisimon.util;
+
     import java.io.File;
     import java.io.IOException;
+    import java.util.ArrayList;
+    import java.util.List;
 
-    import org.springframework.boot.env.PropertySourcesLoader;
+    import org.springframework.boot.env.PropertiesPropertySourceLoader;
+    import org.springframework.boot.env.PropertySourceLoader;
+    import org.springframework.boot.env.YamlPropertySourceLoader;
     import org.springframework.core.env.PropertySource;
     import org.springframework.core.io.FileSystemResource;
     import org.springframework.util.ResourceUtils;
 
     public class PropertyUtils {
         
-        private static final PropertySource<?> YAMLS = fetchProperties("classpath:application.yml");
-        private static final PropertySource<?> PROPERTIES = fetchProperties("classpath:application.properties");
+        private static final PropertySource<?> YAMLS = fetchProperties(new YamlPropertySourceLoader(), "classpath:application.yml");
+        private static final PropertySource<?> PROPERTIES = fetchProperties(new PropertiesPropertySourceLoader(), "classpath:application.properties");
         
-        public static PropertySource<?> fetchProperties(String name) {
+        public static PropertySource<?> fetchProperties(PropertySourceLoader loader, String name) {
             try {
-                PropertySourcesLoader loader = new PropertySourcesLoader();
-                File file = ResourceUtils.getFile(name);
-                return loader.load(new FileSystemResource(file));
+                ClassPathResource classPathResource = new ClassPathResource(name);
+                List<PropertySource<?>> propertySources = loader.load(name, classPathResource);
+                if (propertySources.size() == 0) {
+                    throw new IllegalStateException("fetch "+ name +" file failed!");
+                }
+                return propertySources.get(0);
             } catch (IOException e) {
-                throw new IllegalStateException("fetch "+ name +" file failed!");
+                throw new IllegalStateException("fetch "+ name +" file failed!", e);
             }
         }
 
         /**
          ,* 读取 application.yml 文件的属性
+         ,* 
          ,*/
-        public static Object fetchYaml(String name) {
-            return YAMLS.getProperty(name);
+        public static Object fetchYaml(String key) {
+            Object obj = YAMLS.getProperty(key);
+            if (obj != null) {
+                return obj;
+            }
+            List<Object> objs = new ArrayList<>();
+            int idx = 0;
+            do {
+                obj = YAMLS.getProperty(key + "[" + idx + "]");
+                if (obj != null) {
+                    objs.add(obj);
+                }
+                idx++;
+            } while (obj != null);
+            return objs.isEmpty() ? null : objs;
         }
 
         /**
          ,* 读取 application.properties 文件的属性
+         ,* 
          ,*/
-        public static Object fetchProperty(String name) {
-            return PROPERTIES.getProperty(name);
+        public static Object fetchProperty(String key) {
+            return PROPERTIES.getProperty(key);
         }
         
     }
